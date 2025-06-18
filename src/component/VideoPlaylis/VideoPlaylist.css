@@ -1,0 +1,36 @@
+.container_list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.container_list_item {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.container_list_item img {
+  width: 8rem;
+  aspect-ratio: 16/9;
+}
+video {
+  aspect-ratio: 16/9;
+}
+@media (width <= 480px) {
+  .container_list_item {
+    width: 90%;
+  }
+  .container_list_item img {
+    width: 15rem;
+  }
+}
