@@ -1,11 +1,14 @@
 import "./App.css";
+import { Route, Routes } from "react-router-dom";
 
 import VideoPlaylistStream from "./component/VideoPlaylis/VideoPlaylist";
 
 function App() {
   return (
     <div className="App">
-      <VideoPlaylistStream />
+      <Routes>
+        <Route path="/" element={<VideoPlaylistStream />} />
+      </Routes>
     </div>
   );
 }
