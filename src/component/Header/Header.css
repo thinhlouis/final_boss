@@ -1,0 +1,23 @@
+.Header {
+  width: 100%;
+  height: 60px;
+}
+.Header ul li {
+  list-style: none;
+}
+.Header a {
+  text-decoration: none;
+  color: #657e1f;
+}
+.Header .active-item {
+  color: #a4e63b;
+  font-weight: bold;
+  border-bottom: 1px solid #a4e63b;
+}
+ul.Header__nav-list {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 2rem;
+}

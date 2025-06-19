@@ -1,0 +1,92 @@
+.container_login_page {
+  min-height: 80vh;
+  width: 100%;
+}
+.login-page {
+  font-family: Arial, sans-serif;
+  margin: 50px auto;
+  max-width: 500px;
+  min-height: 250px;
+  padding: 50px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-image: linear-gradient(to bottom, #fff 0%, #a4e63b 100%);
+  text-align: center;
+}
+
+form.login-page h1#title-login {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+div.form-group input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #657e1f;
+}
+
+div.form-group input:focus {
+  outline: 2px solid #657e1f;
+}
+
+form.login-page button.btn_login {
+  width: calc(100% - 20px);
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #657e1f;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+form.login-page button.hide_unhide {
+  font-size: 24px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #657e1f;
+}
+
+form.login-page button.btn_login:hover {
+  background-color: #a9d433;
+}
+
+.error_login {
+  color: #dc3545;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.position-btn-hide {
+  position: relative;
+}
+.p-b-hide {
+  position: absolute;
+  top: 20%;
+  right: 5%;
+}
+@media (width <= 480px) {
+  .login-page {
+    background-image: none;
+    width: 80%;
+    padding: 50px 10px;
+    border: 1px solid #657e1f;
+    height: 60vh;
+  }
+  form.login-page button.btn_login {
+    width: calc(100% - 0px);
+  }
+  form.login-page h1#title-login {
+    margin-top: 30%;
+    font-size: 1.5rem;
+  }
+  .p-b-hide {
+    right: 0;
+  }
+}

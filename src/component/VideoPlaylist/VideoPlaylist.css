@@ -1,3 +1,9 @@
+.video-playlist-container button {
+  color: #657e1f;
+  background-color: #fff;
+  border: #657e1f 2px solid;
+  border-radius: 5px;
+}
 .container_list {
   display: flex;
   justify-content: center;
@@ -26,11 +32,27 @@
 video {
   aspect-ratio: 16/9;
 }
+
 @media (width <= 480px) {
+  h1 {
+    font-size: 1.2rem;
+    color: #ffffff;
+    background: linear-gradient(to bottom, #f6e2ab 45%, #657e1f 65%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
   .container_list_item {
     width: 90%;
   }
   .container_list_item img {
     width: 15rem;
+  }
+  button.btn-interact {
+    width: 12rem;
+    height: 3rem;
+  }
+  button.btn-prev,
+  button.btn-next {
+    width: 6rem;
   }
 }
