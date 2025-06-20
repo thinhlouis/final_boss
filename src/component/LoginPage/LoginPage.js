@@ -13,12 +13,15 @@ function LoginPage() {
 
   const {
     handleUserLogin,
-    auth: { isAuthenticated },
+    handleLogout,
+    auth: { isAuthenticated, error: authError },
   } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || "/";
+  const from = location.state?.from?.pathname || "/";
+
+  const timeLogout = 30 * 60 * 1000; // Thời gian logout sau khi đăng nhập thành công
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,18 +30,20 @@ function LoginPage() {
       setError("Please fill in both fields.");
       return;
     }
-    try {
-      handleUserLogin(username, password);
-      navigate(from, { replace: true });
-    } catch (error) {
-      console.error("Login failed:", error);
-      setError("Login failed. Please check your credentials.");
+
+    const success = await handleUserLogin(username, password, from);
+
+    if (!success) {
+      // authError sẽ được cập nhật từ context sau khi gọi handleUserLogin
+      return;
     }
+    setTimeout(handleLogout, timeLogout);
+    // Nếu login thành công thì điều hướng, không cần làm gì ở đây vì đã navigate trong AuthState
   };
 
   const handleHidePass = (e) => {
     e.preventDefault();
-    setHidePass(!hidePass);
+    setHidePass((prev) => !prev);
   };
 
   useEffect(() => {
@@ -47,18 +52,27 @@ function LoginPage() {
     }
   }, [isAuthenticated, navigate]);
 
+  useEffect(() => {
+    if (authError) {
+      setError(authError);
+    }
+  }, [authError]);
+
   return (
     <div className="container_login_page">
       <form className="login-page" onSubmit={handleLogin}>
         <h1 id="title-login">Login Final Boss</h1>
+
         <div className="form-group">
           <input
             type="text"
+            className="input_login"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
+
         <div className="form-group position-btn-hide">
           <input
             type={hidePass ? "text" : "password"}
@@ -66,26 +80,17 @@ function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {hidePass ? (
-            <button
-              type="button"
-              onClick={handleHidePass}
-              className="hide_unhide p-b-hide"
-            >
-              <AiFillEye />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={handleHidePass}
-              className="hide_unhide p-b-hide"
-            >
-              <AiFillEyeInvisible />
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={handleHidePass}
+            className="hide_unhide p-b-hide"
+          >
+            {hidePass ? <AiFillEye /> : <AiFillEyeInvisible />}
+          </button>
         </div>
 
         {error && <p className="error_login">{error}</p>}
+
         <button type="submit" className="btn_login">
           Login
         </button>

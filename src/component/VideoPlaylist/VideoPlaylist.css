@@ -1,3 +1,8 @@
+.video-playlist-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0px auto;
+}
 .video-playlist-container button {
   color: #657e1f;
   background-color: #fff;
@@ -10,9 +15,11 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
+  margin-top: 2rem;
 }
 
 .container_list_item {
+  position: relative;
   width: 20%;
   display: flex;
   flex-direction: column;
@@ -29,11 +36,48 @@
   width: 8rem;
   aspect-ratio: 16/9;
 }
-video {
+.video-playlist-container video {
   aspect-ratio: 16/9;
+  width: 100%;
+  height: auto;
+}
+img.icon-hot {
+  width: 4rem;
+  height: auto;
+  position: absolute;
+  top: -15px;
+  right: -20px;
+}
+
+button.scroll-to-top-button {
+  position: fixed; /* Giữ nút ở một vị trí cố định */
+  bottom: 20px; /* Cách đáy 20px */
+  right: 20px; /* Cách phải 20px */
+  background-color: #657e1f; /* Màu nền */
+  color: white; /* Màu chữ */
+  border: none;
+  border-radius: 50%; /* Hình tròn */
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s ease-in-out; /* Hiệu ứng mượt mà khi hiển thị/ẩn */
+  z-index: 1000; /* Đảm bảo nút nằm trên cùng */
+}
+
+button.scroll-to-top-button:hover {
+  background-color: #465716;
 }
 
 @media (width <= 480px) {
+  .container_list {
+    width: 100%;
+    height: auto;
+  }
   h1 {
     font-size: 1.2rem;
     color: #ffffff;
@@ -42,10 +86,15 @@ video {
     -webkit-text-fill-color: transparent;
   }
   .container_list_item {
-    width: 90%;
+    width: 40%;
   }
   .container_list_item img {
-    width: 15rem;
+    width: 8rem;
+  }
+  img.icon-hot {
+    width: 4rem;
+    top: -10px;
+    right: -15px;
   }
   button.btn-interact {
     width: 12rem;
@@ -54,5 +103,8 @@ video {
   button.btn-prev,
   button.btn-next {
     width: 6rem;
+  }
+  .video-playlist-container video {
+    width: 80%;
   }
 }

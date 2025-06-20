@@ -12,17 +12,37 @@ form.upload-video-form {
   align-items: center;
   width: 40%;
 }
-.upload-video-container input {
+.upload-video-container input,
+.upload-video-container select {
   width: 20rem;
   height: 1.4rem;
-  border: 1px solid #000;
+  border: 1px solid #657e1f;
   border-radius: 3px;
   padding-left: 10px;
 }
+.upload-video-container select {
+  height: 1.8rem;
+  width: 20.8rem;
+  color: #657e1f;
+}
+.upload-video-container input:focus,
+.upload-video-container select:focus {
+  outline: 1px solid #657e1f;
+}
+
 .upload-video-container button {
-  width: 10rem;
+  width: 21rem;
   height: 2rem;
-  margin-left: 6rem;
+  margin-left: 16rem;
+  background-color: #657e1f;
+  color: #fff;
+  border: 1px solid #657e1f;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.upload-video-container span {
+  color: #657e1f;
+  font-weight: bold;
 }
 
 @media (width <= 480px) {
@@ -32,10 +52,20 @@ form.upload-video-form {
   .upload-video-container label {
     width: 100%;
   }
-  .upload-video-container input {
+  .upload-video-container input,
+  .upload-video-container select {
     width: 12rem;
     height: 1.4rem;
-    border: 1px solid #000;
+    border: 1px solid #657e1f;
     border-radius: 3px;
+  }
+  .upload-video-container select {
+    height: 1.8rem;
+    width: 12.8rem;
+    color: #657e1f;
+  }
+  .upload-video-container button {
+    margin-left: 10.5rem;
+    width: 12rem;
   }
 }

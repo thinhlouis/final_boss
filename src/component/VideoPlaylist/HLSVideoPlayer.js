@@ -42,8 +42,10 @@ const HLSVideoPlayer = ({ url, playing, onEnded }) => {
           url={url}
           playing={playing}
           controls
-          width="100%"
+          muted
+          width="90%"
           height="auto"
+          style={{ margin: "0 auto" }}
           playsinline
           onEnded={onEnded}
           config={{
@@ -61,10 +63,11 @@ const HLSVideoPlayer = ({ url, playing, onEnded }) => {
           ref={videoRef}
           src={url}
           controls
+          muted
           playsInline
           autoPlay={playing}
           onEnded={onEnded}
-          style={{ width: "100%" }}
+          style={{ width: "90%" }}
         />
       )}
     </div>

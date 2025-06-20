@@ -46,6 +46,7 @@ const AuthState = ({ children }) => {
           isAuthenticated: true,
           accessToken: currentlyLogin,
           videos: videos,
+          error: null,
         });
       } else {
         // Trường hợp không có token HOẶC token không hợp lệ
@@ -53,6 +54,7 @@ const AuthState = ({ children }) => {
           isAuthenticated: false,
           accessToken: null,
           videos: videos, // Vẫn cập nhật videos
+          error: null,
         });
         if (currentlyLogin) {
           // Chỉ cảnh báo nếu có token nhưng không hợp lệ
@@ -74,6 +76,8 @@ const AuthState = ({ children }) => {
     setAuth({
       isAuthenticated: false,
       accessToken: null,
+      videos: [],
+      error: null,
     });
 
     // Redirect to home
@@ -81,44 +85,51 @@ const AuthState = ({ children }) => {
   }, [navigate]);
 
   const handleUserLogin = useCallback(
-    async (username, password) => {
-      setLoading(true); // Bắt đầu tải
+    async (username, password, redirectPath = "/") => {
+      setLoading(true);
 
       const isLoginSuccessful =
         username === process.env.REACT_APP_USERNAME &&
         password === process.env.REACT_APP_PASSWORD;
 
       if (!isLoginSuccessful) {
-        console.error("Invalid username or password.");
         setAuth({
-          // Đặt lại trạng thái nếu đăng nhập không thành công
           isAuthenticated: false,
           accessToken: null,
           videos: [],
+          error: "Invalid username or password",
         });
-        setLoading(false); // Kết thúc tải ngay đây
-        return;
+        setLoading(false);
+        return false;
       }
 
       try {
         const videos = await fetchVideos();
-        sessionStorage.setItem("accessToken", process.env.REACT_APP_SECRETKEY);
+        sessionStorage.setItem(
+          STORAGE_KEYS.TOKEN,
+          process.env.REACT_APP_SECRETKEY
+        );
 
         setAuth({
           isAuthenticated: true,
           accessToken: process.env.REACT_APP_SECRETKEY,
-          videos: videos,
+          videos,
+          error: null,
         });
-        navigate("/video-final-boss-202115-767");
+
+        navigate(redirectPath);
+        return true;
       } catch (error) {
         console.error("Login failed:", error);
         setAuth({
           isAuthenticated: false,
           accessToken: null,
           videos: [],
+          error: "Failed to fetch videos",
         });
+        return false;
       } finally {
-        setLoading(false); // Luôn kết thúc tải, dù thành công hay thất bại
+        setLoading(false);
       }
     },
     [navigate, fetchVideos]
