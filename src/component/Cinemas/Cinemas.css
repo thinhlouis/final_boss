@@ -1,0 +1,30 @@
+.cinemas-container ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  height: 3rem;
+  width: 25%;
+  margin: 0 auto;
+  border: #465716 2px solid;
+}
+.cinemas-container ul li {
+  list-style: none;
+  padding: 10px;
+}
+.cinemas-container ul li a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #465716;
+}
+.cinemas-container ul li a.active-category {
+  color: #bec107;
+  border-bottom: 2px solid;
+}
+@media (width <= 480px) {
+  .cinemas-container ul {
+    margin-top: 1.5rem;
+    width: 60%;
+  }
+}

@@ -7,6 +7,14 @@
   pointer-events: none;
 }
 
+h1 {
+  font-size: 2rem;
+  color: #ffffff;
+  background: linear-gradient(to bottom, #f6e2ab 45%, #657e1f 65%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

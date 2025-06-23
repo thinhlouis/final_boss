@@ -1,72 +1,31 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
+import Cookies from "js-cookie";
+
 import AuthContext from "./AuthContext";
+import authAPI from "../apis/authAPI";
 
 const STORAGE_KEYS = {
   TOKEN: "accessToken",
+  USER_INFO: "userInfo",
 };
-
-const LISTVIDEO = process.env.REACT_APP_UIR_API;
 
 const AuthState = ({ children }) => {
   const [auth, setAuth] = useState({
     isAuthenticated: false,
-    accessToken: null,
-    videos: [],
+    user: {},
+    error: null,
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   const clearStorage = () => {
-    sessionStorage.removeItem(STORAGE_KEYS.TOKEN);
+    Cookies.remove(STORAGE_KEYS.TOKEN);
+    Cookies.remove(STORAGE_KEYS.USER_INFO);
   };
-
-  const fetchVideos = useCallback(async () => {
-    let videoList = [];
-    await axios
-      .get(`${LISTVIDEO}`)
-      .then((response) => {
-        videoList = response.data;
-      })
-      .catch((error) => {
-        console.error("Error fetching videos:", error);
-      });
-    return videoList;
-  }, []);
-
-  useEffect(() => {
-    const initializeAuth = async () => {
-      const currentlyLogin = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
-      const videos = await fetchVideos(); // Luôn fetch videos
-
-      if (currentlyLogin === process.env.REACT_APP_SECRETKEY) {
-        setAuth({
-          isAuthenticated: true,
-          accessToken: currentlyLogin,
-          videos: videos,
-          error: null,
-        });
-      } else {
-        // Trường hợp không có token HOẶC token không hợp lệ
-        setAuth({
-          isAuthenticated: false,
-          accessToken: null,
-          videos: videos, // Vẫn cập nhật videos
-          error: null,
-        });
-        if (currentlyLogin) {
-          // Chỉ cảnh báo nếu có token nhưng không hợp lệ
-          console.warn(
-            "Invalid secret key found in session storage. Authentication failed."
-          );
-        }
-      }
-    };
-
-    initializeAuth();
-  }, [fetchVideos]); // Thêm fetchVideos vào dependency array
 
   const handleLogout = useCallback(() => {
     // Clear all storage
@@ -75,8 +34,7 @@ const AuthState = ({ children }) => {
     // Reset auth state
     setAuth({
       isAuthenticated: false,
-      accessToken: null,
-      videos: [],
+      user: {},
       error: null,
     });
 
@@ -84,67 +42,81 @@ const AuthState = ({ children }) => {
     navigate("/");
   }, [navigate]);
 
-  const handleUserLogin = useCallback(
-    async (username, password, redirectPath = "/") => {
-      setLoading(true);
+  const verifyToken = useCallback(async () => {
+    try {
+      await authAPI.verify();
+      console.log("✅ Token hợp lệ");
+      return true;
+    } catch (err) {
+      console.warn("⛔ Token không hợp lệ:", err);
+      handleLogout();
+      return false;
+    }
+  }, [handleLogout]);
 
-      const isLoginSuccessful =
-        username === process.env.REACT_APP_USERNAME &&
-        password === process.env.REACT_APP_PASSWORD;
+  const handleUserLogin = useCallback(async () => {
+    setError(null);
 
-      if (!isLoginSuccessful) {
+    try {
+      const isTokenValid = await verifyToken();
+      if (!isTokenValid) {
         setAuth({
           isAuthenticated: false,
-          accessToken: null,
-          videos: [],
-          error: "Invalid username or password",
-        });
-        setLoading(false);
-        return false;
-      }
-
-      try {
-        const videos = await fetchVideos();
-        sessionStorage.setItem(
-          STORAGE_KEYS.TOKEN,
-          process.env.REACT_APP_SECRETKEY
-        );
-
-        setAuth({
-          isAuthenticated: true,
-          accessToken: process.env.REACT_APP_SECRETKEY,
-          videos,
+          user: {},
           error: null,
         });
-
-        navigate(redirectPath);
-        return true;
-      } catch (error) {
-        console.error("Login failed:", error);
-        setAuth({
-          isAuthenticated: false,
-          accessToken: null,
-          videos: [],
-          error: "Failed to fetch videos",
-        });
-        return false;
-      } finally {
-        setLoading(false);
+        return;
       }
-    },
-    [navigate, fetchVideos]
-  );
+
+      const userData = Cookies.get(STORAGE_KEYS.USER_INFO);
+      const cachedUser = userData ? JSON.parse(userData) : null;
+
+      // Lấy thông tin user mới nhất
+      const response_user = await authAPI.info();
+      const user = response_user.data;
+
+      setAuth({
+        isAuthenticated: true,
+        user: user?.userInfo || cachedUser,
+        error: null,
+      });
+      Cookies.set(
+        STORAGE_KEYS.USER_INFO,
+        JSON.stringify(user?.userInfo || cachedUser)
+      );
+    } catch (error) {
+      console.error("Lỗi khi lấy thông tin user:", error);
+      setError(error?.response?.data?.message || "Có lỗi xảy ra");
+      handleLogout();
+    } finally {
+      setLoading(false);
+    }
+  }, [handleLogout, verifyToken]);
+
+  useEffect(() => {
+    const initAuth = async () => {
+      const storedToken = Cookies.get(STORAGE_KEYS.TOKEN);
+      if (storedToken) {
+        // Nếu có token, cố gắng khôi phục session
+        await handleUserLogin();
+      } else {
+        // Nếu không có token, người dùng rõ ràng là chưa đăng nhập
+        setLoading(false); // Kết thúc loading ngay lập tức
+        setAuth({ isAuthenticated: false, user: {}, error: null });
+      }
+    };
+    initAuth();
+  }, [handleUserLogin]);
 
   const contextValue = useMemo(
     () => ({
       auth,
-      setAuth,
-      loading,
+      error,
       handleUserLogin,
       handleLogout,
-      fetchVideos,
+      loading,
     }),
-    [auth, loading, handleUserLogin, handleLogout, fetchVideos]
+    [auth, error, handleUserLogin, handleLogout, loading]
   );
 
   return (

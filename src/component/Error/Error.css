@@ -1,0 +1,44 @@
+.error {
+  max-width: 50%;
+  margin: 0 auto;
+  padding: 5rem 6rem 5rem 6rem;
+  margin-top: 2rem;
+  background-image: linear-gradient(to top, #fff 0%, #ecf9c78a 100%);
+
+  border: 2px solid #657e1f;
+  border-radius: 8px;
+  box-shadow: 3px 5px 7px #ddd;
+}
+.error p {
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.text-title {
+  font-size: 4rem;
+}
+img.img-logo_bhd {
+  width: 15rem;
+}
+button.error-button {
+  color: #fff;
+  background: #657e1f;
+  font-size: 0.9rem;
+  border: none;
+  margin-top: 1rem;
+  width: 5rem;
+  height: 2rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.error-link {
+  text-decoration: none;
+}
+.pathname,
+.error-link {
+  color: #657e1f;
+}
+.box-error {
+  padding-bottom: 3rem;
+  border-bottom: 2px solid #657e1f;
+}

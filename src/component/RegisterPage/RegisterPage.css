@@ -1,0 +1,50 @@
+.sigup-page {
+  font-family: Arial, sans-serif;
+  margin: 50px auto;
+  max-width: 500px;
+  min-height: 250px;
+  padding: 50px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-image: linear-gradient(to bottom, #fff 0%, #a4e63b 100%);
+  text-align: center;
+}
+
+form.sigup-page h1#title-login {
+  color: #333;
+  margin-bottom: 20px;
+}
+form.sigup-page button.btn_sigup {
+  width: calc(100% - 0px);
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #657e1f;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+form.sigup-page button.hide_unhide {
+  font-size: 24px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #657e1f;
+}
+
+form.sigup-page button.btn_sigup:hover {
+  background-color: #a9d433;
+}
+div.form-group select {
+  width: calc(100% - 0px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #657e1f;
+  margin-bottom: 1.5rem;
+}
+
+div.form-group select:focus {
+  outline: 2px solid #657e1f;
+}

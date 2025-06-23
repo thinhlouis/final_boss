@@ -1,0 +1,43 @@
+.image-slider-container {
+  margin: 0 auto;
+  width: 100%;
+  height: fit-content;
+}
+
+.image-slider-container .slick-prev:before,
+.image-slider-container .slick-next:before {
+  color: black;
+}
+.image-slider-container img {
+  width: 80%;
+  max-width: 90%;
+  height: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  margin: 0 auto;
+}
+.slick-slider button {
+  display: none !important;
+}
+.quote_container {
+  display: none;
+}
+
+@media (width <= 480px) {
+  .home-container {
+    margin-top: 3rem;
+  }
+  .image-slider-container img {
+    width: 90%;
+  }
+  .quote_container {
+    display: block;
+    margin-top: 8rem;
+  }
+
+  q {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+  }
+}

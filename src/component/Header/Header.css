@@ -2,6 +2,9 @@
   width: 100%;
   height: 60px;
 }
+.Header .Header__nav {
+  height: 100%;
+}
 .Header ul li {
   list-style: none;
 }
@@ -15,6 +18,7 @@
   border-bottom: 1px solid #a4e63b;
 }
 ul.Header__nav-list {
+  height: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;

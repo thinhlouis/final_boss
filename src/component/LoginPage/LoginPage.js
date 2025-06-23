@@ -2,43 +2,54 @@ import "./LoginPage.css";
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import Cookies from "js-cookie";
 
 import AuthContext from "../../context/AuthContext";
+import authAPI from "../../apis/authAPI";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [hidePass, setHidePass] = useState(false);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState("");
 
   const {
     handleUserLogin,
     handleLogout,
-    auth: { isAuthenticated, error: authError },
+    auth: { error: authError },
   } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const timeLogout = 30 * 60 * 1000; // Thời gian logout sau khi đăng nhập thành công
+  const timeLogout = 60 * 60 * 1000; // Thời gian logout sau khi đăng nhập thành công
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
-      setError("Please fill in both fields.");
+      setErrors("Please fill in both fields.");
       return;
     }
 
-    const success = await handleUserLogin(username, password, from);
+    const payload = {
+      username,
+      password,
+    };
+    try {
+      const response = await authAPI.login(payload);
 
-    if (!success) {
-      // authError sẽ được cập nhật từ context sau khi gọi handleUserLogin
-      return;
+      const { accessToken } = response.data;
+
+      Cookies.set("accessToken", accessToken);
+      await handleUserLogin();
+      navigate(from, { replace: true });
+    } catch (err) {
+      setErrors(authError);
     }
+
     setTimeout(handleLogout, timeLogout);
-    // Nếu login thành công thì điều hướng, không cần làm gì ở đây vì đã navigate trong AuthState
   };
 
   const handleHidePass = (e) => {
@@ -47,14 +58,8 @@ function LoginPage() {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/video-final-boss-202115-767");
-    }
-  }, [isAuthenticated, navigate]);
-
-  useEffect(() => {
     if (authError) {
-      setError(authError);
+      setErrors(authError);
     }
   }, [authError]);
 
@@ -89,7 +94,7 @@ function LoginPage() {
           </button>
         </div>
 
-        {error && <p className="error_login">{error}</p>}
+        {errors && <p className="error_login">{errors}</p>}
 
         <button type="submit" className="btn_login">
           Login

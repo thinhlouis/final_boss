@@ -8,6 +8,7 @@ export default function Header() {
   const { auth, handleLogout } = useContext(AuthContext);
 
   const isAuthenticated = auth.isAuthenticated;
+  const isRoot = auth?.user?.role === "super_root";
 
   const activeLink = ({ isActive }) => (isActive ? "active-item" : "");
 
@@ -15,17 +16,37 @@ export default function Header() {
     <div className="Header">
       <nav className="Header__nav">
         <ul className="Header__nav-list">
-          {isAuthenticated && (
+          <li>
+            <NavLink to="/" className={activeLink}>
+              HOME
+            </NavLink>
+          </li>
+          {!isAuthenticated && !isRoot && (
+            <li>
+              <NavLink to="/bmi" className={activeLink}>
+                BMI
+              </NavLink>
+            </li>
+          )}
+          {isAuthenticated && isRoot && (
             <li>
               <NavLink to="/upload-video-767202115" className={activeLink}>
                 UPLOAD
               </NavLink>
             </li>
           )}
-          {isAuthenticated && (
+          {isAuthenticated && isRoot && (
             <li>
               <NavLink to="/video-final-boss-202115-767" className={activeLink}>
-                VIDEO
+                CINEMA
+              </NavLink>
+            </li>
+          )}
+
+          {isAuthenticated && isRoot && (
+            <li>
+              <NavLink to="/sigup" className={activeLink}>
+                SIGUP
               </NavLink>
             </li>
           )}
@@ -36,7 +57,7 @@ export default function Header() {
             </li>
           ) : (
             <li>
-              <NavLink to="/" className={activeLink}>
+              <NavLink to="/sigin" className={activeLink}>
                 LOGIN
               </NavLink>
             </li>
