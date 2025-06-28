@@ -37,7 +37,7 @@ function WeatherCard() {
           `https://api.openweathermap.org/data/2.5/forecast?id=${cityID}&appid=${API_KEY}&units=metric&lang=vi`
         );
         const pollutionResponse = await fetch(
-          `http://api.openweathermap.org/data/2.5/air_pollution?lat=${cityLat}&lon=${cityLon}&appid=${API_KEY}&units=metric&lang=vi`
+          `https://api.openweathermap.org/data/2.5/air_pollution?lat=${cityLat}&lon=${cityLon}&appid=${API_KEY}&units=metric&lang=vi`
         );
 
         if (!currentWeatherResponse.ok || !forecastResponse.ok) {
