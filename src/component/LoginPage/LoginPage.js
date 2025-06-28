@@ -65,40 +65,55 @@ function LoginPage() {
 
   return (
     <div className="container_login_page">
+      <h1 id="title-login" style={{ marginTop: "1rem" }}>
+        Login Final Boss
+      </h1>
       <form className="login-page" onSubmit={handleLogin}>
-        <h1 id="title-login">Login Final Boss</h1>
+        <div className="login-box-center">
+          <div className="form-group">
+            <input
+              type="text"
+              className="input_login"
+              id="input_login"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <label
+              htmlFor="input_login"
+              style={username ? { top: "-8px" } : {}}
+            >
+              Username
+            </label>
+          </div>
 
-        <div className="form-group">
-          <input
-            type="text"
-            className="input_login"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+          <div className="form-group position-btn-hide">
+            <input
+              type={hidePass ? "text" : "password"}
+              id="input_password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <label
+              htmlFor="input_password"
+              style={password ? { top: "-8px" } : {}}
+            >
+              Password
+            </label>
+            <button
+              type="button"
+              onClick={handleHidePass}
+              className="hide_unhide p-b-hide"
+            >
+              {hidePass ? <AiFillEye /> : <AiFillEyeInvisible />}
+            </button>
+          </div>
 
-        <div className="form-group position-btn-hide">
-          <input
-            type={hidePass ? "text" : "password"}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button
-            type="button"
-            onClick={handleHidePass}
-            className="hide_unhide p-b-hide"
-          >
-            {hidePass ? <AiFillEye /> : <AiFillEyeInvisible />}
+          {errors && <p className="error_login">{errors}</p>}
+
+          <button type="submit" className="btn_login">
+            Login
           </button>
         </div>
-
-        {errors && <p className="error_login">{errors}</p>}
-
-        <button type="submit" className="btn_login">
-          Login
-        </button>
       </form>
     </div>
   );

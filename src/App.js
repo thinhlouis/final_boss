@@ -1,7 +1,6 @@
-import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
-import AuthState from "./context/AuthState";
+import "./App.css";
 import LoginPage from "./component/LoginPage/LoginPage";
 import RegisterPage from "./component/RegisterPage/RegisterPage";
 import UploadVideo from "./component/UploadVideo/UploadVideo";
@@ -12,53 +11,113 @@ import Home from "./component/Home/Home";
 import BodyMassIndexCalculator from "./component/BMI/BodyMassIndexCalculator";
 import Error from "./component/Error/Error";
 import Cinemas from "./component/Cinemas/Cinemas";
+import WeatherCard from "./component/Weather/WeatherCard";
+import MovieBox from "./component/Movies/MovieBox";
+import MovieDetail from "./component/Movies/MovieDetail";
+import PlayMovie from "./component/PlayMovie/PlayMovie";
+import Footer from "./component/Footer/Footer";
+import ScreenPage from "./component/ScreenPage/ScreenPage";
+import DashBoard from "./component/DashBoard/DashBoard";
+import InformationUser from "./component/InformationUser/InformationUser";
+import AddQuote from "./component/Home/component/ActionWithQuote";
 
 function App() {
   return (
-    <AuthState>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
+    <div className="App">
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/bmi" element={<BodyMassIndexCalculator />} />
+        <Route path="/weather" element={<WeatherCard />} />
 
+        <Route
+          path="/movies"
+          element={
+            <ScreenPage>
+              <MovieBox />
+            </ScreenPage>
+          }
+        />
+        <Route
+          path="/movies/:slug_movie"
+          element={
+            <ScreenPage>
+              <MovieDetail />
+            </ScreenPage>
+          }
+        />
+        <Route
+          path="/player/:slug_name/:slug_eps"
+          element={
+            <ScreenPage>
+              <PlayMovie />
+            </ScreenPage>
+          }
+        />
+        <Route
+          path="/video-final-boss-202115-767"
+          element={
+            <PrivateLogin>
+              <Cinemas />
+            </PrivateLogin>
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <PrivateLogin>
+              <DashBoard />
+            </PrivateLogin>
+          }
+        >
           <Route
-            path="/video-final-boss-202115-767"
-            element={
-              <PrivateLogin>
-                <Cinemas />
-              </PrivateLogin>
-            }
-          />
-          <Route
-            path="/sigin"
-            element={
-              <PublicRoute>
-                <LoginPage />
-              </PublicRoute>
-            }
-          />
-          <Route path="/bmi" element={<BodyMassIndexCalculator />} />
-          <Route
-            path="/sigup"
+            index
             element={
               <PrivateLogin>
                 <RegisterPage />
               </PrivateLogin>
             }
           />
-
           <Route
-            path="/upload-video-767202115"
+            path="search-member"
             element={
               <PrivateLogin>
-                <UploadVideo />
+                <InformationUser />
               </PrivateLogin>
             }
           />
-          <Route path="*" element={<Error />} />
-        </Routes>
-      </div>
-    </AuthState>
+          <Route
+            path="action-quote"
+            element={
+              <PrivateLogin>
+                <AddQuote />
+              </PrivateLogin>
+            }
+          />
+        </Route>
+
+        <Route
+          path="/sigin"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/upload-video-767202115"
+          element={
+            <PrivateLogin>
+              <UploadVideo />
+            </PrivateLogin>
+          }
+        />
+        <Route path="*" element={<Error />} />
+      </Routes>
+      <Footer />
+    </div>
   );
 }
 

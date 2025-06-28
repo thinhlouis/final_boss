@@ -1,0 +1,222 @@
+.quote-card {
+  width: 77%;
+  max-width: 77%;
+  margin: 35px auto;
+  padding: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 15px;
+}
+.quote-card img.avatar-author {
+  width: 50px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.quote-card svg.svg-quote-top {
+  display: block;
+  rotate: 180deg;
+  text-align: left;
+}
+.quote-card .items-center {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-left: 0.25rem;
+}
+.quote-card .items-center,
+.quote-card p.leading-relaxed {
+  margin-top: 1rem;
+}
+.quote-card p.leading-relaxed {
+  margin-left: 1rem;
+  font-style: italic;
+}
+.quote-card p.quote_name_author {
+  font-size: 0.9rem;
+}
+.quote-card p.quote_name_author span {
+  color: #657e1f;
+}
+/* action quote */
+.action-quote-container {
+  width: 80%;
+  margin: 2rem auto;
+}
+div.add-new-quote-item,
+div.delete-quote-item {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+div.add-new-quote,
+div.delete-quote {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+div.add-new-quote-item textarea,
+div.delete-quote-item input {
+  width: 25rem;
+  height: 6rem;
+  resize: none;
+  padding: 10px 10px 10px 14px;
+  outline: none;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #24292e;
+}
+div.delete-quote-item input {
+  height: 1rem;
+  width: 15rem;
+}
+div.add-new-quote-item textarea:focus,
+div.delete-quote-item input:focus {
+  border-color: #657e1f;
+}
+div.add-new-quote-item label,
+div.delete-quote-item label {
+  position: absolute;
+  cursor: text;
+  top: -10px;
+  left: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #fff;
+  padding: 0 10px;
+  color: #999;
+  transition: all 0.3s ease;
+}
+div.delete-quote-item label {
+}
+div.add-new-quote-item textarea:focus + label,
+div.delete-quote-item input:focus + label {
+  color: #657e1f;
+}
+div.add-new-quote-item select {
+  width: 15rem;
+  height: 2rem;
+  padding-left: 1rem;
+  font-size: 1rem;
+  color: #24292e;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+}
+div.add-new-quote-item select:focus {
+  border-color: #657e1f;
+  outline: none;
+  color: #657e1f;
+}
+
+div.add-new-quote-item button.btn-action-add,
+div.delete-quote-item button {
+  cursor: pointer;
+  width: 15rem;
+  height: 2.2rem;
+  border: 2px solid #657e1f;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #657e1f;
+  font-size: 1rem;
+  font-weight: bold;
+}
+div.add-new-quote-item button.btn-action-add:hover,
+div.delete-quote-item button:hover {
+  background-color: #657e1f;
+  color: #fff;
+  opacity: 0.8;
+}
+div.add-new-quote-item button.btn-action-add:active,
+div.delete-quote-item button:active {
+  transform: translateY(3px);
+}
+div.delete-quote-item button {
+  margin: 1rem 0;
+}
+/* switch */
+div.switch-box {
+  width: 50%;
+  margin: 1.5rem auto;
+  display: flex;
+  gap: 1rem;
+}
+label.switch {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 34px;
+}
+
+label.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+span.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ddd;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+span.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+label.switch input:checked + .slider {
+  background-color: #657e1f;
+}
+
+label.switch input:checked + .slider:before {
+  -webkit-transform: translateX(36px);
+  -ms-transform: translateX(36px);
+  transform: translateX(36px);
+}
+
+@media (width <= 480px) {
+  .quote-card {
+    width: 80%;
+    max-width: 80%;
+  }
+  .quote-card .items-center {
+    align-items: flex-end;
+    margin-top: 1rem;
+  }
+  .action-quote-container {
+    width: 90%;
+  }
+  div.add-new-quote,
+  div.delete-quote,
+  div.switch-box {
+    width: 100%;
+  }
+  div.add-new-quote-item textarea {
+    width: 16rem;
+  }
+  div.switch-box {
+    align-items: center;
+    margin: 0;
+    padding: 1rem 0;
+  }
+}

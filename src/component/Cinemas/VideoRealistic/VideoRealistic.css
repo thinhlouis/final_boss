@@ -45,10 +45,13 @@
   border-radius: 3px;
   cursor: pointer;
   aspect-ratio: 9 / 16;
+
+  transition: 0.3s;
 }
 .items-video-real .playlist_video_realistic img:hover {
-  scale: 1.1;
+  transform: scale(1.05);
 }
+
 .item-video-realistic {
   width: 18%;
   max-width: 20%;

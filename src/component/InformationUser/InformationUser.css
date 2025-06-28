@@ -1,0 +1,227 @@
+.infomation-container {
+  margin-top: 2rem;
+  height: 100%;
+  min-height: 70vh;
+}
+
+.infomation-container table.table-infomation {
+  width: 50%;
+  border-collapse: collapse;
+  margin: 20px auto;
+}
+p.style-color-search {
+  color: rgb(245, 181, 1);
+  font-weight: bold;
+}
+table.table-infomation th,
+table.table-infomation td {
+  border: 1px solid #657e1f;
+  padding: 3px;
+}
+table.table-infomation button {
+  width: 3.5rem;
+  height: 1.4rem;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  background-color: #657e1f;
+  color: #fff;
+  cursor: pointer;
+}
+table.table-infomation button:hover {
+  opacity: 0.7;
+}
+div.search {
+  display: inline-block;
+  position: relative;
+}
+div.search input[type="text"] {
+  width: 14rem;
+  height: 1.8rem;
+  border: thin solid #657e1f;
+  border-radius: 5px;
+  padding-left: 8px;
+  color: #657e1f;
+  font-weight: bold;
+  font-size: 1rem;
+}
+div.search input[type="text"]:focus {
+  outline: none;
+  border-color: #f5b501;
+}
+div.search span {
+  color: #000;
+  font-size: 1.4rem;
+  font-weight: bold;
+  position: absolute;
+  right: 8px;
+  top: 3px;
+  opacity: 0.4;
+}
+td button.hidden-code {
+  font-size: 1.2rem;
+  width: 35%;
+  height: 2rem;
+  background-color: transparent;
+  color: #657e1f;
+}
+p.box-hiddenCode {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+div.form_edited {
+  width: 80%;
+  margin: 20px auto;
+}
+div.form_edited form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+div.edited-item,
+div.enter_code {
+  margin-bottom: 15px;
+  position: relative;
+  width: 35%;
+}
+
+div.form_edited form input,
+div.form_edited form select,
+div.enter_code input {
+  width: calc(100% - 60px);
+  padding: 10px 10px 10px 14px;
+  outline: none;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #24292e;
+}
+div.form_edited form select {
+  width: calc(100% - 34px);
+}
+div.form_edited form input:focus,
+div.form_edited form select:focus,
+div.enter_code input:focus {
+  border-color: #657e1f;
+}
+div.form_edited form label,
+div.enter_code label {
+  position: absolute;
+  cursor: text;
+  top: -8px;
+  left: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  background: #fff;
+  padding: 0 10px;
+  color: #999;
+  transition: all 0.3s ease;
+}
+div.form_edited form input:focus + label,
+div.form_edited form select:focus + label,
+div.enter_code input:focus + label {
+  color: #657e1f;
+}
+button.send_request,
+button.submit-update {
+  width: calc(100% - 34px);
+  height: 2rem;
+  border: thin solid #657e1f;
+  background-color: #657e1f;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+button.send_request {
+  width: 7rem;
+}
+button.send_request:hover,
+button.submit-update:hover {
+  opacity: 0.7;
+}
+button.submit-update {
+  width: 8rem;
+  font-size: 0.9rem;
+}
+button.is_hidden {
+  cursor: pointer;
+  font-size: 1.6rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #657e1f;
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  right: 25px;
+  top: 6px;
+}
+input.relative {
+  position: relative;
+}
+
+div.enter_code {
+  margin: 20px auto;
+}
+p.update-success {
+  margin: 5rem 0px 5rem 3rem;
+  color: #f5b501;
+}
+div.edited-item-btn-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (width <= 480px) {
+  .infomation-container {
+    margin-top: 1rem;
+  }
+  p.style-color-search {
+    font-size: 1rem;
+  }
+  div.search input[type="text"] {
+    width: 11rem;
+  }
+  th:nth-child(2),
+  th:nth-child(3),
+  th:nth-child(4),
+  td:nth-child(2),
+  td:nth-child(3),
+  td:nth-child(4) {
+    display: none;
+  }
+  .infomation-container table.table-infomation {
+    width: 95%;
+  }
+  div.form_edited {
+    width: 90%;
+  }
+  div.edited-item,
+  div.enter_code {
+    width: 100%;
+  }
+  p.update-success {
+    margin: 1rem;
+  }
+  button.submit-update {
+    height: 2.2rem;
+  }
+  div.form_edited form select {
+    height: 2.7rem;
+    background-color: transparent;
+  }
+  div.edited-item-btn-box {
+    gap: 0.5rem;
+  }
+  button.send_request {
+    width: 6.5rem;
+  }
+}

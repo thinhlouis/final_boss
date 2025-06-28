@@ -1,36 +1,48 @@
 import "./Home.css";
 import gallerys from "../../mock/gallerys";
 import settingSlider from "./settingSlider";
+import WeatherCard from "../Weather/WeatherCard";
+import Quote from "./component/Quote";
 
-import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import AuthContext from "../../context/AuthContext";
+import quotesAPI from "../../apis/quotesAPI";
+
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function Home() {
-  const [quotes, setQuotes] = useState([]);
+  const [datas, setDatas] = useState({});
   const [currentQuote, setCurrentQuote] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { auth } = useContext(AuthContext);
 
-  const getRandomQuote = (quotes) => {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    return quotes[randomIndex];
-  };
+  const isRoot = auth?.user?.role === "super_root";
 
   useEffect(() => {
     const fetchQuotes = async () => {
-      await axios
-        .get(`${process.env.REACT_APP_UIR_API_QUOTE}`)
-        .then((response) => {
-          setQuotes(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      try {
+        const response = await quotesAPI.quotes();
+
+        setDatas(response.data[0]);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchQuotes();
   }, []);
+
+  const { avatar, quotes } = datas;
+
+  const getRandomQuote = (quote) => {
+    if (!quote) return;
+    const randomIndex = Math.floor(Math.random() * quote.length);
+    return quote[randomIndex];
+  };
 
   const updateQuote = useCallback(() => {
     setCurrentQuote(getRandomQuote(quotes));
@@ -41,7 +53,7 @@ function Home() {
     updateQuote();
 
     // Thiết lập interval để cập nhật quote mỗi 5 giây
-    const intervalId = setInterval(updateQuote, 10000); // 10000 ms = 10 giây
+    const intervalId = setInterval(updateQuote, 15000); // 10000 ms = 10 giây
 
     // Hàm dọn dẹp (cleanup function) của useEffect
     // Sẽ chạy khi component unmount hoặc khi dependencies thay đổi
@@ -52,26 +64,41 @@ function Home() {
 
   return (
     <div className="home-container">
-      <div className="image-slider-container">
-        <Slider {...settingSlider}>
-          {gallerys.map((gallery, index) => (
-            <div
-              key={index}
-              style={{ width: "100%", margin: "0 auto" }}
-              className="Numeber"
-            >
-              <img src={gallery} alt="img" />
-            </div>
-          ))}
-        </Slider>
-      </div>
-      <div className="quote_container">
-        {!currentQuote ? (
-          <p className="quote-text">Đang tải quote...</p>
-        ) : (
-          <q className="quote-text">{currentQuote.quote}</q>
-        )}
-      </div>
+      {currentQuote && (
+        <div className="quote-small">
+          <Quote
+            quote={currentQuote.text}
+            avatar=""
+            author={currentQuote.author}
+          />
+        </div>
+      )}
+      {isRoot && (
+        <div className="image-slider-container">
+          <Slider {...settingSlider}>
+            {gallerys.map((gallery, index) => (
+              <div
+                key={index}
+                style={{ width: "100%", margin: "0 auto" }}
+                className="Numeber"
+              >
+                <img src={gallery} alt="img" loading="lazy" />
+              </div>
+            ))}
+          </Slider>
+        </div>
+      )}
+
+      {!loading && currentQuote && (
+        <div className="quote-full">
+          <Quote
+            quote={currentQuote.text}
+            avatars={avatar[currentQuote?.author]}
+            author={currentQuote.author}
+          />
+        </div>
+      )}
+      <WeatherCard />
     </div>
   );
 }

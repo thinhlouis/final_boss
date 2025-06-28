@@ -1,17 +1,19 @@
 .container_login_page {
   min-height: 80vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .login-page {
-  font-family: Arial, sans-serif;
-  margin: 50px auto;
-  max-width: 500px;
-  min-height: 250px;
-  padding: 50px;
-  border: 1px solid #ddd;
+  margin: 30px auto;
+  width: 30%;
+  max-width: 40%;
+  padding: 80px 50px;
   border-radius: 8px;
-  background-image: linear-gradient(to bottom, #fff 0%, #a4e63b 100%);
   text-align: center;
+  border: 2px solid #657e1f;
 }
 
 form.login-page h1#title-login {
@@ -21,23 +23,42 @@ form.login-page h1#title-login {
 
 .form-group {
   margin-bottom: 15px;
+  position: relative;
 }
 
 div.form-group input {
-  width: calc(100% - 20px);
-  padding: 10px;
-  border: 1px solid #ddd;
+  width: calc(100% - 60px);
+  padding: 10px 10px 10px 14px;
+  outline: none;
+  border: 2px solid #ddd;
   border-radius: 4px;
-  font-size: 16px;
-  color: #657e1f;
+  font-size: 14px;
+  color: #24292e;
 }
 
 div.form-group input:focus {
-  outline: 2px solid #657e1f;
+  border-color: #657e1f;
+}
+.login-page .form-group label {
+  position: absolute;
+  cursor: text;
+  top: 10px;
+  left: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #fff;
+  padding: 0 10px;
+  color: #999;
+  transition: all 0.3s ease;
+}
+.login-page .form-group input:focus + label {
+  top: -8px;
+  color: #657e1f;
+  font-size: 0.9rem;
 }
 
 form.login-page button.btn_login {
-  width: calc(100% - 20px);
+  width: calc(100% - 35px);
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -75,18 +96,20 @@ form.login-page button.btn_login:hover {
   .login-page {
     background-image: none;
     width: 80%;
+    max-width: 80%;
     padding: 50px 10px;
     border: 1px solid #657e1f;
-    height: 60vh;
+    margin-top: 1rem;
   }
   form.login-page button.btn_login {
-    width: calc(100% - 0px);
+    width: calc(100% - 30px);
+    border: thin solid #fff;
   }
   form.login-page h1#title-login {
-    margin-top: 30%;
+    margin-top: 10%;
     font-size: 1.5rem;
   }
   .p-b-hide {
-    right: 0;
+    right: 8%;
   }
 }

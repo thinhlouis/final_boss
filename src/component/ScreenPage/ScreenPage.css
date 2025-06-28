@@ -1,0 +1,21 @@
+.title-login-movie {
+  margin-top: 1.5rem;
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 3rem;
+}
+.title-login-movie p {
+  color: #657e1f;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px 0;
+}
+.title-login-movie span {
+  text-transform: uppercase;
+  color: #f5b501;
+}
+@media (width <= 480px) {
+  .title-login-movie p {
+    text-align: left;
+  }
+}

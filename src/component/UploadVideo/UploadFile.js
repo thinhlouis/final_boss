@@ -1,6 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Swal from "sweetalert2";
+import { PulseLoader } from "react-spinners";
+import { FaUpload } from "react-icons/fa6";
 
 import uploadAPI from "../../apis/uploadAPI";
 
@@ -8,6 +10,9 @@ export default function UploadFile() {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [category, setCategory] = useState("");
+
+  const inputRef = useRef(null);
+  const inputRadioRef = useRef(null);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -38,14 +43,6 @@ export default function UploadFile() {
     const selectedFiles = Array.from(e.target.files).filter((f) =>
       f.type.startsWith("video/")
     );
-
-    if (selectedFiles.length === 0) {
-      return Swal.fire({
-        text: "Chọn ít nhất một file video.",
-        width: "18rem",
-        confirmButtonColor: "#007bff",
-      });
-    }
 
     // Tạo Set để theo dõi các file đã chọn
     const existingFiles = new Set(files.map((f) => f.name));
@@ -100,6 +97,7 @@ export default function UploadFile() {
           files.forEach((f) => URL.revokeObjectURL(f.videoUrl));
           setFiles([]);
           setUploading(false); // Đảm bảo reset trạng thái upload tổng thể
+          inputRef.current.click();
         }
       });
     } catch (error) {
@@ -155,18 +153,33 @@ export default function UploadFile() {
   const handleUpload = async () => {
     if (!category) {
       return Swal.fire({
-        text: "Vui lòng chọn danh mục (REAL)!",
+        text: "Bạn chưa chọn danh mục!",
         icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Select REAL ?",
         confirmButtonColor: "#657e1f",
         width: "20rem",
+      }).then((res) => {
+        if (res.isConfirmed) {
+          inputRadioRef.current.click();
+        }
       });
     }
     if (files.length === 0) {
-      return Swal.fire({
+      Swal.fire({
+        width: "25rem",
         text: "Không có file nào để upload.",
         icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Select file",
         confirmButtonColor: "#657e1f",
+      }).then((res) => {
+        if (res.isConfirmed) {
+          inputRef.current.click();
+        }
       });
+
+      return;
     }
 
     setUploading(true);
@@ -273,6 +286,7 @@ export default function UploadFile() {
     <div className="upload-real-container">
       <div className="box_select_file">
         <input
+          ref={inputRef}
           id="select-file"
           type="file"
           accept="video/*"
@@ -290,6 +304,7 @@ export default function UploadFile() {
       <div className="box_category_count-file">
         <label htmlFor="vid-real" className="category-vid">
           <input
+            ref={inputRadioRef}
             type="radio"
             onChange={(e) => setCategory(e.target.value)}
             name="category"
@@ -325,13 +340,28 @@ export default function UploadFile() {
               />
             )} */}
 
-            <p>
+            <p style={{ display: "flex" }}>
               <EMT text={file.name} start={5} end={8} /> - {file.type}
               {file.isUploading && (
-                <span style={{ marginLeft: "10px", color: "#007bff" }}>
-                  {" "}
-                  (Đang tải lên...)
-                </span>
+                <div
+                  className="loaded-file"
+                  style={{
+                    marginLeft: "10px",
+                    color: "#657e1f",
+                    display: "flex",
+                  }}
+                >
+                  <span>L</span>
+                  <span>o</span>
+                  <span>a</span>
+                  <span>d</span>
+                  <span>i</span>
+                  <span>n</span>
+                  <span>g</span>
+                  <span>.</span>
+                  <span>.</span>
+                  <span>.</span>
+                </div>
               )}
               {file.uploadError && (
                 <span style={{ marginLeft: "10px", color: "red" }}>
@@ -370,7 +400,11 @@ export default function UploadFile() {
       </div>
 
       <button onClick={handleUpload} className="btn_upload_file">
-        {uploading ? "Đang upload..." : "Upload"}
+        {uploading ? (
+          <PulseLoader color="#fff" size={8} />
+        ) : (
+          <strong>UPLOAD {<FaUpload />}</strong>
+        )}
       </button>
       {uploading && (
         <div className="notification-upload">

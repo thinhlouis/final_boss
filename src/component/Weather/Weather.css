@@ -1,0 +1,335 @@
+.weather-component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.weather-app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 30%;
+  max-width: 800px;  */
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.weather-card {
+  background: linear-gradient(180deg, #f6e2ab, #657e1f); /* Màu gradient xanh */
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 25px;
+  width: 80%;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  margin: 10px; /* Khoảng cách giữa hai card */
+}
+.weather-content {
+  width: 45%;
+}
+.content-right {
+  margin-top: 15px;
+}
+
+.header-weather {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  height: 2rem;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 15px;
+}
+.header-weather select {
+  width: 15rem;
+  height: 2rem;
+  text-align: center;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #959f4d;
+  color: #fff;
+}
+
+.header-weather select:focus {
+  outline: none;
+}
+.header-weather p {
+  text-transform: uppercase;
+  font-size: 1rem;
+  color: #fff;
+}
+.header-small {
+  display: none;
+}
+.current-weather {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.plus-icon,
+.dots-icon {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.city-name {
+  flex-grow: 1;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+}
+
+.current-main {
+  width: 100%;
+}
+
+.current-main .date {
+  font-size: 1.1em;
+  opacity: 0.8;
+}
+
+.current-main .main-icon {
+  width: 115px;
+  height: 115px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.current-main .temperature {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.current-main .description {
+  font-size: 1.2em;
+  text-transform: capitalize;
+}
+
+.weather-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9em;
+  gap: 3px;
+}
+
+.detail-item .icon {
+  font-size: 1.5em; /* Tăng kích thước icon */
+  margin-bottom: 5px;
+}
+
+.detail-item .label {
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+/* Hourly Forecast */
+.hourly-forecast {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.hourly-forecast h3 {
+  margin-top: 0;
+  font-size: 1.1em;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.hourly-list {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  overflow-x: auto; /* Cho phép cuộn ngang nếu có nhiều item */
+  padding-bottom: 5px;
+}
+
+.hourly-list img {
+  width: 2rem;
+  margin-top: 5px;
+}
+.pollution-flex {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+
+.hourly-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 60px; /* Đảm bảo đủ rộng cho mỗi item */
+}
+
+.hourly-item .hourly-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.hourly-item .time {
+  font-size: 0.8em;
+  opacity: 0.9;
+}
+
+.hourly-item .temp {
+  font-weight: bold;
+}
+
+.hourly-item .hourly-description {
+  font-size: 0.7em;
+  opacity: 0.8;
+  white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+}
+
+/* Daily Forecast */
+.daily-forecast {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 15px;
+  margin-top: 20px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.daily-forecast h3 {
+  margin-top: 0;
+  font-size: 1.1em;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.daily-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.daily-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95em;
+  padding: 5px 0;
+}
+
+.daily-item .day {
+  flex: 1;
+  text-align: left;
+}
+
+.daily-item .daily-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+}
+
+.daily-item .daily-description {
+  flex: 2;
+  text-align: left;
+  opacity: 0.9;
+  text-transform: capitalize;
+}
+
+.daily-item .daily-temp {
+  flex: 1;
+  text-align: right;
+  font-weight: bold;
+}
+.weather-component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 30px;
+}
+.left select {
+  width: 15rem;
+  height: 2rem;
+  padding-left: 0.25rem;
+  font-size: 1.1rem;
+  border: 2px solid #657e1f;
+  border-radius: 5px;
+  color: #657e1f;
+}
+.left select:focus {
+  outline: none;
+}
+
+.air-pollution-container {
+  position: relative;
+  width: 90%;
+  max-width: 500px; /* Chiều rộng tối đa của thanh */
+  height: 20px; /* Chiều cao của thanh */
+  background-color: #e0e0e0; /* Màu nền khi chưa có chỉ số */
+  border-radius: 5px;
+  overflow: hidden; /* Quan trọng để thanh màu không tràn ra ngoài */
+}
+
+.air-pollution-bar {
+  height: 100%;
+  width: 0%; /* Ban đầu là 0% */
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out; /* Hiệu ứng chuyển động mượt mà */
+  /* Màu nền sẽ được thiết lập qua JavaScript */
+}
+span.name-pollution {
+  color: #bcbcbc;
+  position: absolute;
+  left: 8px;
+  top: 3px;
+  font-size: 12px;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .weather-app-container {
+    width: 90%;
+    padding: 0;
+    margin: 20px auto;
+  }
+  .weather-card {
+    width: 100%; /* Trên màn hình nhỏ, thẻ chiếm toàn bộ chiều rộng */
+    margin: 0;
+    flex-direction: column;
+  }
+  .header-small {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+  }
+  .header-full {
+    display: none;
+  }
+  .weather-content {
+    width: 100%;
+  }
+  span.name-pollution {
+    top: 2px;
+  }
+}

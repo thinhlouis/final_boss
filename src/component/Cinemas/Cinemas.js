@@ -1,10 +1,10 @@
 import "./Cinemas.css";
 import VideoRealistic from "./VideoRealistic/VideoRealistic";
 import VideoPlaylistStream from "./VideoPlaylist/VideoPlaylist";
+import Movies from "../Movies/Movies";
 
 import React from "react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
 
 export default function Cinemas() {
   const [cinemas, setCinemas] = useState("");
@@ -15,25 +15,19 @@ export default function Cinemas() {
       <nav>
         <ul>
           <li onClick={() => setCinemas("jav")}>
-            <NavLink
-              to="#"
-              className={cinemas === "jav" ? "active-category" : ""}
-            >
-              JAV
-            </NavLink>
+            <p className={cinemas === "jav" ? "active-category" : ""}>JAV</p>
           </li>
           <li onClick={() => setCinemas("real")}>
-            <NavLink
-              to="##"
-              className={cinemas === "real" ? "active-category" : ""}
-            >
-              REAL
-            </NavLink>
+            <p className={cinemas === "real" ? "active-category" : ""}>REAL</p>
+          </li>
+          <li onClick={() => setCinemas("mov")}>
+            <p className={cinemas === "mov" ? "active-category" : ""}>MOV</p>
           </li>
         </ul>
       </nav>
       {cinemas === "jav" && <VideoPlaylistStream />}
       {cinemas === "real" && <VideoRealistic />}
+      {cinemas === "mov" && <Movies />}
     </div>
   );
 }

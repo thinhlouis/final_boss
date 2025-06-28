@@ -1,6 +1,7 @@
 .Header {
   width: 100%;
   height: 60px;
+  margin-bottom: 0.5rem;
 }
 .Header .Header__nav {
   height: 100%;
@@ -8,14 +9,24 @@
 .Header ul li {
   list-style: none;
 }
+.Header__nav .Header__nav-list span {
+  font-size: 1.5rem;
+}
+.Header__nav .Header__nav-list sup {
+  font-size: 0.5rem;
+}
 .Header a {
   text-decoration: none;
   color: #657e1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .Header .active-item {
-  color: #a4e63b;
+  color: #f5b501;
   font-weight: bold;
-  border-bottom: 1px solid #a4e63b;
+  border-bottom: 1px solid #f5b501;
 }
 ul.Header__nav-list {
   height: 100%;
@@ -23,5 +34,24 @@ ul.Header__nav-list {
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
-  margin-right: 2rem;
+  margin-right: 10rem;
+}
+@media (width <= 480px) {
+  .Header {
+    margin: 0;
+  }
+  .Header ul li {
+    margin-top: 20px;
+  }
+  .Header__nav .Header__nav-list span {
+    font-size: 2rem;
+  }
+  .Header__nav .Header__nav-list sup {
+    font-size: 0.7rem;
+  }
+  ul.Header__nav-list {
+    gap: 1.5rem;
+    margin-right: 3rem;
+    margin-top: 0.25rem;
+  }
 }

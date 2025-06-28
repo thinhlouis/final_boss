@@ -9,12 +9,12 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 
 export default function BodyMassIndexCalculator() {
-  const [bmi, setBmi] = useState(null);
+  const [bmi, setBmi] = useState("");
   const [age, setAge] = useState(null);
   const [img, setImg] = useState(null);
   const [birth, setBirth] = useState("");
-  const [weight, setWeight] = useState(null);
-  const [height, setHeight] = useState(null);
+  const [weight, setWeight] = useState(0);
+  const [height, setHeight] = useState(0);
   const [gender, setGender] = useState("");
 
   const inputRef = useRef(null);
@@ -101,7 +101,7 @@ export default function BodyMassIndexCalculator() {
                 type="number"
                 value={weight}
                 onChange={(e) => {
-                  setWeight(e.target.value);
+                  setWeight(e.target.valueAsNumber);
                 }}
                 onFocus={(e) => e.target.select()}
                 id="weight"
@@ -115,13 +115,13 @@ export default function BodyMassIndexCalculator() {
                 type="number"
                 value={height}
                 onChange={(e) => {
-                  setHeight(e.target.value);
+                  setHeight(e.target.valueAsNumber);
                 }}
                 onFocus={(e) => e.target.select()}
                 id="height"
               />
             </label>
-            <label htmlFor="gender" className="gender">
+            <label className="gender">
               <span>Gender</span>
               <p className="select-gender">
                 <span>Male</span>

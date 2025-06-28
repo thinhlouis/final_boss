@@ -28,7 +28,7 @@ export default function RegisterPage() {
   const [hidePass, setHidePass] = useState(false);
   const [errors, setErrors] = useState("");
 
-  const native = useNavigate();
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -41,24 +41,27 @@ export default function RegisterPage() {
     }
 
     const payload = {
-      username,
-      password,
-      securityCode,
-      role,
+      username: username,
+      password: password,
+      securyti_code: securityCode,
+      role: role,
     };
 
     try {
-      const response = await authAPI.register(payload);
+      await authAPI.register(payload);
 
-      if (response) {
-        return Toast.fire({
-          icon: "success",
-          title: "Register successfully.",
-        });
-      }
-      setTimeout(() => {
-        native("/");
-      }, 2000);
+      Toast.fire({
+        icon: "success",
+        title: "Register successfully.",
+      });
+
+      setUsername("");
+      setPassword("");
+      setRePassword("");
+      setSecurityCode("");
+      setRole("");
+
+      setTimeout(() => navigate("/"), 2000);
     } catch (error) {
       setErrors(error);
     } finally {
@@ -72,26 +75,33 @@ export default function RegisterPage() {
 
   return (
     <div className="register_container">
-      <form className="sigup-page" onSubmit={handleRegister}>
-        <h1 id="title-sigin">Register Final Boss</h1>
+      <h1 id="title-sigin" style={{ marginBottom: "10px" }}>
+        Register Final Boss
+      </h1>
 
+      <form className="sigup-page" onSubmit={handleRegister}>
         <div className="form-group">
           <input
             type="text"
             className="input_sigup"
-            placeholder="Username"
+            id="input_sigup"
+            autoComplete="off"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            tabIndex="1"
           />
+          <label htmlFor="input_sigup">Username</label>
         </div>
 
         <div className="form-group position-btn-hide">
           <input
             type={hidePass ? "text" : "password"}
-            placeholder="Password"
+            id="input_pass"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            tabIndex="2"
           />
+          <label htmlFor="input_pass">Password</label>
           <button
             type="button"
             onClick={handleHidePass}
@@ -104,29 +114,37 @@ export default function RegisterPage() {
         <div className="form-group">
           <input
             type={hidePass ? "text" : "password"}
-            placeholder="Re-Password"
+            id="input_repass"
             value={rePassword}
             onChange={(e) => setRePassword(e.target.value)}
+            tabIndex="3"
           />
+          <label htmlFor="input_repass">Re-Password</label>
         </div>
         <div className="form-group">
           <input
             type="text"
             className="input_sigup"
-            placeholder="Security Code"
+            id="input_code"
             value={securityCode}
             onChange={(e) => setSecurityCode(e.target.value)}
+            tabIndex="4"
           />
+          <label htmlFor="input_code">Security Code</label>
         </div>
         <div className="form-group">
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="" disabled hidden>
-              Select Role
-            </option>
+          <select
+            value={role}
+            id="input_role"
+            onChange={(e) => setRole(e.target.value)}
+            tabIndex="5"
+          >
+            <option value="" disabled hidden></option>
             <option value="super_root">SUPER ROOT</option>
             <option value="admin">ADMINISTRATOR</option>
             <option value="regular_member">REGULAR MEMBER</option>
           </select>
+          <label htmlFor="input_role">Select Role</label>
         </div>
         {errors && <p className="error_login">{errors}</p>}
 

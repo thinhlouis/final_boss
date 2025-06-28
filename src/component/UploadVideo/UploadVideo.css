@@ -1,3 +1,7 @@
+.upload-video-container {
+  height: 100%;
+  min-height: 100vh;
+}
 .upload-video-container nav {
   margin-top: 1rem;
 }
@@ -100,6 +104,9 @@ p.upload-err {
 }
 .upload-real-container button.btn_upload_file {
   width: 15rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .box_select_file label.select-file {
   height: 1.9rem;
@@ -156,7 +163,64 @@ button.remove-file-btn {
   background-color: #f6821f;
   border: 1px solid #fff;
 }
+div.loaded-file span {
+  color: #657e1f;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+div.loaded-file span:nth-child(1) {
+  animation: animate 1s infinite ease-in-out;
+}
+div.loaded-file span:nth-child(2) {
+  animation: animate 1s infinite ease-in-out 0.1s;
+}
+div.loaded-file span:nth-child(3) {
+  animation: animate 1s infinite ease-in-out 0.2s;
+}
+div.loaded-file span:nth-child(4) {
+  animation: animate 1s infinite ease-in-out 0.3s;
+}
+div.loaded-file span:nth-child(5) {
+  animation: animate 1s infinite ease-in-out 0.4s;
+}
+div.loaded-file span:nth-child(6) {
+  animation: animate 1s infinite ease-in-out 0.5s;
+}
+div.loaded-file span:nth-child(7) {
+  animation: animate 1s infinite ease-in-out 0.6s;
+}
+div.loaded-file span:nth-child(8) {
+  animation: animate 1s infinite ease-in-out 0.7s;
+}
+div.loaded-file span:nth-child(9) {
+  animation: animate 1s infinite ease-in-out 0.8s;
+}
+div.loaded-file span:nth-child(10) {
+  animation: animate 1s infinite ease-in-out 0.9s;
+}
+
+@keyframes animate {
+  0% {
+    color: #f3f4f5;
+  }
+  25% {
+    color: #657e1f;
+  }
+  50% {
+    color: #bec107;
+  }
+  75% {
+    color: #657e1f;
+  }
+  100% {
+    color: #f3f4f5;
+  }
+}
+
 @media (width <= 480px) {
+  .upload-video-container {
+    margin-top: 2rem;
+  }
   .upload-video-container nav ul {
     width: 70%;
   }

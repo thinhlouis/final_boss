@@ -1,0 +1,118 @@
+.movies_container {
+  width: 90%;
+  margin: 20px auto;
+}
+div.search-movie {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+div.search-movie select {
+  width: 15rem;
+  height: 1.8rem;
+  padding-left: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #657e1f;
+  border: 1px solid #657e1f;
+  border-radius: 5px;
+}
+div.search-movie select:focus {
+  outline: 2px solid #657e1f;
+}
+div.search-movie p.search {
+  text-transform: uppercase;
+  color: #657e1f;
+}
+div.search-movie button.btn-search-movie {
+  width: 8rem;
+  height: 2rem;
+  background-color: #657e1f;
+  color: #fff;
+  border: 1px solid #657e1f;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+div.search-movie button.btn-search-movie:hover {
+  background-color: #a9d433;
+  border-color: #fff;
+}
+div.search-movie button.btn-search-movie:active {
+  transform: translateY(3px);
+}
+.movies table.list_movie {
+  margin-top: 2rem;
+  border-collapse: collapse;
+  width: 75%;
+  border: 1px solid #dddddd;
+}
+table.list_movie tr {
+  border: 1px solid #dddddd;
+  text-align: left;
+}
+table.list_movie td,
+table.list_movie th {
+  padding: 8px;
+}
+
+table.list_movie td.info-movie {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+span.name-origin_name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 1rem;
+  gap: 0.25rem;
+}
+
+table.list_movie span.poster-movie img {
+  width: 50px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+table.list_movie span.name-origin_name a {
+  text-decoration: none;
+  color: #657e1f;
+  font-weight: bold;
+}
+span.episode-movie {
+  padding: 5px;
+  border: 1px solid #d3e3fd;
+  background-color: #d3e3fd;
+  border-radius: 6px;
+  color: #657e1f;
+}
+td.tmdb {
+  text-transform: uppercase;
+}
+div.control-button {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid rgb(193, 193, 193);
+}
+div.control-button button.button-page {
+  margin: 5px;
+  padding: 5px 11px;
+  background-color: rgb(101, 126, 31);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+@media (width <= 480px) {
+  table.list_movie td.small {
+    display: none;
+  }
+  div.search-movie button.btn-search-movie {
+    width: 15rem;
+  }
+}

@@ -1,13 +1,14 @@
 import "./Error.css";
 
 import React, { useEffect, useLayoutEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import page_404 from "../../assets/page-not-found.png";
 
 const Error = () => {
   const navigate = useNavigate();
   useEffect(() => {
     return () => {
-      document.title = "FINAL BOSS CINEPLEX - HỆ THỐNG RẠP CHIẾU PHIM HIỆN ĐẠI";
+      document.title = "FINAL BOSS APP - PRO";
     };
   }, []);
 
@@ -18,19 +19,15 @@ const Error = () => {
   return (
     <div className="error">
       <div className="box-error">
+        <img src={page_404} alt="page_404_not_found" />
         <h1 className="text-title">404. That's an error</h1>
-        <h2 className="text-error">Page not found</h2>
+        <h3 className="text-error-h3">This Page Does Not Exist</h3>
 
-        <p className="text-error">
-          Trang bạn đang tìm kiếm không tồn tại hoặc đã xảy ra lỗi khác.
-        </p>
-        <p className="text-error">
-          Vui lòng quay trở lại, hoặc đi đến{" "}
-          <Link to="/" className="error-link">
-            <strong>Trang Chủ </strong>
-          </Link>
-          để đi đến trang khác.
-        </p>
+        <span className="text-error">
+          Sorry, the page you are looking for could not be found. It's just an
+          accident that was not intentional.
+        </span>
+
         <button
           type="button"
           title="go back"

@@ -18,7 +18,7 @@ const PrivateLogin = ({ children }) => {
     return children;
   } else {
     // Nếu không xác thực hoặc không có vai trò phù hợp, chuyển hướng
-    return <Navigate to="/sigin" replace state={{ from: location.pathname }} />; //
+    return <Navigate to="*" replace state={{ from: location.pathname }} />; //
   }
 };
 

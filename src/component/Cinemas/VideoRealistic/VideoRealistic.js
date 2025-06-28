@@ -3,6 +3,7 @@ import videoAPI from "../../../apis/videoAPI";
 
 import React, { useState, useRef, useEffect } from "react";
 import { AiFillBackward, AiFillForward } from "react-icons/ai";
+import { PulseLoader } from "react-spinners";
 
 const KEY = process.env.REACT_APP_API_KEY;
 
@@ -114,7 +115,14 @@ const VideoRealistic = () => {
           <div className="video-realistic-item">
             {autoPlay && (
               <>
-                <video ref={videoRef} controls autoPlay={autoPlay} loop muted>
+                <video
+                  ref={videoRef}
+                  controls
+                  autoPlay={autoPlay}
+                  loop
+                  muted
+                  playsInline
+                >
                   <source
                     src={currentPlayingVideo?.videoUrl}
                     type="video/mp4"
@@ -158,7 +166,7 @@ const VideoRealistic = () => {
 
         {loading ? (
           <div className="loading-file">
-            <p>Đang tải videos...</p>
+            <PulseLoader color="#657e1f" size={15} />
           </div>
         ) : (
           <div className="realistic-container-item items-video-real">

@@ -1,3 +1,10 @@
+.cinemas-container {
+  height: 100%;
+  min-height: 100vh;
+}
+.cinemas-container nav {
+  margin-top: 1rem;
+}
 .cinemas-container ul {
   display: flex;
   justify-content: center;
@@ -12,19 +19,29 @@
   list-style: none;
   padding: 10px;
 }
-.cinemas-container ul li a {
-  text-decoration: none;
+.cinemas-container ul li p {
   font-size: 1.2rem;
   font-weight: bold;
   color: #465716;
+  cursor: pointer;
 }
 .cinemas-container ul li a.active-category {
   color: #bec107;
   border-bottom: 2px solid;
 }
+.cinemas-container .movies {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 @media (width <= 480px) {
+  .cinemas-container {
+    margin-top: 2rem;
+  }
   .cinemas-container ul {
     margin-top: 1.5rem;
-    width: 60%;
+    width: 70%;
   }
 }

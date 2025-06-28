@@ -1,0 +1,36 @@
+div.footer {
+  width: 80%;
+  margin: 10px auto;
+  font-size: 1rem;
+  color: #657e1f;
+}
+div.footer p {
+  padding: 3px 0;
+}
+div.footer strong {
+  text-transform: uppercase;
+  color: #ef4444;
+}
+.footer div.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.footer span.border-footer {
+  width: 250px;
+  height: 1px;
+  background-color: #ef4444;
+  display: inline-block;
+}
+
+@media (width <= 480px) {
+  div.footer {
+    width: 90%;
+    font-size: 0.9rem;
+  }
+  .footer div.footer-content {
+    flex-direction: column;
+    gap: 0;
+  }
+}
