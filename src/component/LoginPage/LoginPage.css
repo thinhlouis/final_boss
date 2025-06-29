@@ -1,5 +1,5 @@
 .container_login_page {
-  min-height: 80vh;
+  min-height: 70vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -32,8 +32,12 @@ div.form-group input {
   outline: none;
   border: 2px solid #ddd;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 0.9rem;
   color: #24292e;
+}
+input:-webkit-autofill {
+  background-color: white !important;
+  transition: background-color 100000s ease-in-out 0s;
 }
 
 div.form-group input:focus {
@@ -93,6 +97,9 @@ form.login-page button.btn_login:hover {
   right: 5%;
 }
 @media (width <= 480px) {
+  .container_login_page {
+    min-height: 50vh;
+  }
   .login-page {
     background-image: none;
     width: 80%;
@@ -111,5 +118,8 @@ form.login-page button.btn_login:hover {
   }
   .p-b-hide {
     right: 8%;
+  }
+  div.form-group input {
+    font-size: 1rem;
   }
 }

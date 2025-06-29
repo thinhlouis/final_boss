@@ -13,7 +13,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function Home() {
-  const [datas, setDatas] = useState({});
+  const [quotes, setQuotes] = useState({});
+
+  const [avtAuthor, setAvtAuthor] = useState({});
   const [currentQuote, setCurrentQuote] = useState(null);
   const [loading, setLoading] = useState(true);
   const { auth } = useContext(AuthContext);
@@ -24,8 +26,15 @@ function Home() {
     const fetchQuotes = async () => {
       try {
         const response = await quotesAPI.quotes();
+        const result = response?.data.find((data) => {
+          return {
+            data: data?.quotes,
+            avatar: data?.avatar,
+          };
+        });
 
-        setDatas(response.data[0]);
+        setQuotes(result?.quotes);
+        setAvtAuthor(result?.avatar);
       } catch (error) {
         console.error(error);
       } finally {
@@ -36,7 +45,7 @@ function Home() {
     fetchQuotes();
   }, []);
 
-  const { avatar, quotes } = datas;
+  // const { avatar, quotes } = datas;
 
   const getRandomQuote = (quote) => {
     if (!quote) return;
@@ -68,7 +77,7 @@ function Home() {
         <div className="quote-small">
           <Quote
             quote={currentQuote.text}
-            avatar=""
+            avatar={avtAuthor[currentQuote?.author]}
             author={currentQuote.author}
           />
         </div>
@@ -93,7 +102,7 @@ function Home() {
         <div className="quote-full">
           <Quote
             quote={currentQuote.text}
-            avatars={avatar[currentQuote?.author]}
+            avatar={avtAuthor[currentQuote?.author]}
             author={currentQuote.author}
           />
         </div>

@@ -185,6 +185,7 @@ export default function UploadFile() {
     setUploading(true);
 
     let allUploadsSuccessful = true;
+    let errorsOccurred = [];
 
     for (let i = 0; i < files.length; i++) {
       const fileToUpload = files[i];
@@ -230,6 +231,12 @@ export default function UploadFile() {
       } catch (err) {
         console.error(`❌ Lỗi upload ${fileToUpload.name}:`, err);
         allUploadsSuccessful = false;
+        const errorMessage =
+          err.response?.data?.message || err.message || "Lỗi không xác định";
+        errorsOccurred.push({
+          fileName: fileToUpload.name,
+          message: errorMessage,
+        });
         // Đánh dấu file bị lỗi
         setFiles((prevFiles) =>
           prevFiles.map((f, index) =>
@@ -237,16 +244,11 @@ export default function UploadFile() {
               ? {
                   ...f,
                   isUploading: false,
-                  uploadError: err.message || "Unknown error",
+                  uploadError: errorMessage,
                 }
               : f
           )
         );
-        Swal.fire({
-          text: `Upload thất bại: ${fileToUpload.name}`,
-          icon: "error",
-          confirmButtonColor: "#007bff",
-        });
         // Không dừng lại mà tiếp tục upload các file khác nếu có lỗi
       }
     }
@@ -263,9 +265,15 @@ export default function UploadFile() {
         timer: 1500,
       });
     } else {
+      // Hiển thị thông báo tổng hợp sau khi vòng lặp kết thúc
+      let errorText =
+        "Có lỗi xảy ra trong quá trình upload một hoặc nhiều file:\n";
+      errorsOccurred.forEach((err) => {
+        errorText += `- ${err.fileName}: ${err.message}\n`;
+      });
       Swal.fire({
-        text: "Có lỗi xảy ra trong quá trình upload một hoặc nhiều file. Vui lòng kiểm tra lại.",
-        icon: "info",
+        text: errorText,
+        icon: "error", // Hoặc "info" tùy theo mức độ nghiêm trọng
         confirmButtonColor: "#007bff",
       });
     }

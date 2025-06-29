@@ -1,36 +1,37 @@
 import "./BodyMassIndexCalculator.css";
-import BMI1 from "../../assets/bmi/bmi_1.png";
-import BMI2 from "../../assets/bmi/bmi_2.png";
-import BMI3 from "../../assets/bmi/bmi_3.png";
-import BMI4 from "../../assets/bmi/bmi_4.png";
-import BMI5 from "../../assets/bmi/bmi_5.png";
+import BMI_Index_1 from "../../assets/bmi/bmi_1.png";
+import BMI_Index_2 from "../../assets/bmi/bmi_2.png";
+import BMI_Index_3 from "../../assets/bmi/bmi_3.png";
+import BMI_Index_4 from "../../assets/bmi/bmi_4.png";
+import BMI_Index_5 from "../../assets/bmi/bmi_5.png";
 
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 
 export default function BodyMassIndexCalculator() {
-  const [bmi, setBmi] = useState("");
-  const [age, setAge] = useState(null);
-  const [img, setImg] = useState(null);
-  const [birth, setBirth] = useState("");
-  const [weight, setWeight] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [gender, setGender] = useState("");
+  const [yourBMI, setYourBMI] = useState(0);
+
+  const [yourAge, setYourAge] = useState(0);
+  const [yourBirth, setYourBirth] = useState(0);
+  const [yourWeight, setYourWeight] = useState(0);
+  const [yourHeight, setYourHeight] = useState(0);
+  const [yourGender, setYourGender] = useState("");
 
   const inputRef = useRef(null);
 
   const objBMI = {
-    1: BMI1,
-    2: BMI2,
-    3: BMI3,
-    4: BMI4,
-    5: BMI5,
+    index_1: BMI_Index_1,
+    index_2: BMI_Index_2,
+    index_3: BMI_Index_3,
+    index_4: BMI_Index_4,
+    index_5: BMI_Index_5,
   };
 
-  async function calculateAge(value) {
+  function calculateAge(value) {
     if (!value) return;
 
-    const birthDate = new Date(value); // Chuyển đổi thành đối tượng Date
+    const birthDate = new Date(value);
+
     const today = new Date(); // Ngày hiện tại
 
     let age = today.getFullYear() - birthDate.getFullYear(); // Tuổi sơ bộ
@@ -47,30 +48,29 @@ export default function BodyMassIndexCalculator() {
     return age;
   }
 
-  async function imgBMI(bmi) {
-    if (bmi <= 18.5) {
-      return 1;
+  const resultImageBMI = (bmi_index) => {
+    if (bmi_index <= 18.5) {
+      return objBMI.index_1;
     }
-    if (bmi > 18.5 && bmi <= 22.9) {
-      return 2;
+    if (bmi_index > 18.5 && bmi_index <= 22.9) {
+      return objBMI.index_2;
     }
-    if (bmi > 22.9 && bmi <= 24.9) {
-      return 3;
+    if (bmi_index > 22.9 && bmi_index <= 24.9) {
+      return objBMI.index_3;
     }
-    if (bmi > 24.9 && bmi <= 29.9) {
-      return 4;
+    if (bmi_index > 24.9 && bmi_index <= 29.9) {
+      return objBMI.index_4;
     }
-    return 5;
-  }
+    return objBMI.index_5;
+  };
 
-  const resultCalculateBMI = async () => {
-    const age = await calculateAge(birth);
-    const BMI = Number(weight) / Number((height / 100) ** 2);
+  const resultCalculateBMI = () => {
+    const age = calculateAge(yourBirth);
 
-    const img = await imgBMI(BMI);
-    setAge(age);
-    setBmi(BMI);
-    setImg(img);
+    const resultBMI = Number(yourWeight) / Number((yourHeight / 100) ** 2);
+
+    setYourAge(age);
+    setYourBMI(resultBMI);
   };
 
   useEffect(() => {
@@ -91,20 +91,22 @@ export default function BodyMassIndexCalculator() {
                 ref={inputRef}
                 type="date"
                 id="birth"
-                value={birth}
-                onChange={(e) => setBirth(e.target.value)}
+                value={yourBirth}
+                onChange={(e) => setYourBirth(e.target.value)}
+                tabIndex="1"
               />
             </label>
             <label htmlFor="weight">
               <span>Weight (kg) </span>
               <input
                 type="number"
-                value={weight}
+                value={yourWeight}
                 onChange={(e) => {
-                  setWeight(e.target.valueAsNumber);
+                  setYourWeight(e.target.valueAsNumber);
                 }}
                 onFocus={(e) => e.target.select()}
                 id="weight"
+                tabIndex="3"
               />
             </label>
           </div>
@@ -113,12 +115,13 @@ export default function BodyMassIndexCalculator() {
               <span>Height (cm)</span>
               <input
                 type="number"
-                value={height}
+                value={yourHeight}
                 onChange={(e) => {
-                  setHeight(e.target.valueAsNumber);
+                  setYourHeight(e.target.valueAsNumber);
                 }}
                 onFocus={(e) => e.target.select()}
                 id="height"
+                tabIndex="2"
               />
             </label>
             <label className="gender">
@@ -128,17 +131,19 @@ export default function BodyMassIndexCalculator() {
                 <input
                   type="radio"
                   value="Chàng trai"
-                  onChange={(e) => setGender(e.target.value)}
+                  onChange={(e) => setYourGender(e.target.value)}
                   name="gender"
                   id="male"
+                  tabIndex="4"
                 />
                 <span>Female</span>
                 <input
                   type="radio"
                   value="Cô gái"
-                  onChange={(e) => setGender(e.target.value)}
+                  onChange={(e) => setYourGender(e.target.value)}
                   name="gender"
                   id="female"
+                  tabIndex="5"
                 />
               </p>
             </label>
@@ -148,13 +153,13 @@ export default function BodyMassIndexCalculator() {
           XEM KẾT QUẢ
         </button>
       </div>
-      {bmi && age && (
+      {yourBMI && (
         <div className="result_container">
-          <img src={objBMI[img]} alt={`index-bmi-${bmi}`} />
+          <img src={resultImageBMI(yourBMI)} alt={`index-bmi-${yourBMI}`} />
           <p>
-            Xin chào {gender} {age} tuổi
+            Xin chào {yourGender} {yourAge} tuổi
           </p>
-          <h2>Chỉ số BMI của bạn là {bmi.toFixed(1)}</h2>
+          <h2>Chỉ số BMI của bạn là {Number(yourBMI).toFixed(1)}</h2>
         </div>
       )}
     </div>

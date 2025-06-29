@@ -28,18 +28,22 @@ const AuthState = ({ children }) => {
   };
 
   const handleLogout = useCallback(() => {
+    // Redirect to home
+    navigate("/");
     // Clear all storage
     clearStorage();
 
     // Reset auth state
-    setAuth({
-      isAuthenticated: false,
-      user: {},
-      error: null,
+    setTimeout(() => {
+      setAuth(
+        {
+          isAuthenticated: false,
+          user: {},
+          error: null,
+        },
+        1000
+      );
     });
-
-    // Redirect to home
-    navigate("/");
   }, [navigate]);
 
   const verifyToken = useCallback(async () => {
@@ -69,8 +73,8 @@ const AuthState = ({ children }) => {
       }
 
       const userData = Cookies.get(STORAGE_KEYS.USER_INFO);
-      const cachedUser = userData ? JSON.parse(userData) : null;
 
+      const cachedUser = userData ? JSON.parse(userData) : null;
       // Lấy thông tin user mới nhất
       const response_user = await authAPI.info();
       const user = response_user.data;
@@ -96,7 +100,8 @@ const AuthState = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = Cookies.get(STORAGE_KEYS.TOKEN);
-      if (storedToken) {
+
+      if (storedToken && storedToken !== "undefined") {
         // Nếu có token, cố gắng khôi phục session
         await handleUserLogin();
       } else {

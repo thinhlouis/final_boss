@@ -15,15 +15,12 @@ function LoginPage() {
 
   const {
     handleUserLogin,
-    handleLogout,
     auth: { error: authError },
   } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-
-  const timeLogout = 60 * 60 * 1000; // Thời gian logout sau khi đăng nhập thành công
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,12 +30,12 @@ function LoginPage() {
       return;
     }
 
-    const payload = {
+    const infoLogin = {
       username,
       password,
     };
     try {
-      const response = await authAPI.login(payload);
+      const response = await authAPI.login(infoLogin);
 
       const { accessToken } = response.data;
 
@@ -48,8 +45,6 @@ function LoginPage() {
     } catch (err) {
       setErrors(authError);
     }
-
-    setTimeout(handleLogout, timeLogout);
   };
 
   const handleHidePass = (e) => {

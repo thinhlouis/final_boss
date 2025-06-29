@@ -5,6 +5,7 @@ import formattedDate from "../../utils/formattedDate";
 import React from "react";
 import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Movies() {
   const [selectCountry, setSelectCountry] = useState("");
@@ -20,18 +21,39 @@ export default function Movies() {
   } = useContext(MoviesContext);
 
   const today = formattedDate(new Date()).split(" ");
+  const uri = process.env.REACT_APP_UIR_KPHIM_API;
 
   useEffect(() => {
-    //trả về mảng country duy nhất
-    const uniqueItems = movies.reduce((acc, item) => {
-      if (!acc.some((i) => i.country[0].slug === item.country[0].slug)) {
-        acc.push(item);
+    const countCounty = async () => {
+      let count = [];
+      for (let i = 1; i <= 4; i++) {
+        const responseFull = await axios.get(`${uri}?limit=64&page=${i}`);
+        const uniqueItems = responseFull?.data?.data?.items.reduce(
+          (acc, item) => {
+            if (!acc.some((i) => i.country[0].slug === item.country[0].slug)) {
+              acc.push(item);
+            }
+            return acc;
+          },
+          []
+        );
+        count = [...count, ...uniqueItems];
       }
-      return acc;
-    }, []);
+      return count;
+    };
 
-    setCountrys(uniqueItems);
-  }, [movies]);
+    countCounty().then((res) => {
+      //trả về mảng country duy nhất
+      const uniqueItems = res.reduce((acc, item) => {
+        if (!acc.some((i) => i.country[0].slug === item.country[0].slug)) {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+
+      setCountrys(uniqueItems);
+    });
+  }, [uri]);
 
   return (
     <div className="movies">

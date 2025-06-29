@@ -1,7 +1,7 @@
 import "./Quote.css";
 import React from "react";
 
-const Quote = ({ quote, avatars, author }) => {
+const Quote = ({ quote, avatar, author }) => {
   return (
     <div className="quote-card">
       <svg
@@ -32,7 +32,7 @@ const Quote = ({ quote, avatars, author }) => {
           decoding="async"
           data-nimg="1"
           className="avatar-author"
-          src={avatars}
+          src={avatar}
         />
         <p className="quote_name_author">
           <strong>Author: </strong>

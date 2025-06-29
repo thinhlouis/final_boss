@@ -1,6 +1,7 @@
 .bmi_calculator_container {
   width: 100%;
-  height: 100vh;
+  min-height: 60vh;
+  margin-top: 2rem;
 }
 .bmi_calculator_box {
   border: 2px solid #657e1f;
@@ -77,6 +78,7 @@ label.gender {
 }
 
 .bmi_calculator_item input[type="date"] {
+  text-align: left;
   font-family: "Roboto", sans-serif;
   font-weight: 600;
   color: gray;

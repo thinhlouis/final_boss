@@ -2,7 +2,7 @@ import "./Header.css";
 import AuthContext from "../../context/AuthContext";
 
 import React from "react";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
   RiHome4Fill,
@@ -15,6 +15,7 @@ import {
 } from "react-icons/ri";
 
 export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
   const { auth, handleLogout } = useContext(AuthContext);
 
   const isAuthenticated = auth.isAuthenticated;
@@ -23,8 +24,34 @@ export default function Header() {
   const activeLink = ({ isActive }) => (isActive ? "active-item" : "");
   const playPage = window.location.pathname.includes("/player/");
 
+  const classHeaderScroll = isScrolled
+    ? "Header scrolled-up"
+    : "Header scrolled-down";
+
+  useEffect(() => {
+    let prevScrollpos = window.scrollY;
+    const handleScroll = () => {
+      let currentScrollPos = window.scrollY;
+      if (prevScrollpos > currentScrollPos) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+      prevScrollpos = currentScrollPos;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="Header" style={playPage ? { display: "none" } : {}}>
+    <div
+      className={classHeaderScroll}
+      style={playPage ? { display: "none" } : {}}
+    >
       <nav className="Header__nav">
         <ul className="Header__nav-list">
           <li>
@@ -35,16 +62,16 @@ export default function Header() {
               <sup>HOME</sup>
             </NavLink>
           </li>
-          {!isAuthenticated && !isRoot && (
-            <li>
-              <NavLink to="/bmi" className={activeLink}>
-                <span className="icon-header">
-                  <RiHeartPulseFill />
-                </span>
-                <sup>BMI</sup>
-              </NavLink>
-            </li>
-          )}
+
+          <li>
+            <NavLink to="/bmi" className={activeLink}>
+              <span className="icon-header">
+                <RiHeartPulseFill />
+              </span>
+              <sup>BMI</sup>
+            </NavLink>
+          </li>
+
           {isAuthenticated && isRoot && (
             <li>
               <NavLink to="/upload-video-767202115" className={activeLink}>

@@ -14,7 +14,6 @@ const MoviesState = ({ children }) => {
   const limit = 20;
 
   const uri = process.env.REACT_APP_UIR_KPHIM_API;
-  const uri_search = process.env.REACT_APP_UIR_SEARCH_KPHIM_API;
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -42,9 +41,7 @@ const MoviesState = ({ children }) => {
   const searchMovies = useCallback(
     async (values) => {
       try {
-        const response = await axios.get(
-          `${uri_search}?limit=${limit}&page=${currentPage}&keyword=${values}`
-        );
+        const response = await axios.get(`${uri}?country=${values}`);
 
         setMovies(response?.data?.data?.items);
         setCurrentPage(response?.data?.data?.params?.pagination?.currentPage);
@@ -56,20 +53,8 @@ const MoviesState = ({ children }) => {
         setLoading(false);
       }
     },
-    [currentPage, uri_search]
+    [uri]
   );
-  // function debounce
-  const debounceSearchMovie = useCallback((callback, delay) => {
-    let timeout;
-    return (searchValue) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        callback(searchValue);
-      }, delay);
-    };
-  }, []);
-
-  const handleResultDebounce = debounceSearchMovie(searchMovies, 3000);
 
   const handlePageClick = useCallback(
     (page) => {
@@ -94,7 +79,6 @@ const MoviesState = ({ children }) => {
       loading,
       searchMovies,
       error,
-      handleResultDebounce,
     }),
     [
       movies,
@@ -104,7 +88,6 @@ const MoviesState = ({ children }) => {
       loading,
       searchMovies,
       error,
-      handleResultDebounce,
     ]
   );
 

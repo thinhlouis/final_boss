@@ -45,7 +45,7 @@ div.search-movie button.btn-search-movie:active {
   transform: translateY(3px);
 }
 .movies table.list_movie {
-  margin-top: 2rem;
+  margin: 2rem auto;
   border-collapse: collapse;
   width: 75%;
   border: 1px solid #dddddd;
@@ -109,10 +109,21 @@ div.control-button button.button-page {
   cursor: pointer;
 }
 @media (width <= 480px) {
-  table.list_movie td.small {
+  .movies table.list_movie {
+    width: 85%;
+  }
+  table.list_movie td.small,
+  table.list_movie th.small {
     display: none;
   }
   div.search-movie button.btn-search-movie {
     width: 15rem;
+  }
+  .movies div.control-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 85%;
   }
 }
