@@ -30,6 +30,9 @@
   gap: 1rem;
   padding-bottom: 2rem;
 }
+div.bmi_right {
+  padding-bottom: 3rem;
+}
 .bmi_calculator_item label {
   width: 100%;
   display: flex;
@@ -54,7 +57,6 @@ label.gender {
   font-weight: bold;
 }
 
-.bmi_calculator_item input[type="date"],
 .bmi_calculator_item input[type="number"] {
   width: 14rem;
   height: 1.8rem;
@@ -66,15 +68,49 @@ label.gender {
   font-weight: bold;
   font-size: 0.9rem;
 }
-.bmi_calculator_item input[type="date"]:focus,
-.bmi_calculator_item input[type="number"]:focus {
-  outline: #8db327 2px solid;
-  border: none;
+
+.bmi_calculator_item input[type="number"]:focus,
+input[type="text"].day-of-birth:focus,
+input[type="text"].month-of-birth:focus,
+input[type="text"].year-of-birth:focus {
+  border: #8db327 2px solid;
+  outline: none;
 }
 .bmi_calculator_item input[type="radio"] {
   width: 1.2rem;
   height: 1.2rem;
   accent-color: #8db327;
+}
+
+div.birth-day-box {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+div.birth-day-box label {
+  width: 16%;
+}
+div.birth-day-box label span {
+  text-align: center;
+  display: inline-block;
+  width: 70%;
+}
+input[type="text"].day-of-birth,
+input[type="text"].month-of-birth,
+input[type="text"].year-of-birth {
+  width: 3rem;
+  height: 1.8rem;
+  text-align: center;
+  border: #657e1f thin solid;
+  border-radius: 3px;
+  margin: 10px 0;
+  color: #657e1f;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+input[type="text"].year-of-birth {
+  width: 4rem;
 }
 
 .bmi_calculator_item input[type="date"] {
@@ -134,15 +170,30 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-top: 2rem;
   }
   .bmi_calculator {
+    width: 100%;
     height: 100%;
     flex-direction: column;
   }
   .bmi_calculator_item {
     width: 100%;
     height: fit-content;
-    padding-left: 3rem;
+    padding-bottom: 0;
   }
+
   .bmi_left {
     margin-left: 0;
+  }
+  .bmi_calculator_item input[type="number"] {
+    width: 11rem;
+  }
+  div.birth-day-box {
+    justify-content: center;
+    gap: 1rem;
+  }
+  .bmi_calculator_item label {
+    align-items: center;
+  }
+  button.result_bmi {
+    width: 12rem;
   }
 }

@@ -3,8 +3,7 @@ import gallerys from "../../mock/gallerys";
 import settingSlider from "./settingSlider";
 import WeatherCard from "../Weather/WeatherCard";
 import Quote from "./component/Quote";
-
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../context/AuthContext/AuthContext";
 import quotesAPI from "../../apis/quotesAPI";
 
 import React, { useState, useEffect, useCallback, useContext } from "react";

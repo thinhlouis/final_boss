@@ -17,7 +17,7 @@ const Error = () => {
   }, []);
 
   return (
-    <div className="error">
+    <div className="error-container">
       <div className="box-error">
         <img src={page_404} alt="page_404_not_found" />
         <h1 className="text-title">404. That's an error</h1>

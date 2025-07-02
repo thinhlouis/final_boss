@@ -1,6 +1,10 @@
 import { Route, Routes } from "react-router-dom";
+import { useContext, useEffect } from "react";
 
 import "./App.css";
+import ActiveContext from "./context/ActiveContext/ActiveContext";
+import AuthContext from "./context/AuthContext/AuthContext";
+import { useActive } from "./hook/useActive";
 import LoginPage from "./component/LoginPage/LoginPage";
 import RegisterPage from "./component/RegisterPage/RegisterPage";
 import UploadVideo from "./component/UploadVideo/UploadVideo";
@@ -20,16 +24,36 @@ import ScreenPage from "./component/ScreenPage/ScreenPage";
 import DashBoard from "./component/DashBoard/DashBoard";
 import InformationUser from "./component/InformationUser/InformationUser";
 import AddQuote from "./component/Home/component/ActionWithQuote";
+import ResetPassword from "./component/ResetPassword/ResetPassword";
+import InactivityModal from "./component/InactivityModal/InactivityModal";
 
 function App() {
+  const { auth } = useContext(AuthContext);
+  const { showModal, checkedStatusActive, handleInactive } =
+    useContext(ActiveContext);
+
+  const { isAuthenticated } = auth;
+  const timeShowModal = 1000 * 60 * 5;
+
+  useEffect(() => {
+    isAuthenticated && checkedStatusActive();
+  }, [checkedStatusActive, isAuthenticated]);
+
+  useActive(timeShowModal, handleInactive);
+
   return (
     <div className="App">
+      {showModal && (
+        <div className="user-activity-checker">
+          <InactivityModal />
+        </div>
+      )}
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/bmi" element={<BodyMassIndexCalculator />} />
         <Route path="/weather" element={<WeatherCard />} />
-
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/movies"
           element={

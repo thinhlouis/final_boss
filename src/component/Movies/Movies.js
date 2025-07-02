@@ -1,5 +1,5 @@
 import "./Movies.css";
-import MoviesContext from "../../context/MoviesContext";
+import MoviesContext from "../../context/MovieContext/MoviesContext";
 import formattedDate from "../../utils/formattedDate";
 
 import React from "react";

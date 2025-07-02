@@ -93,4 +93,7 @@ form.sigup-page button.btn_sigup:hover {
     height: 2.7rem;
     background-color: transparent;
   }
+  form.sigup-page button.hide_unhide {
+    right: 4%;
+  }
 }

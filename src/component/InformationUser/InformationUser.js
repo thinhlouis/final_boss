@@ -2,11 +2,9 @@ import "./InformationUser.css";
 import authAPI from "../../apis/authAPI";
 import formattedDate from "../../utils/formattedDate";
 import useDebounce from "../../utils/useDebounce";
-import hiddenText from "../../utils/hiddenText";
-import AuthContext from "../../context/AuthContext";
 
 import React from "react";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { RiSearchLine } from "react-icons/ri";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
@@ -21,13 +19,14 @@ export default function InformationUser() {
   const [loading, setLoading] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [error, setError] = useState("");
-  const [hiddenCode, setHiddenCode] = useState(true);
+  const [notification, setNotification] = useState("");
   const [hiddenPassUpdate, setHiddenPassUpdate] = useState(true);
   const [hiddenCodeUpdate, setHiddenCodeUpdate] = useState(true);
   const [hiddenRootCode, setHiddenRootCode] = useState(true);
   //
   const [edited, setEdited] = useState(false);
   const [editUserName, setEditUserName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
   const [editPassword, setEditPassword] = useState("");
   const [editSecurityCode, setEditSecurityCode] = useState("");
   const [editRole, setEditRole] = useState("");
@@ -36,13 +35,11 @@ export default function InformationUser() {
   const [playload, setPayload] = useState({
     _id: "",
     username: "",
+    email: "",
     password: "",
-    securyti_code: "",
+    security_code: "",
     role: "",
   });
-
-  const { auth } = useContext(AuthContext);
-  const root_code = auth?.user?.securyti_code;
 
   const objRoles = {
     super_root: {
@@ -104,14 +101,13 @@ export default function InformationUser() {
     });
     setEdited(true);
     setEditUserName(infomationUser.username);
-    setEditSecurityCode(infomationUser.securyti_code);
+    setEditEmail(infomationUser.email);
     setEditRole(infomationUser.role);
   };
 
   const handleChangeSearch = (e) => {
     if (!e.target.value) {
       setShowTable(false);
-      setHiddenCode(true);
       setHiddenCodeUpdate(true);
       setHiddenPassUpdate(true);
       setHiddenRootCode(true);
@@ -120,6 +116,7 @@ export default function InformationUser() {
       setRootCode("");
       setError("");
     }
+    setNotification("");
     const newKeyword = e.target.value;
     setKeyword(newKeyword);
 
@@ -132,8 +129,9 @@ export default function InformationUser() {
     setPayload({
       _id: isUser._id,
       username: editUserName,
+      email: editEmail,
       password: editPassword,
-      securyti_code: editSecurityCode,
+      security_code: editSecurityCode,
       role: editRole,
     });
 
@@ -142,22 +140,31 @@ export default function InformationUser() {
   const handleCancelRequestUpdate = () => {
     setEdited(false);
     setEditUserName("");
+    setEditEmail("");
+    setEditPassword("");
     setEditSecurityCode("");
     setEditRole("");
   };
   const handleUpdateUser = async () => {
-    const macthCode = +rootCode === +root_code;
+    setNotification("");
+    setError("");
 
-    if (!macthCode) {
-      setError("Security code không hợp lệ!");
+    if (!rootCode) {
+      setError("Please enter security code!");
       return;
     }
 
     try {
-      await authAPI.update(playload);
-      setError("Cập nhật thông tin người dùng thành công.");
+      const code = {
+        security_code: rootCode,
+      };
+      await authAPI.verifyCode(code);
+
+      const result = await authAPI.update(playload);
+      setNotification(result.data.message);
       setKeyword("");
       setEditUserName("");
+      setEditEmail("");
       setEditPassword("");
       setEditSecurityCode();
       setEditRole("");
@@ -166,7 +173,7 @@ export default function InformationUser() {
       setEnterCode(false);
       setShowTable(false);
     } catch (error) {
-      setError(error.data.message);
+      setError(error?.response.data.message);
     }
   };
 
@@ -195,100 +202,53 @@ export default function InformationUser() {
         </div>
       </div>
 
-      {error && (
+      {!showTable && (
         <div>
-          <p style={{ marginTop: "2rem", color: "#dc3545" }}>{error}</p>
+          {error && <p className="error">{error}</p>}
+          {notification && <p className="notification">{notification}</p>}
         </div>
       )}
       {!loading && showTable && (
-        <>
-          <p style={{ marginTop: "1rem", color: "#888", fontStyle: "italic" }}>
-            Đã tìm thấy{" "}
-            <strong style={{ color: "#657e1f", fontSize: "20px" }}>
-              {usersFind.length}{" "}
-            </strong>
-            người dùng có chứa kí tự{" "}
-            <strong style={{ color: "red", fontSize: "20px" }}>
-              {keyword}
-            </strong>
-          </p>
-          <table className="table-infomation">
-            <thead>
-              <tr>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Code</th>
-                <th>CreatedAt</th>
-                <th>Selected</th>
+        <table className="table-infomation">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>CreatedAt</th>
+              <th>Selected</th>
+            </tr>
+          </thead>
+          <tbody>
+            {usersFind.map((user) => (
+              <tr key={user.userId}>
+                <td
+                  style={
+                    user.role === "super_root"
+                      ? { color: "#657e1f", fontWeight: "bold" }
+                      : {}
+                  }
+                >
+                  {user.username}
+                </td>
+                <td>{user.email}</td>
+                <td style={{ color: objRoles[user.role]?.color }}>
+                  {objRoles[user.role]?.role_name}
+                </td>
+
+                <td>{formattedDate(user.createdAt)}</td>
+                <td>
+                  <button onClick={() => handleShowInfoUser(user.userId)}>
+                    Edited
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {usersFind.map((user) => (
-                <tr key={user.userId}>
-                  <td
-                    style={
-                      user.role === "super_root"
-                        ? { color: "#657e1f", fontWeight: "bold" }
-                        : {}
-                    }
-                  >
-                    {user.username}
-                  </td>
-                  <td style={{ color: objRoles[user.role]?.color }}>
-                    {objRoles[user.role]?.role_name}
-                  </td>
-                  <td>
-                    {user.role === "super_root" ? (
-                      <i style={{ color: "#888" }}>null</i>
-                    ) : (
-                      <p className="box-hiddenCode">
-                        {hiddenCode ? (
-                          <span
-                            style={{
-                              fontStyle: "italic",
-                              color: "#888",
-                              width: "60%",
-                              display: "inline-block",
-                            }}
-                          >
-                            {hiddenText(user.securyti_code)}
-                          </span>
-                        ) : (
-                          <span
-                            style={{ width: "60%", display: "inline-block" }}
-                          >
-                            {user.securyti_code}
-                          </span>
-                        )}
-                        <button
-                          className="hidden-code"
-                          onClick={() => setHiddenCode(!hiddenCode)}
-                        >
-                          {hiddenCode ? <AiFillEyeInvisible /> : <AiFillEye />}
-                        </button>
-                      </p>
-                    )}
-                  </td>
-                  <td>{formattedDate(user.createdAt)}</td>
-                  <td>
-                    <button onClick={() => handleShowInfoUser(user.userId)}>
-                      Edited
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
+            ))}
+          </tbody>
+        </table>
       )}
       {edited && (
         <div className="form_edited">
-          <p>
-            Bạn đang edit thông tin user :{" "}
-            <span style={{ color: "red", fontWeight: "bold" }}>
-              {isUser.username}
-            </span>
-          </p>
           {enterCode ? (
             <div
               style={{
@@ -310,12 +270,12 @@ export default function InformationUser() {
                 />
                 <label htmlFor="enter_root_code">Security code</label>
                 {
-                  <p
-                    style={error ? { display: "block" } : { display: "none" }}
-                    className="update-success"
-                  >
-                    {error}
-                  </p>
+                  <div>
+                    {error && <p className="error">{error}</p>}
+                    {notification && (
+                      <p className="notification">{notification}</p>
+                    )}
+                  </div>
                 }
                 <button
                   className="is_hidden"
@@ -336,7 +296,7 @@ export default function InformationUser() {
                     setEnterCode(false);
                   }}
                 >
-                  Cancel Update
+                  Back Send
                 </button>
                 <button className="submit-update" onClick={handleUpdateUser}>
                   Submit Update
@@ -353,6 +313,15 @@ export default function InformationUser() {
                   onChange={(e) => setEditUserName(e.target.value)}
                 />
                 <label htmlFor="edit_username">Edit username</label>
+              </div>
+              <div className="edited-item">
+                <input
+                  type="text"
+                  id="edit_email"
+                  value={editEmail}
+                  onChange={(e) => setEditEmail(e.target.value)}
+                />
+                <label htmlFor="edit_email">Edit email</label>
               </div>
               <div className="edited-item">
                 <input

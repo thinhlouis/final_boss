@@ -4,17 +4,20 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import AuthState from "./context/AuthState";
-import MoviesState from "./context/MoviesState";
+import AuthState from "./context/AuthContext/AuthState";
+import MoviesState from "./context/MovieContext/MoviesState";
+import ActiveState from "./context/ActiveContext/ActiveState";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthState>
-        <MoviesState>
-          <App />
-        </MoviesState>
+        <ActiveState>
+          <MoviesState>
+            <App />
+          </MoviesState>
+        </ActiveState>
       </AuthState>
     </BrowserRouter>
   </React.StrictMode>

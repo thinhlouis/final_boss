@@ -1,14 +1,13 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Cookies from "js-cookie";
-
 import AuthContext from "./AuthContext";
-import authAPI from "../apis/authAPI";
+import authAPI from "../../apis/authAPI";
 
 const STORAGE_KEYS = {
   TOKEN: "accessToken",
   USER_INFO: "userInfo",
+  VERIFY_CODE: "validated",
 };
 
 const AuthState = ({ children }) => {
@@ -23,11 +22,12 @@ const AuthState = ({ children }) => {
   const navigate = useNavigate();
 
   const clearStorage = () => {
-    Cookies.remove(STORAGE_KEYS.TOKEN);
-    Cookies.remove(STORAGE_KEYS.USER_INFO);
+    sessionStorage.removeItem(STORAGE_KEYS.TOKEN);
+    sessionStorage.removeItem(STORAGE_KEYS.USER_INFO);
+    sessionStorage.removeItem(STORAGE_KEYS.VERIFY_CODE);
   };
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback(async () => {
     // Redirect to home
     navigate("/");
     // Clear all storage
@@ -48,7 +48,7 @@ const AuthState = ({ children }) => {
 
   const verifyToken = useCallback(async () => {
     try {
-      await authAPI.verify();
+      await authAPI.verifyToken();
       console.log("✅ Token hợp lệ");
       return true;
     } catch (err) {
@@ -72,9 +72,9 @@ const AuthState = ({ children }) => {
         return;
       }
 
-      const userData = Cookies.get(STORAGE_KEYS.USER_INFO);
+      const userData = sessionStorage.getItem(STORAGE_KEYS.USER_INFO);
 
-      const cachedUser = userData ? JSON.parse(userData) : null;
+      const cachedUser = userData ? JSON.parse(userData) : {};
       // Lấy thông tin user mới nhất
       const response_user = await authAPI.info();
       const user = response_user.data;
@@ -84,7 +84,7 @@ const AuthState = ({ children }) => {
         user: user?.userInfo || cachedUser,
         error: null,
       });
-      Cookies.set(
+      sessionStorage.setItem(
         STORAGE_KEYS.USER_INFO,
         JSON.stringify(user?.userInfo || cachedUser)
       );
@@ -99,7 +99,7 @@ const AuthState = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      const storedToken = Cookies.get(STORAGE_KEYS.TOKEN);
+      const storedToken = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
 
       if (storedToken && storedToken !== "undefined") {
         // Nếu có token, cố gắng khôi phục session

@@ -5,7 +5,7 @@
 }
 
 .infomation-container table.table-infomation {
-  width: 50%;
+  width: 70%;
   border-collapse: collapse;
   margin: 20px auto;
 }
@@ -70,8 +70,8 @@ p.box-hiddenCode {
   align-items: center;
 }
 div.form_edited {
-  width: 80%;
-  margin: 20px auto;
+  width: 90%;
+  margin: 3rem auto;
 }
 div.form_edited form {
   width: 100%;
@@ -86,7 +86,7 @@ div.edited-item,
 div.enter_code {
   margin-bottom: 15px;
   position: relative;
-  width: 35%;
+  width: 40%;
 }
 
 div.form_edited form input,
@@ -139,14 +139,14 @@ button.submit-update {
   font-size: 1.1rem;
 }
 button.send_request {
-  width: 7rem;
+  width: 10.5rem;
 }
 button.send_request:hover,
 button.submit-update:hover {
   opacity: 0.7;
 }
 button.submit-update {
-  width: 8rem;
+  width: 12rem;
   font-size: 0.9rem;
 }
 button.is_hidden {
@@ -212,6 +212,7 @@ div.edited-item-btn-box {
     margin: 1rem;
   }
   button.submit-update {
+    width: 7.5rem;
     height: 2.2rem;
   }
   div.form_edited form select {

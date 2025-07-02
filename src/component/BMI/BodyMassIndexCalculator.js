@@ -9,13 +9,14 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 
 export default function BodyMassIndexCalculator() {
-  const [yourBMI, setYourBMI] = useState(0);
-
+  const [yourBMI, setYourBMI] = useState(null);
   const [yourAge, setYourAge] = useState(0);
-  const [yourBirth, setYourBirth] = useState(0);
-  const [yourWeight, setYourWeight] = useState(0);
-  const [yourHeight, setYourHeight] = useState(0);
-  const [yourGender, setYourGender] = useState("");
+  const [yourWeight, setYourWeight] = useState("");
+  const [yourHeight, setYourHeight] = useState("");
+  const [yourGender, setYourGender] = useState("Chàng trai");
+  const [dayOfBirth, setDayOfBirth] = useState("");
+  const [monthOfBirth, setMonthOfBirth] = useState("");
+  const [yearOfBirth, setYearOfBirth] = useState("");
 
   const inputRef = useRef(null);
 
@@ -65,7 +66,14 @@ export default function BodyMassIndexCalculator() {
   };
 
   const resultCalculateBMI = () => {
-    const age = calculateAge(yourBirth);
+    let age;
+    const birthDay = `${yearOfBirth}-${monthOfBirth}-${dayOfBirth}`;
+    console.log(birthDay);
+    if (birthDay === "--") {
+      age = "không có";
+    } else {
+      age = calculateAge(birthDay);
+    }
 
     const resultBMI = Number(yourWeight) / Number((yourHeight / 100) ** 2);
 
@@ -85,25 +93,58 @@ export default function BodyMassIndexCalculator() {
       <div className="bmi_calculator_box">
         <div className="bmi_calculator">
           <div className="bmi_calculator_item bmi_left">
-            <label htmlFor="birth">
-              <span>Day of birth</span>
-              <input
-                ref={inputRef}
-                type="date"
-                id="birth"
-                value={yourBirth}
-                onChange={(e) => setYourBirth(e.target.value)}
-                tabIndex="1"
-              />
-            </label>
+            <div className="birth-day-box">
+              <label htmlFor="day-of-birth">
+                <span>Day</span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={dayOfBirth}
+                  className="day-of-birth"
+                  placeholder="dd"
+                  id="day-of-birth"
+                  onChange={(e) =>
+                    setDayOfBirth(e.target.value.replace(/\D/g, ""))
+                  }
+                  onFocus={(e) => e.target.select()}
+                />
+              </label>
+              <label htmlFor="month-of-birth">
+                <span>Month</span>
+                <input
+                  type="text"
+                  value={monthOfBirth}
+                  className="month-of-birth"
+                  placeholder="mm"
+                  id="month-of-birth"
+                  onChange={(e) =>
+                    setMonthOfBirth(e.target.value.replace(/\D/g, ""))
+                  }
+                  onFocus={(e) => e.target.select()}
+                />
+              </label>
+              <label htmlFor="year-of-birth">
+                <span>Year</span>
+                <input
+                  type="text"
+                  value={yearOfBirth}
+                  className="year-of-birth"
+                  placeholder="yyyy"
+                  id="year-of-birth"
+                  onChange={(e) =>
+                    setYearOfBirth(e.target.value.replace(/\D/g, ""))
+                  }
+                  onFocus={(e) => e.target.select()}
+                />
+              </label>
+            </div>
+
             <label htmlFor="weight">
               <span>Weight (kg) </span>
               <input
                 type="number"
                 value={yourWeight}
-                onChange={(e) => {
-                  setYourWeight(e.target.valueAsNumber);
-                }}
+                onChange={(e) => setYourWeight(e.target.value)}
                 onFocus={(e) => e.target.select()}
                 id="weight"
                 tabIndex="3"
@@ -116,9 +157,7 @@ export default function BodyMassIndexCalculator() {
               <input
                 type="number"
                 value={yourHeight}
-                onChange={(e) => {
-                  setYourHeight(e.target.valueAsNumber);
-                }}
+                onChange={(e) => setYourHeight(e.target.value)}
                 onFocus={(e) => e.target.select()}
                 id="height"
                 tabIndex="2"
@@ -131,6 +170,7 @@ export default function BodyMassIndexCalculator() {
                 <input
                   type="radio"
                   value="Chàng trai"
+                  checked={yourGender === "Chàng trai"}
                   onChange={(e) => setYourGender(e.target.value)}
                   name="gender"
                   id="male"
@@ -140,6 +180,7 @@ export default function BodyMassIndexCalculator() {
                 <input
                   type="radio"
                   value="Cô gái"
+                  checked={yourGender === "Cô gái"}
                   onChange={(e) => setYourGender(e.target.value)}
                   name="gender"
                   id="female"
@@ -149,7 +190,11 @@ export default function BodyMassIndexCalculator() {
             </label>
           </div>
         </div>
-        <button className="result_bmi" onClick={resultCalculateBMI}>
+        <button
+          type="button"
+          className="result_bmi"
+          onClick={resultCalculateBMI}
+        >
           XEM KẾT QUẢ
         </button>
       </div>

@@ -1,8 +1,8 @@
 .admin-layout-container {
   display: flex;
   min-height: calc(100vh - 80px); /* Trừ đi chiều cao header/footer */
-  width: 95%;
-  margin: 30px auto;
+  width: 100%;
+  margin: 0 auto;
   border: thin solid #657e1f;
 }
 
@@ -48,6 +48,45 @@
   background-color: #fff;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   margin-left: 10px;
+}
+.enter-code-valid {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.enter-code-valid label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #657e1f;
+  margin: 0.75rem 0;
+}
+.enter-code-valid input {
+  padding-left: 0.5rem;
+  width: 12rem;
+  height: 1.8rem;
+  border: #657e1f solid thin;
+  border-radius: 5px;
+}
+.enter-code-valid input:focus {
+  outline: none;
+  border-width: 2px;
+}
+.enter-code-valid button {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 12.5rem;
+  height: 2rem;
+  background-color: #657e1f;
+  color: #fff;
+  border: thin solid #657e1f;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+.enter-code-valid button:hover {
+  opacity: 0.8;
 }
 @media (width <= 480px) {
   .admin-sidebar nav ul {

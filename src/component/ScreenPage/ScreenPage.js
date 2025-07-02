@@ -3,7 +3,7 @@ import "./ScreenPage.css";
 import React from "react";
 import { useContext } from "react";
 
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../context/AuthContext/AuthContext";
 import LoginPage from "../LoginPage/LoginPage";
 
 export default function ScreenPage({ children }) {

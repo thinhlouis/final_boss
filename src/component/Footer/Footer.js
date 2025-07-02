@@ -1,6 +1,7 @@
 import "./Footer.css";
 
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   const playPage = window.location.pathname.includes("/player/");
@@ -19,7 +20,9 @@ export default function Footer() {
 
       <span className="border-footer"></span>
       <div className="footer-author">
-        <p>Final Boss - © 2025 ♥ ksc88.net </p>
+        <p>
+          Final Boss - © 2025 ♥ <Link to="/">ksc88.net</Link>
+        </p>
       </div>
     </div>
   );

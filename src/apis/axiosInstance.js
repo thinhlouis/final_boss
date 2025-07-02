@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_UIR_ROOT_API,
@@ -8,7 +7,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   // Get accessToken from local storage
-  const accessToken = Cookies.get("accessToken");
+  const accessToken = sessionStorage.getItem("accessToken");
 
   if (accessToken) {
     config.headers["x-access-token"] = accessToken;

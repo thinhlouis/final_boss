@@ -83,11 +83,6 @@ form.login-page button.btn_login:hover {
   background-color: #a9d433;
 }
 
-.error_login {
-  color: #dc3545;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
 .position-btn-hide {
   position: relative;
 }
@@ -95,6 +90,18 @@ form.login-page button.btn_login:hover {
   position: absolute;
   top: 20%;
   right: 5%;
+}
+p.chage-reissue {
+  text-align: right;
+  margin-bottom: 1rem;
+  padding-right: 1.2rem;
+}
+p.chage-reissue span {
+  color: #657e1f;
+  cursor: pointer;
+}
+p.chage-reissue span:hover {
+  color: #dc3545;
 }
 @media (width <= 480px) {
   .container_login_page {

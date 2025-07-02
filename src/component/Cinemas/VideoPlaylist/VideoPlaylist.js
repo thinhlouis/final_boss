@@ -5,7 +5,7 @@ import HLSVideoPlayer from "./HLSVideoPlayer";
 import hot from "../../../assets/hot-icon.png";
 import videoAPI from "../../../apis/videoAPI";
 
-import AuthContext from "../../../context/AuthContext";
+import AuthContext from "../../../context/AuthContext/AuthContext";
 
 const KEY = process.env.REACT_APP_API_KEY;
 

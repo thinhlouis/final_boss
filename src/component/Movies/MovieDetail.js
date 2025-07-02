@@ -1,5 +1,5 @@
 import "./MovieDetail.css";
-import MoviesContext from "../../context/MoviesContext";
+import MoviesContext from "../../context/MovieContext/MoviesContext";
 import CustomDetails from "./CustomDetails/CustomDetails";
 import video_not_found from "../../assets/video-not-found.png";
 

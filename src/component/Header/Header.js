@@ -1,5 +1,5 @@
 import "./Header.css";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../context/AuthContext/AuthContext";
 
 import React from "react";
 import { useContext, useState, useEffect } from "react";
@@ -16,13 +16,25 @@ import {
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { auth, handleLogout } = useContext(AuthContext);
+  const { auth, handleLogout, loading } = useContext(AuthContext);
 
   const isAuthenticated = auth.isAuthenticated;
   const isRoot = auth?.user?.role === "super_root";
 
   const activeLink = ({ isActive }) => (isActive ? "active-item" : "");
-  const playPage = window.location.pathname.includes("/player/");
+
+  const pageActive = () => {
+    let isPage;
+    if (window.location.pathname.includes("/player/")) {
+      isPage = { display: "none" };
+    }
+    if (window.location.pathname.includes("/admin")) {
+      isPage = { width: "100%", margin: "0 auto" };
+    }
+    return isPage;
+  };
+
+  const isPageActive = pageActive();
 
   const classHeaderScroll = isScrolled
     ? "Header scrolled-up"
@@ -48,89 +60,88 @@ export default function Header() {
   }, []);
 
   return (
-    <div
-      className={classHeaderScroll}
-      style={playPage ? { display: "none" } : {}}
-    >
-      <nav className="Header__nav">
-        <ul className="Header__nav-list">
-          <li>
-            <NavLink to="/" className={activeLink}>
-              <span className="icon-header">
-                <RiHome4Fill />
-              </span>
-              <sup>HOME</sup>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/bmi" className={activeLink}>
-              <span className="icon-header">
-                <RiHeartPulseFill />
-              </span>
-              <sup>BMI</sup>
-            </NavLink>
-          </li>
-
-          {isAuthenticated && isRoot && (
+    <div className={classHeaderScroll} style={isPageActive ? isPageActive : {}}>
+      {!loading && (
+        <nav className="Header__nav">
+          <ul className="Header__nav-list">
             <li>
-              <NavLink to="/upload-video-767202115" className={activeLink}>
+              <NavLink to="/" className={activeLink}>
                 <span className="icon-header">
-                  <RiFolderUploadFill />
+                  <RiHome4Fill />
                 </span>
-                <sup>UPLOAD</sup>
+                <sup>HOME</sup>
               </NavLink>
             </li>
-          )}
 
-          <li>
-            <NavLink
-              to={
-                isAuthenticated && isRoot
-                  ? "/video-final-boss-202115-767"
-                  : "/movies"
-              }
-              className={activeLink}
-            >
-              <span className="icon-header">
-                <RiVidiconFill />
-              </span>
-              <sup>CINEMA</sup>
-            </NavLink>
-          </li>
-
-          {isAuthenticated && isRoot && (
             <li>
-              <NavLink to="/admin" className={activeLink}>
+              <NavLink to="/bmi" className={activeLink}>
                 <span className="icon-header">
-                  <RiDashboardFill />
+                  <RiHeartPulseFill />
                 </span>
-                <sup>DASHBOARD</sup>
+                <sup>BMI</sup>
               </NavLink>
             </li>
-          )}
 
-          {isAuthenticated ? (
-            <li onClick={handleLogout}>
-              <NavLink to="*">
-                <span className="icon-header">
-                  <RiUserSharedFill />
-                </span>
-                <sup>LOGOUT</sup>
-              </NavLink>
-            </li>
-          ) : (
+            {isAuthenticated && isRoot && (
+              <li>
+                <NavLink to="/upload-video-767202115" className={activeLink}>
+                  <span className="icon-header">
+                    <RiFolderUploadFill />
+                  </span>
+                  <sup>UPLOAD</sup>
+                </NavLink>
+              </li>
+            )}
+
             <li>
-              <NavLink to="/sigin" className={activeLink}>
+              <NavLink
+                to={
+                  isAuthenticated && isRoot
+                    ? "/video-final-boss-202115-767"
+                    : "/movies"
+                }
+                className={activeLink}
+              >
                 <span className="icon-header">
-                  <RiUserReceivedFill />
+                  <RiVidiconFill />
                 </span>
-                <sup>LOGIN</sup>
+                <sup>CINEMA</sup>
               </NavLink>
             </li>
-          )}
-        </ul>
-      </nav>
+
+            {isAuthenticated && isRoot && (
+              <li>
+                <NavLink to="/admin" className={activeLink}>
+                  <span className="icon-header">
+                    <RiDashboardFill />
+                  </span>
+                  <sup>DASHBOARD</sup>
+                </NavLink>
+              </li>
+            )}
+
+            {isAuthenticated ? (
+              <li onClick={handleLogout}>
+                <NavLink to="*">
+                  <span className="icon-header">
+                    <RiUserSharedFill />
+                  </span>
+                  <sup>LOGOUT</sup>
+                </NavLink>
+              </li>
+            ) : (
+              <li>
+                <NavLink to="/sigin" className={activeLink}>
+                  <span className="icon-header">
+                    <RiUserReceivedFill />
+                  </span>
+                  <sup>LOGIN</sup>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+        </nav>
+      )}
     </div>
   );
 }

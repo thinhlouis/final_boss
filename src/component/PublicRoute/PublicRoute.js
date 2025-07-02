@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../context/AuthContext/AuthContext";
 import { Navigate, useLocation } from "react-router-dom"; // Sửa lỗi chính tả từ "react-router" thành "react-router-dom"
 
 const PublicRoute = ({ children }) => {

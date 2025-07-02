@@ -2,20 +2,21 @@ import "./LoginPage.css";
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import Cookies from "js-cookie";
 
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../context/AuthContext/AuthContext";
 import authAPI from "../../apis/authAPI";
+import ReissuePassword from "../ResetPassword/ReissuePassword";
 
 function LoginPage() {
-  const [username, setUsername] = useState("");
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePass, setHidePass] = useState(false);
   const [errors, setErrors] = useState("");
+  const [chageReissue, setChangeReissue] = useState(false);
 
   const {
     handleUserLogin,
-    auth: { error: authError },
+    auth: { error: errorState },
   } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -25,13 +26,13 @@ function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!username || !password) {
+    if (!usernameOrEmail || !password) {
       setErrors("Please fill in both fields.");
       return;
     }
 
     const infoLogin = {
-      username,
+      usernameOrEmail,
       password,
     };
     try {
@@ -39,11 +40,12 @@ function LoginPage() {
 
       const { accessToken } = response.data;
 
-      Cookies.set("accessToken", accessToken);
+      sessionStorage.setItem("accessToken", accessToken);
+
       await handleUserLogin();
       navigate(from, { replace: true });
     } catch (err) {
-      setErrors(authError);
+      setErrors(err.response?.data?.message);
     }
   };
 
@@ -53,64 +55,76 @@ function LoginPage() {
   };
 
   useEffect(() => {
-    if (authError) {
-      setErrors(authError);
+    if (errorState) {
+      setErrors(errorState);
     }
-  }, [authError]);
+  }, [errorState]);
 
   return (
-    <div className="container_login_page">
-      <h1 id="title-login" style={{ marginTop: "1rem" }}>
-        Login Final Boss
-      </h1>
-      <form className="login-page" onSubmit={handleLogin}>
-        <div className="login-box-center">
-          <div className="form-group">
-            <input
-              type="text"
-              className="input_login"
-              id="input_login"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <label
-              htmlFor="input_login"
-              style={username ? { top: "-8px" } : {}}
-            >
-              Username
-            </label>
-          </div>
+    <>
+      {chageReissue ? (
+        <ReissuePassword setChangeReissue={setChangeReissue} />
+      ) : (
+        <div className="container_login_page">
+          <h1 id="title-login" style={{ marginTop: "1rem" }}>
+            Login Final Boss
+          </h1>
+          <form className="login-page" onSubmit={handleLogin}>
+            <div className="login-box-center">
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="input_login"
+                  id="input_login"
+                  value={usernameOrEmail}
+                  onChange={(e) => setUsernameOrEmail(e.target.value)}
+                />
+                <label
+                  htmlFor="input_login"
+                  style={usernameOrEmail ? { top: "-8px" } : {}}
+                >
+                  Username or Email
+                </label>
+              </div>
 
-          <div className="form-group position-btn-hide">
-            <input
-              type={hidePass ? "text" : "password"}
-              id="input_password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <label
-              htmlFor="input_password"
-              style={password ? { top: "-8px" } : {}}
-            >
-              Password
-            </label>
-            <button
-              type="button"
-              onClick={handleHidePass}
-              className="hide_unhide p-b-hide"
-            >
-              {hidePass ? <AiFillEye /> : <AiFillEyeInvisible />}
-            </button>
-          </div>
+              <div className="form-group position-btn-hide">
+                <input
+                  type={hidePass ? "text" : "password"}
+                  id="input_password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <label
+                  htmlFor="input_password"
+                  style={password ? { top: "-8px" } : {}}
+                >
+                  Password
+                </label>
+                <button
+                  type="button"
+                  onClick={handleHidePass}
+                  className="hide_unhide p-b-hide"
+                >
+                  {hidePass ? <AiFillEye /> : <AiFillEyeInvisible />}
+                </button>
+              </div>
 
-          {errors && <p className="error_login">{errors}</p>}
+              {errors && <p className="error">{errors}</p>}
+              <p
+                className="chage-reissue"
+                onClick={() => setChangeReissue(true)}
+              >
+                <span>Forgot Password</span>
+              </p>
 
-          <button type="submit" className="btn_login">
-            Login
-          </button>
+              <button type="submit" className="btn_login">
+                Login
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      )}
+    </>
   );
 }
 
