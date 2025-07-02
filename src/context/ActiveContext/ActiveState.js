@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 
 import ActiveContext from "./ActiveContext";
+import session from "../../utils/setStorage";
 import activeAPI from "../../apis/activeAPI";
 import authAPI from "../../apis/authAPI";
 
@@ -22,6 +23,11 @@ const ActiveState = ({ children }) => {
   }, []);
 
   const handleInactive = useCallback(async () => {
+    const status = session.get("status") ?? false;
+    if (!status) {
+      console.log("Người dùng không đăng nhập!");
+      return;
+    }
     console.log("Người dùng không hoạt động trong 1 phút. Hiển thị modal.");
     try {
       await activeAPI.change({ isActive: false });

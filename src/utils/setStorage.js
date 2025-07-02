@@ -1,0 +1,37 @@
+// sessionStorageUtils.js (hoặc tên tệp tương tự)
+
+const session = {
+  set: (key, value) => {
+    // sessionStorage chỉ lưu trữ chuỗi. Chuyển đổi đối tượng/mảng thành JSON.
+    // Nếu 'value' đã là chuỗi hoặc kiểu nguyên thủy, nó sẽ lưu trữ nguyên trạng.
+    if (typeof value === "object" && value !== null) {
+      sessionStorage.setItem(key, JSON.stringify(value));
+    } else {
+      sessionStorage.setItem(key, value);
+    }
+  },
+  get: (key) => {
+    const value = sessionStorage.getItem(key);
+    try {
+      // Thử phân tích cú pháp dưới dạng JSON. Nếu thất bại, trả về chuỗi gốc.
+      return JSON.parse(value);
+    } catch (e) {
+      return value; // Không phải là chuỗi JSON, trả về nguyên trạng (ví dụ: số, chuỗi đơn giản)
+    }
+  },
+  remove: (key) => {
+    sessionStorage.removeItem(key);
+  },
+  clear: () => {
+    sessionStorage.clear();
+  },
+};
+
+export default session;
+
+// Cách sử dụng trong một tệp khác:
+// import sessionStorageUtils from './sessionStorageUtils';
+// sessionStorageUtils.set('userName', 'Alice');
+// const user = sessionStorageUtils.get('userName'); // 'Alice'
+// sessionStorageUtils.set('userObject', { id: 1, name: 'Bob' });
+// const userObj = sessionStorageUtils.get('userObject'); // { id: 1, name: 'Bob' }

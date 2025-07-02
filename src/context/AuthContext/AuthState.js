@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import AuthContext from "./AuthContext";
 import authAPI from "../../apis/authAPI";
+import session from "../../utils/setStorage";
 
 const STORAGE_KEYS = {
   TOKEN: "accessToken",
@@ -22,9 +23,9 @@ const AuthState = ({ children }) => {
   const navigate = useNavigate();
 
   const clearStorage = () => {
-    sessionStorage.removeItem(STORAGE_KEYS.TOKEN);
-    sessionStorage.removeItem(STORAGE_KEYS.USER_INFO);
-    sessionStorage.removeItem(STORAGE_KEYS.VERIFY_CODE);
+    session.remove(STORAGE_KEYS.TOKEN);
+    session.remove(STORAGE_KEYS.USER_INFO);
+    session.remove(STORAGE_KEYS.VERIFY_CODE);
   };
 
   const handleLogout = useCallback(async () => {
@@ -72,9 +73,9 @@ const AuthState = ({ children }) => {
         return;
       }
 
-      const userData = sessionStorage.getItem(STORAGE_KEYS.USER_INFO);
+      const userData = session.get(STORAGE_KEYS.USER_INFO);
 
-      const cachedUser = userData ? JSON.parse(userData) : {};
+      const cachedUser = userData ? userData : {};
       // Lấy thông tin user mới nhất
       const response_user = await authAPI.info();
       const user = response_user.data;
@@ -84,7 +85,7 @@ const AuthState = ({ children }) => {
         user: user?.userInfo || cachedUser,
         error: null,
       });
-      sessionStorage.setItem(
+      session.set(
         STORAGE_KEYS.USER_INFO,
         JSON.stringify(user?.userInfo || cachedUser)
       );
@@ -99,7 +100,7 @@ const AuthState = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      const storedToken = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
+      const storedToken = session.get(STORAGE_KEYS.TOKEN);
 
       if (storedToken && storedToken !== "undefined") {
         // Nếu có token, cố gắng khôi phục session

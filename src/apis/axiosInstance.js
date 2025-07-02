@@ -1,3 +1,4 @@
+import session from "../utils/setStorage";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -7,7 +8,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   // Get accessToken from local storage
-  const accessToken = sessionStorage.getItem("accessToken");
+  const accessToken = session.get("accessToken");
 
   if (accessToken) {
     config.headers["x-access-token"] = accessToken;

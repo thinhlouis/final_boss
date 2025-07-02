@@ -17,6 +17,7 @@ export default function BodyMassIndexCalculator() {
   const [dayOfBirth, setDayOfBirth] = useState("");
   const [monthOfBirth, setMonthOfBirth] = useState("");
   const [yearOfBirth, setYearOfBirth] = useState("");
+  const [noti, setNoti] = useState("");
 
   const inputRef = useRef(null);
 
@@ -66,13 +67,22 @@ export default function BodyMassIndexCalculator() {
   };
 
   const resultCalculateBMI = () => {
+    setNoti("");
+
+    if (!yourHeight || !yourWeight) {
+      setNoti(`Bớt bấm linh tinh đi!`);
+      return;
+    }
+
     let age;
     const birthDay = `${yearOfBirth}-${monthOfBirth}-${dayOfBirth}`;
-    console.log(birthDay);
+
     if (birthDay === "--") {
       age = "không có";
+      setNoti(` Xin chào ${yourGender} ${age} tuổi`);
     } else {
       age = calculateAge(birthDay);
+      setNoti(` Xin chào ${yourGender} ${age} tuổi`);
     }
 
     const resultBMI = Number(yourWeight) / Number((yourHeight / 100) ** 2);
@@ -80,6 +90,8 @@ export default function BodyMassIndexCalculator() {
     setYourAge(age);
     setYourBMI(resultBMI);
   };
+
+  console.log(noti);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -89,121 +101,120 @@ export default function BodyMassIndexCalculator() {
 
   return (
     <div className="bmi_calculator_container">
-      <h1>BMI CALCULATOR FINAL BOSS</h1>
+      <h1 style={{ margin: "2rem 0" }}>BMI CALCULATOR FINAL BOSS</h1>
       <div className="bmi_calculator_box">
-        <div className="bmi_calculator">
-          <div className="bmi_calculator_item bmi_left">
-            <div className="birth-day-box">
-              <label htmlFor="day-of-birth">
-                <span>Day</span>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={dayOfBirth}
-                  className="day-of-birth"
-                  placeholder="dd"
-                  id="day-of-birth"
-                  onChange={(e) =>
-                    setDayOfBirth(e.target.value.replace(/\D/g, ""))
-                  }
-                  onFocus={(e) => e.target.select()}
-                />
-              </label>
-              <label htmlFor="month-of-birth">
-                <span>Month</span>
-                <input
-                  type="text"
-                  value={monthOfBirth}
-                  className="month-of-birth"
-                  placeholder="mm"
-                  id="month-of-birth"
-                  onChange={(e) =>
-                    setMonthOfBirth(e.target.value.replace(/\D/g, ""))
-                  }
-                  onFocus={(e) => e.target.select()}
-                />
-              </label>
-              <label htmlFor="year-of-birth">
-                <span>Year</span>
-                <input
-                  type="text"
-                  value={yearOfBirth}
-                  className="year-of-birth"
-                  placeholder="yyyy"
-                  id="year-of-birth"
-                  onChange={(e) =>
-                    setYearOfBirth(e.target.value.replace(/\D/g, ""))
-                  }
-                  onFocus={(e) => e.target.select()}
-                />
-              </label>
-            </div>
-
-            <label htmlFor="weight">
-              <span>Weight (kg) </span>
+        <div className="bmi_calculator_item">
+          <div className="birth-day-box">
+            <label htmlFor="day-of-birth">
+              <span>Day</span>
               <input
-                type="number"
-                value={yourWeight}
-                onChange={(e) => setYourWeight(e.target.value)}
+                ref={inputRef}
+                type="text"
+                value={dayOfBirth}
+                className="day-of-birth"
+                placeholder="dd"
+                id="day-of-birth"
+                onChange={(e) =>
+                  setDayOfBirth(e.target.value.replace(/\D/g, ""))
+                }
                 onFocus={(e) => e.target.select()}
-                id="weight"
-                tabIndex="3"
+              />
+            </label>
+            <label htmlFor="month-of-birth">
+              <span>Month</span>
+              <input
+                type="text"
+                value={monthOfBirth}
+                className="month-of-birth"
+                placeholder="mm"
+                id="month-of-birth"
+                onChange={(e) =>
+                  setMonthOfBirth(e.target.value.replace(/\D/g, ""))
+                }
+                onFocus={(e) => e.target.select()}
+              />
+            </label>
+            <label htmlFor="year-of-birth">
+              <span>Year</span>
+              <input
+                type="text"
+                value={yearOfBirth}
+                className="year-of-birth"
+                placeholder="yyyy"
+                id="year-of-birth"
+                onChange={(e) =>
+                  setYearOfBirth(e.target.value.replace(/\D/g, ""))
+                }
+                onFocus={(e) => e.target.select()}
               />
             </label>
           </div>
-          <div className="bmi_calculator_item bmi_right">
-            <label htmlFor="height">
-              <span>Height (cm)</span>
+          <label className="gender">
+            <span>Gender</span>
+            <p className="select-gender">
+              <span>Male</span>
               <input
-                type="number"
-                value={yourHeight}
-                onChange={(e) => setYourHeight(e.target.value)}
-                onFocus={(e) => e.target.select()}
-                id="height"
-                tabIndex="2"
+                type="radio"
+                value="Chàng trai"
+                checked={yourGender === "Chàng trai"}
+                onChange={(e) => setYourGender(e.target.value)}
+                name="gender"
+                id="male"
+                tabIndex="4"
               />
-            </label>
-            <label className="gender">
-              <span>Gender</span>
-              <p className="select-gender">
-                <span>Male</span>
-                <input
-                  type="radio"
-                  value="Chàng trai"
-                  checked={yourGender === "Chàng trai"}
-                  onChange={(e) => setYourGender(e.target.value)}
-                  name="gender"
-                  id="male"
-                  tabIndex="4"
-                />
-                <span>Female</span>
-                <input
-                  type="radio"
-                  value="Cô gái"
-                  checked={yourGender === "Cô gái"}
-                  onChange={(e) => setYourGender(e.target.value)}
-                  name="gender"
-                  id="female"
-                  tabIndex="5"
-                />
-              </p>
-            </label>
-          </div>
+              <span>Female</span>
+              <input
+                type="radio"
+                value="Cô gái"
+                checked={yourGender === "Cô gái"}
+                onChange={(e) => setYourGender(e.target.value)}
+                name="gender"
+                id="female"
+                tabIndex="5"
+              />
+            </p>
+          </label>
+          <label htmlFor="height">
+            <span>Height (cm)</span>
+            <input
+              type="number"
+              value={yourHeight}
+              onChange={(e) => setYourHeight(e.target.value)}
+              onFocus={(e) => e.target.select()}
+              id="height"
+              tabIndex="2"
+            />
+          </label>
+          <label htmlFor="weight">
+            <span>Weight (kg) </span>
+            <input
+              type="number"
+              value={yourWeight}
+              onChange={(e) => setYourWeight(e.target.value)}
+              onFocus={(e) => e.target.select()}
+              id="weight"
+              tabIndex="3"
+            />
+          </label>
         </div>
-        <button
-          type="button"
-          className="result_bmi"
-          onClick={resultCalculateBMI}
-        >
-          XEM KẾT QUẢ
-        </button>
+
+        <div className="bmi_calculator_button">
+          <button
+            type="button"
+            className="result_bmi"
+            onClick={resultCalculateBMI}
+          >
+            XEM KẾT QUẢ
+          </button>
+        </div>
       </div>
+      {!yourBMI && noti && (
+        <p style={{ margin: "10px 0", color: "red" }}>{noti} 😈</p>
+      )}
       {yourBMI && (
         <div className="result_container">
           <img src={resultImageBMI(yourBMI)} alt={`index-bmi-${yourBMI}`} />
-          <p>
-            Xin chào {yourGender} {yourAge} tuổi
-          </p>
+          {yourAge && <p>{noti}</p>}
           <h2>Chỉ số BMI của bạn là {Number(yourBMI).toFixed(1)}</h2>
         </div>
       )}

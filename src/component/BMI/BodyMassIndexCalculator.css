@@ -1,44 +1,53 @@
 .bmi_calculator_container {
-  width: 100%;
+  width: 80%;
   min-height: 60vh;
-  margin-top: 2rem;
+  border: 2px solid #657e1f;
+  margin: 2rem auto;
 }
 .bmi_calculator_box {
-  border: 2px solid #657e1f;
   border-radius: 5px;
-  width: 70%;
+  width: 50%;
   margin: 0 auto;
 }
-
-.bmi_calculator {
-  height: 300px;
+.bmi_calculator_item,
+.bmi_calculator_button {
+  width: 100%;
   margin: 0 auto;
-  padding-top: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
 }
 .bmi_calculator_item {
-  width: 45%;
-  height: 200px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 1rem;
-  padding-bottom: 2rem;
 }
-div.bmi_right {
-  padding-bottom: 3rem;
+.bmi_calculator_button {
+  text-align: center;
+  padding-top: 1rem;
 }
+div.birth-day-box,
 .bmi_calculator_item label {
-  width: 100%;
+  width: 60%;
+  margin: 0 auto;
+}
+div.birth-day-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+div.birth-day-box label span {
+  text-align: center;
+  display: inline-block;
+  width: 70%;
+}
+
+.bmi_calculator_item label {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 label.gender {
   display: flex;
@@ -82,20 +91,6 @@ input[type="text"].year-of-birth:focus {
   accent-color: #8db327;
 }
 
-div.birth-day-box {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-div.birth-day-box label {
-  width: 16%;
-}
-div.birth-day-box label span {
-  text-align: center;
-  display: inline-block;
-  width: 70%;
-}
 input[type="text"].day-of-birth,
 input[type="text"].month-of-birth,
 input[type="text"].year-of-birth {
@@ -119,12 +114,10 @@ input[type="text"].year-of-birth {
   font-weight: 600;
   color: gray;
 }
-.bmi_left {
-  margin-left: 5rem;
-}
+
 button.result_bmi {
   margin-bottom: 2rem;
-  width: 20rem;
+  width: 14.5rem;
   height: 2.6rem;
   font-size: 1.2rem;
   color: #fff;
