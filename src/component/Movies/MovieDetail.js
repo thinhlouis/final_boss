@@ -2,13 +2,15 @@ import "./MovieDetail.css";
 import MoviesContext from "../../context/MovieContext/MoviesContext";
 import CustomDetails from "./CustomDetails/CustomDetails";
 import video_not_found from "../../assets/video-not-found.png";
+import AuthContext from "../../context/AuthContext/AuthContext";
+import { local, session } from "../../utils/setStorage";
 
 import React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
-import axios from "axios";
 import { BarLoader } from "react-spinners";
+import axios from "axios";
 
 export default function MovieDetail() {
   const [movie, setMovie] = useState({});
@@ -19,7 +21,29 @@ export default function MovieDetail() {
   const [loading, setLoading] = useState(true);
 
   const { movies } = useContext(MoviesContext);
+  const { auth } = useContext(AuthContext);
   const { slug_movie } = useParams();
+  const { isAuthenticated } = auth;
+  const timeRef = useRef(null);
+
+  useEffect(() => {
+    const channel = new BroadcastChannel("player-channel");
+
+    channel.onmessage = (e) => {
+      if (e.data === "PLAYER_CLOSED") {
+        if (timeRef.current) {
+          clearTimeout(timeRef.current);
+        }
+        timeRef.current = setTimeout(() => {
+          localStorage.removeItem("isAuth");
+        }, 3000);
+      }
+    };
+
+    return () => {
+      channel.close();
+    };
+  }, []);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -52,6 +76,9 @@ export default function MovieDetail() {
   }, [movies, slug_movie]);
 
   const openPlayer = (params, name, eps) => {
+    session.set("isAuth", isAuthenticated);
+    local.set("isAuth", isAuthenticated);
+
     const url = window.location.origin;
     window.open(
       `${url}/player/${name}/${eps}`,

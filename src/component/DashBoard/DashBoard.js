@@ -1,5 +1,6 @@
 import "./DashBoard.css";
 import authAPI from "../../apis/authAPI";
+import { session } from "../../utils/setStorage";
 
 import React from "react";
 import { useState, useEffect, useRef } from "react";
@@ -14,7 +15,7 @@ export default function DashBoard() {
   const timeExpires = 1000 * 60 * 10;
 
   useEffect(() => {
-    const valid = sessionStorage.getItem("validated");
+    const valid = session.get("validated");
     if (!valid) {
       setValidated(false);
       return;
@@ -24,7 +25,7 @@ export default function DashBoard() {
     }
     setValidated(true);
     timeRef.current = setTimeout(() => {
-      sessionStorage.removeItem("validated");
+      session.remove("validated");
       setValidated(false);
     }, timeExpires);
   }, [timeExpires]);
@@ -37,7 +38,7 @@ export default function DashBoard() {
     try {
       await authAPI.verifyCode({ security_code: code });
       setValidated(true);
-      sessionStorage.setItem("validated", true);
+      session.set("validated", true);
     } catch (error) {
       setError(error.response?.data?.message);
       setValidated(false);

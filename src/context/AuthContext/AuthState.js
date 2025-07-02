@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import AuthContext from "./AuthContext";
 import authAPI from "../../apis/authAPI";
-import session from "../../utils/setStorage";
+import { session, local } from "../../utils/setStorage";
 
 const STORAGE_KEYS = {
   TOKEN: "accessToken",
   USER_INFO: "userInfo",
   VERIFY_CODE: "validated",
+  IS_AUTH: "isAuth",
 };
 
 const AuthState = ({ children }) => {
@@ -26,6 +27,7 @@ const AuthState = ({ children }) => {
     session.remove(STORAGE_KEYS.TOKEN);
     session.remove(STORAGE_KEYS.USER_INFO);
     session.remove(STORAGE_KEYS.VERIFY_CODE);
+    local.remove(STORAGE_KEYS.IS_AUTH);
   };
 
   const handleLogout = useCallback(async () => {

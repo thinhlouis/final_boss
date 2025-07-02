@@ -6,7 +6,7 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import ReissuePassword from "../ResetPassword/ReissuePassword";
 import authAPI from "../../apis/authAPI";
-import session from "../../utils/setStorage";
+import { session } from "../../utils/setStorage";
 
 function LoginPage() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");

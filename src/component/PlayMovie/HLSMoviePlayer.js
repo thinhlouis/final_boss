@@ -163,28 +163,27 @@ const HLSMoviePlayer = ({ url, thumb_video }) => {
         />
       )}
 
-      <div
-        className="custom-control"
-        style={styleControl ? { display: "none" } : { display: "block" }}
-      >
-        <div className="control-center">
-          <button className="button_replay" onClick={handleRewind}>
-            <RiReplay10Fill />
-          </button>
-          <button className="button_play-pause" onClick={handlePlayPause}>
-            {isPlaying ? <FaPause /> : <RiPlayLargeFill />}
-          </button>
-          <button className="button_forward" onClick={handleForward}>
-            <RiForward10Fill />
-          </button>
-        </div>
-        <div className="control-bottom">
-          <button className="button_muted" onClick={handleMute}>
-            {isMuted ? <RiVolumeMuteFill /> : <RiVolumeUpFill />}
-          </button>
-          <button className="button_full-screen" onClick={handleFullscreen}>
-            <RiFullscreenFill />
-          </button>
+      <div className="custom-control">
+        <div style={styleControl ? { display: "none" } : { display: "block" }}>
+          <div className="control-center">
+            <button className="button_replay" onClick={handleRewind}>
+              <RiReplay10Fill />
+            </button>
+            <button className="button_play-pause" onClick={handlePlayPause}>
+              {isPlaying ? <FaPause /> : <RiPlayLargeFill />}
+            </button>
+            <button className="button_forward" onClick={handleForward}>
+              <RiForward10Fill />
+            </button>
+          </div>
+          <div className="control-bottom">
+            <button className="button_muted" onClick={handleMute}>
+              {isMuted ? <RiVolumeMuteFill /> : <RiVolumeUpFill />}
+            </button>
+            <button className="button_full-screen" onClick={handleFullscreen}>
+              <RiFullscreenFill />
+            </button>
+          </div>
         </div>
       </div>
     </div>

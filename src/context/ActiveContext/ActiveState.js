@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 
 import ActiveContext from "./ActiveContext";
-import session from "../../utils/setStorage";
+import { session } from "../../utils/setStorage";
 import activeAPI from "../../apis/activeAPI";
 import authAPI from "../../apis/authAPI";
 

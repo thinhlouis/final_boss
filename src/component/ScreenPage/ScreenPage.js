@@ -5,11 +5,13 @@ import { useContext } from "react";
 
 import AuthContext from "../../context/AuthContext/AuthContext";
 import LoginPage from "../LoginPage/LoginPage";
+import { local } from "../../utils/setStorage";
 
 export default function ScreenPage({ children }) {
   const { auth } = useContext(AuthContext);
   const { isAuthenticated } = auth;
-  return isAuthenticated ? (
+  const isAuth = isAuthenticated || local.get("isAuth");
+  return isAuth ? (
     children
   ) : (
     <div>

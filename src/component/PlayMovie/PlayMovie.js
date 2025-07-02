@@ -18,6 +18,24 @@ export default function PlayMovie() {
   const { slug_name, slug_eps } = useParams();
 
   useEffect(() => {
+    const channel = new BroadcastChannel("player-channel");
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        // Gửi tín hiệu cho các tab khác
+        channel.postMessage("PLAYER_CLOSED");
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      channel.close();
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchCurrentMovie = async () => {
       try {
         const response = await axios.get(

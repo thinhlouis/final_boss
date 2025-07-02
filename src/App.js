@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 import "./App.css";
 import ActiveContext from "./context/ActiveContext/ActiveContext";
 import AuthContext from "./context/AuthContext/AuthContext";
-import session from "./utils/setStorage";
+import { session } from "./utils/setStorage";
 
 import { useActive } from "./hook/useActive";
 import LoginPage from "./component/LoginPage/LoginPage";

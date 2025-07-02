@@ -1,4 +1,4 @@
-import session from "../utils/setStorage";
+import { session } from "../utils/setStorage";
 import axios from "axios";
 
 const axiosInstance = axios.create({

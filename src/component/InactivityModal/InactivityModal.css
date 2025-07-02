@@ -64,3 +64,8 @@
 .inactivity-modal-content button:hover {
   background-color: #add345;
 }
+@media (width <= 480px) {
+  .inactivity-modal-content {
+    width: 80%;
+  }
+}
