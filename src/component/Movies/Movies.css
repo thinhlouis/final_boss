@@ -391,6 +391,58 @@ table.list_movie
     transform: scale(1);
   }
 }
+div.popup-warning {
+  position: fixed;
+  width: 20%;
+  height: 140px;
+  background-color: #fff;
+  top: 15%;
+  right: 5%;
+  border: thin solid #999;
+  border-radius: 5px;
+  text-align: left;
+  padding: 5px;
+}
+div.popup-warning .warning-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+div.popup-warning .warning-box .close-popup {
+  position: absolute;
+  right: 0;
+  top: -5%;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #b5d249;
+  border: none;
+  border-radius: 3px;
+  text-transform: lowercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  font-size: 1.5rem;
+}
+div.popup-warning .warning-box .close-popup:hover {
+  color: #000;
+}
+div.popup-warning .warning-box .popup-content {
+  padding: 0.5rem 0;
+  width: 80%;
+  margin: 0 auto;
+}
+div.popup-warning .warning-box .popup-content > h1 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+div.popup-warning .warning-box .popup-content > p > a {
+  text-decoration: none;
+  color: #75921e;
+  font-weight: bold;
+  zoom: 1.1;
+}
 @media (576px <= width <= 991px) {
   table.list_movie td.medium,
   table.list_movie th.medium {

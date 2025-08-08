@@ -6,11 +6,18 @@ import TableMovie from "./TableMovie";
 import SelectComponent from "./SelectComponent";
 import RenderButtonMovie from "./RenderButtonMovie";
 import ScrollContext from "../../context/ScrollContex/ScrollContex";
+import AuthContext from "../../context/AuthContext/AuthContext";
 
 import { useContext, useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
-import { RiSearchLine, RiMovie2AiLine, RiHome4Fill } from "react-icons/ri";
+import {
+  RiSearchLine,
+  RiMovie2AiLine,
+  RiHome4Fill,
+  RiCloseFill,
+} from "react-icons/ri";
 import axios from "axios";
+import { throttle } from "lodash";
 
 export default function Movies() {
   const [contries, setCountries] = useState([]);
@@ -51,6 +58,9 @@ export default function Movies() {
   const { movies, domain_img } = datas;
 
   const { setModal } = useContext(ScrollContext);
+  const {
+    auth: { isAuthenticated },
+  } = useContext(AuthContext);
 
   const imageRef = useRef(null);
 
@@ -69,9 +79,26 @@ export default function Movies() {
       });
       isSearching.current = false; // reset search state
       setKeywordRef("");
+      setShowPopup(true);
     },
     [setLists, setKeywordRef, isSearching]
   );
+
+  const handleScroll = throttle(() => {
+    // Kiểm tra vị trí cuộn: nếu cuộn xuống quá 100px thì hiển thị nút
+    if (!isAuthenticated && window.pageYOffset > 300) {
+      setShowPopup(false);
+    }
+  }, 1000);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    // Dọn dẹp listener khi component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
   useEffect(() => {
     if (!showModal) {
@@ -342,6 +369,27 @@ export default function Movies() {
             <p className="modal-movie-des">
               <span>{descriptionMovie}</span>
             </p>
+          </div>
+        </div>
+      )}
+      {!isAuthenticated && showPopup && (
+        <div className="popup-warning">
+          <div className="warning-box">
+            <button
+              className="close-popup"
+              onClick={() => setShowPopup(false)}
+              title="close popup"
+            >
+              <RiCloseFill />
+            </button>
+            <div className="popup-content">
+              <h1>Bạn chưa login</h1>
+              <p>
+                Bạn hiền ơi! nếu bạn là <b>VIP</b> thì bạn cần phải{" "}
+                <Link to="/sign-in">LOGIN</Link> để xem được các tập phim{" "}
+                <b>VIP</b> bạn nhé.
+              </p>
+            </div>
           </div>
         </div>
       )}

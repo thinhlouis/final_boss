@@ -1,5 +1,4 @@
 import "./EditProfile.css";
-import { useInput } from "../../hook/useInput";
 import userAPI from "../../apis/userAPI";
 import AuthContext from "../../context/AuthContext/AuthContext";
 
