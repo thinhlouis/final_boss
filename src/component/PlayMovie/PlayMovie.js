@@ -116,7 +116,12 @@ export default function PlayMovie() {
     return (
       <div className="playing-movie root_flex_column">
         <p
-          style={{ color: "#98b72b", textAlign: "center", marginTop: "1.5rem" }}
+          style={{
+            width: "80%",
+            color: "#98b72b",
+            textAlign: "center",
+            marginTop: "1.5rem",
+          }}
         >
           Tập phim này chỉ dành cho <span>MEMBER</span> vui lòng <b>login</b>{" "}
           rồi thử lại.

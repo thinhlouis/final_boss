@@ -577,4 +577,12 @@ div.popup-warning .warning-box .popup-content > p > a {
     width: 80%;
     height: auto;
   }
+  div.popup-warning {
+    width: 90%;
+    right: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+  }
 }
