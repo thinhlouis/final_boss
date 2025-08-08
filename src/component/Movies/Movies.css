@@ -573,9 +573,25 @@ div.popup-warning .warning-box .popup-content > p > a {
   .footer-movie .pagination-container {
     justify-content: center;
   }
+  .modal-movie-name {
+    padding: 0 5px;
+  }
   .modal-movie-content {
-    width: 80%;
+    width: 60%;
     height: auto;
+    margin: 0 auto;
+  }
+  .modal-movie-poster {
+    flex-direction: column;
+    align-items: center;
+  }
+  .modal-movie-des {
+    width: 85%;
+  }
+  .modal-movie-des > span {
+    width: 100%;
+    line-height: 1.2;
+    letter-spacing: 1px;
   }
   div.popup-warning {
     width: 90%;
@@ -584,5 +600,10 @@ div.popup-warning .warning-box .popup-content > p > a {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 99;
+  }
+  div.popup-warning .warning-box .close-popup {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.8rem;
   }
 }
