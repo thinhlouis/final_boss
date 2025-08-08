@@ -2,7 +2,7 @@ import "./RegisterPage.css";
 import authAPI from "../../apis/authAPI";
 
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Swal from "sweetalert2";
