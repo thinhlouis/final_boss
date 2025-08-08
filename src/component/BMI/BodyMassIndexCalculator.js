@@ -91,8 +91,6 @@ export default function BodyMassIndexCalculator() {
     setYourBMI(resultBMI);
   };
 
-  console.log(noti);
-
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -101,7 +99,7 @@ export default function BodyMassIndexCalculator() {
 
   return (
     <div className="bmi_calculator_container">
-      <h1 style={{ margin: "2rem 0" }}>BMI CALCULATOR FINAL BOSS</h1>
+      <h1 className="title-bmi">BMI CALCULATOR FINAL BOSS</h1>
       <div className="bmi_calculator_box">
         <div className="bmi_calculator_item">
           <div className="birth-day-box">

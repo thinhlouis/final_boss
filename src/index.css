@@ -1,22 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400..700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: "Reem Kufi", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  margin: 0;
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  min-height: 100vh;
+  color: #1f290a;
 }
 textarea,
 button,
-input {
-  font-family: "Roboto", sans-serif;
+input,
+label {
+  font-family: "Reem Kufi", sans-serif;
+  letter-spacing: 2px;
+}
+button {
+  cursor: pointer;
+  background-color: #cce274;
+  color: #1f290a;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: 0.3s all;
+}
+button:hover {
+  background-color: #98b72b;
+  color: #f3f4f6;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.root_flex_column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.root_flex_row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.flex_start {
+  justify-content: flex-start;
+}
+.flex_end {
+  justify-content: flex-end;
+}
+.flex_center {
+  justify-content: center;
+}
+
+.item_start {
+  align-items: flex-start;
+}
+.item_end {
+  align-items: flex-end;
+}
+.item_center {
+  align-items: center;
+}
+.gap_025 {
+  gap: 0.25rem;
+}
+.gap_05 {
+  gap: 0.5rem;
+}
+.gap_075 {
+  gap: 0.75rem;
+}
+.gap_1 {
+  gap: 1rem;
+}
+.gap_15 {
+  gap: 1.5rem;
+}
+.gap_2 {
+  gap: 2rem;
+}
+.no_wrap {
+  flex-wrap: nowrap;
 }

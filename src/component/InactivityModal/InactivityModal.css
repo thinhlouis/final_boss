@@ -9,16 +9,16 @@
   display: flex;
   justify-content: center; /* Căn giữa theo chiều ngang */
   align-items: center; /* Căn giữa theo chiều dọc */
+  background-image: url("../../../public/wallpaper.png");
+  background-size: cover;
+  background-position: center;
   z-index: 1000; /* Đảm bảo modal nằm trên cùng */
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px); /* Độ mờ mong muốn, ví dụ 8px */
-  -webkit-backdrop-filter: blur(8px); /* Hỗ trợ trình duyệt WebKit (Safari) */
 }
 
 .inactivity-modal-content {
-  background-color: white;
+  background-color: transparent;
   padding: 30px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
   max-width: 400px;
@@ -27,33 +27,72 @@
 .content-inactivity {
   margin-bottom: 20px;
 }
+.content-inactivity-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 .inactivity-modal-content h2 {
   margin-top: 0;
-  color: #333;
+  color: #1f290a;
+}
+.inactivity-modal-content h2.notice {
+  text-align: left;
 }
 
 .inactivity-modal-content p {
-  color: #555;
+  color: #1f290a;
+}
+p.notice {
+  color: #48591b;
+  margin-bottom: 0.5rem;
+}
+p.notice > b {
+  color: #1f290a;
+  font-size: 1.2rem;
+}
+p.noti_fail {
+  color: #1f290a;
+  background-color: #b5d249;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+}
+.inactivity-modal-content p.error {
+  color: #f82c1d;
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: center;
+  margin: 0.75rem auto;
+  padding: 0.25rem 0;
+  background-color: #cce274dd;
+  border-radius: 3px;
 }
 
 .inactivity-modal-content input {
-  width: calc(100% - 20px); /* Trừ padding */
-  padding: 10px;
+  width: 8rem;
+  height: 2.5rem;
+  padding: 0 10px;
   margin-bottom: 15px;
-  border: 1px solid #657e1f;
+  border: 1px solid transparent;
+  outline: none;
+  color: #1f290a;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 1.2rem;
+  background-color: #cce274dd;
+  align-content: center;
 }
 .inactivity-modal-content input:focus {
-  outline: none;
-  border: 2px solid #657e1f;
+  border-color: #cce274;
 }
 
 .inactivity-modal-content button {
-  background-color: #657e1f;
-  color: white;
-  padding: 10px 20px;
+  width: 10rem;
+  height: 2.5rem;
+  padding: 0 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -61,10 +100,7 @@
   transition: background-color 0.3s ease;
 }
 
-.inactivity-modal-content button:hover {
-  background-color: #add345;
-}
-@media (width <= 480px) {
+@media (width <= 575px) {
   .inactivity-modal-content {
     width: 80%;
   }

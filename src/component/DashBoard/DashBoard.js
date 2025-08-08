@@ -1,92 +1,45 @@
 import "./DashBoard.css";
-import authAPI from "../../apis/authAPI";
-import { session } from "../../utils/setStorage";
+import AuthContext from "../../context/AuthContext/AuthContext";
+import SecurityDashBoard from "./SecurityDashBoard";
+import { objRouter } from "./ObjRouter";
+import NavSidebar from "./NavSidebar";
 
 import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
 
-export default function DashBoard() {
-  const [validated, setValidated] = useState(false);
-  const [code, setCode] = useState("");
-  const [error, setError] = useState("");
+export default function DashBoard({ setFullPage }) {
+  const { auth, loading } = useContext(AuthContext);
+  const { user } = auth;
 
-  const timeRef = useRef(null);
-  const timeExpires = 1000 * 60 * 10;
+  const { pathname } = useLocation();
 
-  useEffect(() => {
-    const valid = session.get("validated");
-    if (!valid) {
-      setValidated(false);
-      return;
-    }
-    if (timeRef.current) {
-      clearTimeout(timeRef.current);
-    }
-    setValidated(true);
-    timeRef.current = setTimeout(() => {
-      session.remove("validated");
-      setValidated(false);
-    }, timeExpires);
-  }, [timeExpires]);
+  const { systems, entertainment } = objRouter;
 
-  const verifyCode = async (code) => {
-    if (!code) {
-      setError("Missing input data!");
-      return;
-    }
-    try {
-      await authAPI.verifyCode({ security_code: code });
-      setValidated(true);
-      session.set("validated", true);
-    } catch (error) {
-      setError(error.response?.data?.message);
-      setValidated(false);
-    }
-  };
+  const isRoot = user?.role === "super_root";
+
+  if (loading)
+    return (
+      <div style={{ height: "60vh", marginTop: "5rem" }}>
+        <PropagateLoader color="#657e1f" />
+      </div>
+    );
+
+  if (!isRoot) return <Navigate to="/404" replace state={{ from: pathname }} />;
 
   return (
-    <>
-      {validated ? (
-        <div className="admin-layout-container">
-          <aside className="admin-sidebar">
-            <nav>
-              <ul>
-                <li>
-                  <Link to="/admin">ADD USER</Link>
-                </li>
-                <li>
-                  <Link to="/admin/search-member">EDIT USER</Link>
-                </li>
-                <li>
-                  <Link to="/admin/action-quote">ACTION QUOTE</Link>
-                </li>
-              </ul>
-            </nav>
-          </aside>
-          <main className="admin-content">
-            {/* Đây là vị trí "placeholder" mà các component con sẽ được render vào */}
-            <Outlet />
-          </main>
-        </div>
-      ) : (
-        <div className="admin-layout-container">
-          <div className="enter-code-valid">
-            <label htmlFor="enter-code-valid">Plesae enter code</label>
-            <input
-              type="password"
-              id="enter-code-valid"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-            {error && <p className="error">{error}</p>}
-
-            <button type="button" onClick={() => verifyCode(code)}>
-              Verify
-            </button>
-          </div>
-        </div>
-      )}
-    </>
+    <SecurityDashBoard>
+      <div className="admin-layout-container">
+        <aside className="admin-sidebar">
+          <NavSidebar data={systems} title="Systems" />
+          <NavSidebar data={entertainment} title="Entertainment" />
+        </aside>
+        <main className="admin-content">
+          {/* Đây là vị trí "placeholder" mà các component con sẽ được render vào */}
+          <Outlet context={user?.fullname} />
+        </main>
+      </div>
+    </SecurityDashBoard>
   );
 }

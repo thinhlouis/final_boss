@@ -1,29 +1,119 @@
 .container-video-realistic {
   display: flex;
   justify-content: space-around;
-  align-items: flex-start;
-  width: 85%;
-  margin: 2rem auto;
-}
-.container-item-real {
-  width: 30%;
-}
-.video-realistic-item {
+  align-items: center;
+  flex-direction: column;
   width: 100%;
-  overflow: hidden;
+  margin: 0 auto;
 }
 
-.container-item-real .video-realistic-item video {
-  width: 75%;
+.video-realistic-item {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
   height: 100%;
-  object-fit: contain;
-  aspect-ratio: 9/16;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
 }
+.video-responsive-container {
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  margin: 0 auto;
+}
+.video-realistic-item .current-video {
+  width: 35%;
+  position: relative;
+}
+.video-realistic-item .current-video .controls_bottom_real {
+  visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: auto;
+  gap: 3rem;
+  bottom: 5%;
+}
+
+.controls_bottom_real > button {
+  width: 3rem;
+  height: 3rem;
+  font-size: 3rem;
+  font-weight: bold;
+  border-radius: 20%;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+}
+
+.video-realistic-item .current-video video {
+  display: inline-block;
+  aspect-ratio: 9 / 16;
+  object-fit: contain;
+  width: 100%;
+  height: 100vh;
+  margin-top: 1rem;
+}
+
+.video-controls-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 1rem; /* Khoảng cách giữa các nút */
+  opacity: 1; /* Mặc định ẩn */
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none; /* Đảm bảo các sự kiện chuột xuyên qua overlay khi ẩn */
+  z-index: 9;
+}
+
+.current-video video:hover + .video-controls-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.video-controls-overlay button {
+  background-color: transparent;
+  color: #f3f4f5;
+  border: none;
+  padding: 6px;
+  font-size: 2em;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  pointer-events: all;
+}
+
+.video-controls-overlay sup {
+  color: #f3f4f5;
+  position: absolute;
+  top: 20px;
+}
+.video-controls-overlay sup.next-10s {
+  left: 17px;
+}
+.video-controls-overlay sup.back-10s {
+  right: 17px;
+}
+div.controls-overlay-item {
+  position: relative;
+  cursor: pointer;
+}
+
 .realistic-container-item {
-  width: 70%;
+  width: 17%;
+}
+.playlist_video_realistic .hide-content {
+  filter: blur(10px);
+}
+.playlist_video_realistic .show-content {
+  filter: blur(0);
 }
 .items-video-real {
-  width: 60%;
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -37,25 +127,53 @@
   flex-wrap: wrap;
   gap: 0.5rem;
 }
-.items-video-real .playlist_video_realistic img {
-  width: 7rem;
+.items-video-real .playlist_video_realistic video {
+  width: 100%;
   height: 100%;
   object-fit: cover;
-  margin-top: 15px;
   border-radius: 3px;
   cursor: pointer;
   aspect-ratio: 9 / 16;
-
   transition: 0.3s;
+  scale: 1;
 }
-.items-video-real .playlist_video_realistic img:hover {
-  transform: scale(1.05);
+
+.fix-content {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  display: grid;
+  place-content: center;
+}
+.fix-content video.opacity-100 {
+  opacity: 1;
+}
+.fix-content video.opacity-0 {
+  opacity: 0;
+}
+.items-video-real .playlist_video_realistic video:hover {
+  filter: blur(0);
 }
 
 .item-video-realistic {
-  width: 18%;
-  max-width: 20%;
+  position: relative;
+  width: 15%;
+  max-width: 25%;
+  margin: 0.25rem;
   border: thin solid #ccc;
+  box-shadow: #999 1px 1px 1px;
+}
+.duration-video {
+  width: fit-content;
+  position: absolute;
+  top: 1%;
+  right: 3%;
+  font-size: small;
+  font-weight: 500;
+  background-color: #7c7c7c;
+  color: #f3f4f5;
+  padding: 1px 3px;
+  border-radius: 3px;
 }
 p.fileName-realistic {
   text-align: center;
@@ -66,30 +184,7 @@ p.fileName-realistic {
   width: 80%;
   margin: 10px auto;
 }
-.video-controls-overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  margin-top: 10px;
-}
-.video-controls-overlay button {
-  width: 5rem;
-  height: 1.6rem;
-  font-size: 1rem;
-  background-color: transparent;
-  border: 2px solid #465716;
-  border-radius: 5px;
-  color: #465716;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-.video-controls-overlay button:hover {
-  background-color: #465716;
-  color: #fff;
-}
+
 .item-btn-realistic-full {
   margin-top: 15px;
 }
@@ -104,11 +199,9 @@ p.fileName-realistic {
   display: none;
 }
 button.play-video {
-  width: 10rem;
+  width: 12rem;
   height: 2.4rem;
-  background-color: transparent;
-  color: #465716;
-  border: 2px solid #465716;
+  border: none;
   border-radius: 5px;
   margin: 20px 0;
 }
@@ -117,16 +210,36 @@ div.loading-file {
   position: relative;
   right: 170px;
 }
-@media (width <= 480px) {
-  .container-item-real {
+.show-content-nsfw {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 1rem 0;
+}
+button.show-content-nsfw {
+  font-size: 0.7rem;
+  width: 6rem;
+  height: 1.4rem;
+  background-color: #cccccc29;
+  border: thin solid #ccc;
+  border-radius: 3px;
+  color: #575757;
+  cursor: pointer;
+}
+
+@media (width <= 575px) {
+  .video-realistic-item {
     width: 100%;
   }
-
+  .video-realistic-item .current-video {
+    width: 100%;
+  }
   .container-video-realistic {
     flex-direction: column;
   }
-  .container-item-real .video-realistic-item video {
-    width: 100%;
+  .video-realistic-item video {
+    max-width: 100%;
   }
   .video-controls-overlay {
     display: none;
@@ -137,9 +250,17 @@ div.loading-file {
   .item-video-realistic {
     width: 45%;
     max-width: 50%;
+    box-shadow: none;
   }
+  .video-realistic-item .current-video .controls_bottom_real {
+    visibility: visible;
+  }
+
   .item-btn-realistic-small {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     width: 100%;
     margin: 20px 0;
   }
@@ -151,10 +272,17 @@ div.loading-file {
     background-color: #465716;
     margin-bottom: 12px;
   }
+  button.button-total-pages {
+    margin: 5px !important;
+  }
   .item-btn-realistic-full {
     display: none;
   }
   div.loading-file {
     right: 0;
+  }
+  button.show-content-nsfw {
+    width: 7rem;
+    height: 1.6rem;
   }
 }

@@ -1,65 +1,27 @@
 import "./LoginPage.css";
-import React, { useContext, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 import AuthContext from "../../context/AuthContext/AuthContext";
 import ReissuePassword from "../ResetPassword/ReissuePassword";
-import authAPI from "../../apis/authAPI";
-import { session } from "../../utils/setStorage";
 
 function LoginPage() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePass, setHidePass] = useState(false);
-  const [errors, setErrors] = useState("");
+
   const [chageReissue, setChangeReissue] = useState(false);
 
-  const {
-    handleUserLogin,
-    auth: { error: errorState },
-  } = useContext(AuthContext);
+  const { handleSubmitLogin, error } = useContext(AuthContext);
 
-  const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    if (!usernameOrEmail || !password) {
-      setErrors("Please fill in both fields.");
-      return;
-    }
-
-    const infoLogin = {
-      usernameOrEmail,
-      password,
-    };
-    try {
-      const response = await authAPI.login(infoLogin);
-
-      const { accessToken } = response.data;
-
-      session.set("accessToken", accessToken);
-
-      await handleUserLogin();
-      navigate(from, { replace: true });
-    } catch (err) {
-      setErrors(err.response?.data?.message);
-    }
-  };
+  const path = location.pathname;
 
   const handleHidePass = (e) => {
     e.preventDefault();
     setHidePass((prev) => !prev);
   };
-
-  useEffect(() => {
-    if (errorState) {
-      setErrors(errorState);
-    }
-  }, [errorState]);
 
   return (
     <>
@@ -68,9 +30,14 @@ function LoginPage() {
       ) : (
         <div className="container_login_page">
           <h1 id="title-login" style={{ marginTop: "1rem" }}>
-            Login Final Boss
+            Login
           </h1>
-          <form className="login-page" onSubmit={handleLogin}>
+          <form
+            className="login-page"
+            onSubmit={(e) =>
+              handleSubmitLogin(e, usernameOrEmail, password, path)
+            }
+          >
             <div className="login-box-center">
               <div className="form-group">
                 <input
@@ -78,11 +45,15 @@ function LoginPage() {
                   className="input_login"
                   id="input_login"
                   value={usernameOrEmail}
-                  onChange={(e) => setUsernameOrEmail(e.target.value)}
+                  onChange={(e) =>
+                    setUsernameOrEmail(e.target.value.toLowerCase())
+                  }
                 />
                 <label
                   htmlFor="input_login"
-                  style={usernameOrEmail ? { top: "-8px" } : {}}
+                  style={
+                    usernameOrEmail ? { top: "-25%", fontSize: "0.9rem" } : {}
+                  }
                 >
                   Username or Email
                 </label>
@@ -97,7 +68,7 @@ function LoginPage() {
                 />
                 <label
                   htmlFor="input_password"
-                  style={password ? { top: "-8px" } : {}}
+                  style={password ? { top: "-25%", fontSize: "0.9rem" } : {}}
                 >
                   Password
                 </label>
@@ -110,17 +81,18 @@ function LoginPage() {
                 </button>
               </div>
 
-              {errors && <p className="error">{errors}</p>}
-              <p
-                className="chage-reissue"
-                onClick={() => setChangeReissue(true)}
-              >
-                <span>Forgot Password</span>
-              </p>
+              {error && <p className="error">{error}</p>}
+              <div className="form-group">
+                <p className="chage-reissue">
+                  <span onClick={() => setChangeReissue(true)}>
+                    Forgot Password
+                  </span>
+                </p>
 
-              <button type="submit" className="btn_login">
-                Login
-              </button>
+                <button type="submit" className="btn_login">
+                  Login
+                </button>
+              </div>
             </div>
           </form>
         </div>

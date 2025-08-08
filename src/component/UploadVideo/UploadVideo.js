@@ -1,39 +1,32 @@
 import "./UploadVideo.css";
 import React from "react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
 
-import UploadLink from "./UploadLink";
-import UploadFile from "./UploadFile";
+import UploadVideoReal from "./UploadVideoReal/UploadReal";
+import UploadVideoJav from "./UploadVideoJav/UploadJav";
 
 export default function UploadVideo() {
-  const [uploadCategory, setUploadCategory] = useState("");
+  const [checked, setCheked] = useState(false);
+
+  const handleChangeSlider = (e) => {
+    setCheked(e.target.checked);
+  };
 
   return (
     <div className="upload-video-container">
       <h1>Upload Video Final Boss</h1>
-      <nav>
-        <ul>
-          <li onClick={() => setUploadCategory("link")}>
-            <NavLink
-              to="#"
-              className={uploadCategory === "link" ? "active-category" : ""}
-            >
-              UPLOAD LINK
-            </NavLink>
-          </li>
-          <li onClick={() => setUploadCategory("file")}>
-            <NavLink
-              to="##"
-              className={uploadCategory === "file" ? "active-category" : ""}
-            >
-              UPLOAD FILE
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-      {uploadCategory === "link" && <UploadLink />}
-      {uploadCategory === "file" && <UploadFile />}
+      <div className="switch-box">
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={handleChangeSlider}
+          />
+          <span className="slider"></span>
+        </label>
+        <span>{checked ? "REAL UPLOAD" : "JAV UPLOAD"}</span>
+      </div>
+      <>{checked ? <UploadVideoReal /> : <UploadVideoJav />}</>
     </div>
   );
 }

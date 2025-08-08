@@ -1,5 +1,5 @@
 import "./InformationUser.css";
-import authAPI from "../../apis/authAPI";
+import adminAPI from "../../apis/adminAPI";
 import formattedDate from "../../utils/formattedDate";
 import useDebounce from "../../utils/useDebounce";
 
@@ -10,11 +10,6 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export default function InformationUser() {
   const [usersFind, setUsersFind] = useState([]);
-  const [isUser, setIsUser] = useState({
-    _id: null,
-    userId: null,
-    username: null,
-  });
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showTable, setShowTable] = useState(false);
@@ -22,33 +17,28 @@ export default function InformationUser() {
   const [notification, setNotification] = useState("");
   const [hiddenPassUpdate, setHiddenPassUpdate] = useState(true);
   const [hiddenCodeUpdate, setHiddenCodeUpdate] = useState(true);
-  const [hiddenRootCode, setHiddenRootCode] = useState(true);
   //
   const [edited, setEdited] = useState(false);
-  const [editUserName, setEditUserName] = useState("");
-  const [editEmail, setEditEmail] = useState("");
-  const [editPassword, setEditPassword] = useState("");
-  const [editSecurityCode, setEditSecurityCode] = useState("");
-  const [editRole, setEditRole] = useState("");
-  const [enterCode, setEnterCode] = useState(false);
-  const [rootCode, setRootCode] = useState("");
-  const [playload, setPayload] = useState({
-    _id: "",
-    username: "",
-    email: "",
-    password: "",
-    security_code: "",
-    role: "",
-  });
+  const [user, setUser] = useState({});
+  const [payload, setPayload] = useState({});
 
   const objRoles = {
-    super_root: {
-      role_name: "Super Root",
-      color: "#657e1f",
-    },
-    admin: { role_name: "Administrator", color: "#dc3545" },
-    regular_member: { role_name: "Regular Member", color: "#3b82f6" },
+    super_root: "Final Boss",
+    admin: "Administrator",
+    moderator: "Moderator",
+    regular_member: "Member",
   };
+
+  const {
+    fullname,
+    username,
+    email,
+    phone,
+    password,
+    security_code,
+    role,
+    status,
+  } = payload;
 
   const fetchSearchUsers = async (searchKeyword) => {
     if (!searchKeyword.trim()) {
@@ -62,7 +52,7 @@ export default function InformationUser() {
     setError("");
 
     try {
-      const response = await authAPI.search(searchKeyword);
+      const response = await adminAPI.search(searchKeyword);
       setUsersFind(response.data.users);
       setShowTable(true);
     } catch (error) {
@@ -83,26 +73,28 @@ export default function InformationUser() {
   const handleShowInfoUser = (id) => {
     if (usersFind.length === 0) return;
     const infomationUser = usersFind.find((user) => user.userId === id);
+    const { fullname, username, email, phone, role, status } = infomationUser;
 
     if (!infomationUser) {
       setError("Không tìm thấy thông tin người dùng này!");
-      setIsUser({
-        _id: null,
-        userId: null,
-        username: null,
-      }); // Đặt lại isUser
       return;
     }
     setError(""); // Xóa lỗi nếu tìm thấy
-    setIsUser({
-      _id: infomationUser._id,
-      userId: infomationUser.userId,
-      username: infomationUser.username,
-    });
     setEdited(true);
-    setEditUserName(infomationUser.username);
-    setEditEmail(infomationUser.email);
-    setEditRole(infomationUser.role);
+    setKeyword("");
+    setShowTable(false);
+
+    setUser(infomationUser);
+    setPayload({
+      fullname,
+      username,
+      email,
+      phone,
+      role,
+      status,
+      password: "",
+      security_code: "",
+    });
   };
 
   const handleChangeSearch = (e) => {
@@ -110,103 +102,71 @@ export default function InformationUser() {
       setShowTable(false);
       setHiddenCodeUpdate(true);
       setHiddenPassUpdate(true);
-      setHiddenRootCode(true);
-      setEdited(false);
-      setEnterCode(false);
-      setRootCode("");
       setError("");
+      setNotification("");
     }
-    setNotification("");
+
     const newKeyword = e.target.value;
     setKeyword(newKeyword);
-
     handleResultDebounce(newKeyword);
   };
 
-  const handleSendRequestUpdate = (e) => {
-    e.preventDefault();
-
-    setPayload({
-      _id: isUser._id,
-      username: editUserName,
-      email: editEmail,
-      password: editPassword,
-      security_code: editSecurityCode,
-      role: editRole,
-    });
-
-    setEnterCode(true);
-  };
   const handleCancelRequestUpdate = () => {
     setEdited(false);
-    setEditUserName("");
-    setEditEmail("");
-    setEditPassword("");
-    setEditSecurityCode("");
-    setEditRole("");
+    setShowTable(true);
   };
-  const handleUpdateUser = async () => {
+
+  const handleSendRequestUpdate = async () => {
     setNotification("");
     setError("");
 
-    if (!rootCode) {
-      setError("Please enter security code!");
-      return;
-    }
-
+    const filteredPayload = Object.fromEntries(
+      Object.entries(payload).filter(([key, value]) => {
+        const isEmptyString = value === "";
+        const isDuplicate = user.hasOwnProperty(key) && user[key] === value;
+        return !isEmptyString && !isDuplicate;
+      })
+    );
     try {
-      const code = {
-        security_code: rootCode,
-      };
-      await authAPI.verifyCode(code);
-
-      const result = await authAPI.update(playload);
+      const result = await adminAPI.update(filteredPayload);
       setNotification(result.data.message);
       setKeyword("");
-      setEditUserName("");
-      setEditEmail("");
-      setEditPassword("");
-      setEditSecurityCode();
-      setEditRole("");
-      setRootCode("");
+      setUser({});
+      setPayload({});
       setEdited(false);
-      setEnterCode(false);
       setShowTable(false);
+      setHiddenCodeUpdate(true);
+      setHiddenPassUpdate(true);
     } catch (error) {
       setError(error?.response.data.message);
     }
   };
 
   return (
-    <div className="infomation-container">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "1rem",
-        }}
-      >
+    <div className="infomation-container root_flex_column">
+      <div className="header_search root_flex_row">
         <p className="style-color-search">SEARCH USER</p>
         <div className="search">
+          <p>
+            <span>
+              <RiSearchLine />
+            </span>
+          </p>
           <input
-            type="text"
-            list="users"
+            type="search"
             value={keyword}
+            name="search"
             onChange={handleChangeSearch}
             onInput={() => handleResultDebounce(keyword)}
           ></input>
-          <span>
-            <RiSearchLine />
-          </span>
         </div>
       </div>
 
       {!showTable && (
-        <div>
+        <>
           {error && <p className="error">{error}</p>}
           {notification && <p className="notification">{notification}</p>}
-        </div>
+        </>
       )}
       {!loading && showTable && (
         <table className="table-infomation">
@@ -214,9 +174,14 @@ export default function InformationUser() {
             <tr>
               <th>Username</th>
               <th>Email</th>
+              <th>Birthay</th>
+              <th>Sex</th>
+              <th>Phone</th>
+              <th>Address</th>
               <th>Role</th>
+              <th>Status</th>
               <th>CreatedAt</th>
-              <th>Selected</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -232,10 +197,21 @@ export default function InformationUser() {
                   {user.username}
                 </td>
                 <td>{user.email}</td>
-                <td style={{ color: objRoles[user.role]?.color }}>
-                  {objRoles[user.role]?.role_name}
+                <td>
+                  {user.date_of_birth?.day}/{user.date_of_birth?.month}/
+                  {user.date_of_birth?.year}
                 </td>
-
+                <td>{user.gender}</td>
+                <td>{user.phone}</td>
+                <td>{user.address}</td>
+                <td>{objRoles[user.role]}</td>
+                <td
+                  style={
+                    user.status ? { color: "#97b72b" } : { color: "#b0b0b0" }
+                  }
+                >
+                  {user.status ? "open" : "close"}
+                </td>
                 <td>{formattedDate(user.createdAt)}</td>
                 <td>
                   <button onClick={() => handleShowInfoUser(user.userId)}>
@@ -248,154 +224,138 @@ export default function InformationUser() {
         </table>
       )}
       {edited && (
-        <div className="form_edited">
-          {enterCode ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
+        <div className="form_edited root_flex_column">
+          <div className="edited-item">
+            <input
+              type="text"
+              id="edit_fullname"
+              value={fullname}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, fullname: e.target.value }))
+              }
+            />
+            <label htmlFor="edit_username">Edit fullname</label>
+          </div>
+          <div className="edited-item">
+            <input
+              type="text"
+              id="edit_username"
+              value={username}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, username: e.target.value }))
+              }
+            />
+            <label htmlFor="edit_username">Edit username</label>
+          </div>
+          <div className="edited-item">
+            <input
+              type="text"
+              id="edit_email"
+              value={email}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, email: e.target.value }))
+              }
+            />
+            <label htmlFor="edit_email">Edit email</label>
+          </div>
+          <div className="edited-item">
+            <input
+              type="text"
+              id="edit_phone"
+              value={phone}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, phone: e.target.value }))
+              }
+            />
+            <label htmlFor="edit_phone">Edit Phone</label>
+          </div>
+          <div className="edited-item">
+            <input
+              type={hiddenPassUpdate ? "password" : "text"}
+              id="edit_password"
+              className="relative"
+              value={password}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, password: e.target.value }))
+              }
+            />
+            <label htmlFor="edit_password">Edit password</label>
+            <button
+              type="button"
+              className="is_hidden"
+              onClick={() => setHiddenPassUpdate(!hiddenPassUpdate)}
             >
-              <div className="enter_code">
-                <input
-                  type={hiddenRootCode ? "password" : "number"}
-                  id="enter_root_code"
-                  className="relative"
-                  value={rootCode}
-                  onChange={(e) =>
-                    setRootCode(e.target.value.replace(/\D/g, ""))
-                  }
-                />
-                <label htmlFor="enter_root_code">Security code</label>
-                {
-                  <div>
-                    {error && <p className="error">{error}</p>}
-                    {notification && (
-                      <p className="notification">{notification}</p>
-                    )}
-                  </div>
-                }
-                <button
-                  className="is_hidden"
-                  onClick={() => setHiddenRootCode(!hiddenRootCode)}
-                >
-                  {hiddenRootCode ? <AiFillEyeInvisible /> : <AiFillEye />}
-                </button>
-              </div>
-              <div className="edited-item-btn-box">
-                <button
-                  style={{
-                    backgroundColor: "#CED3DA",
-                    borderColor: "#CED3DA",
-                    color: "#444746",
-                  }}
-                  className="submit-update"
-                  onClick={() => {
-                    setEnterCode(false);
-                  }}
-                >
-                  Back Send
-                </button>
-                <button className="submit-update" onClick={handleUpdateUser}>
-                  Submit Update
-                </button>
-              </div>
-            </div>
-          ) : (
-            <form>
-              <div className="edited-item">
-                <input
-                  type="text"
-                  id="edit_username"
-                  value={editUserName}
-                  onChange={(e) => setEditUserName(e.target.value)}
-                />
-                <label htmlFor="edit_username">Edit username</label>
-              </div>
-              <div className="edited-item">
-                <input
-                  type="text"
-                  id="edit_email"
-                  value={editEmail}
-                  onChange={(e) => setEditEmail(e.target.value)}
-                />
-                <label htmlFor="edit_email">Edit email</label>
-              </div>
-              <div className="edited-item">
-                <input
-                  type={hiddenPassUpdate ? "password" : "text"}
-                  id="edit_password"
-                  className="relative"
-                  value={editPassword}
-                  onChange={(e) => setEditPassword(e.target.value)}
-                />
-                <label htmlFor="edit_password">Edit password</label>
-                <button
-                  type="button"
-                  className="is_hidden"
-                  onClick={() => setHiddenPassUpdate(!hiddenPassUpdate)}
-                >
-                  {hiddenPassUpdate ? <AiFillEyeInvisible /> : <AiFillEye />}
-                </button>
-              </div>
-              <div className="edited-item">
-                <input
-                  type={hiddenCodeUpdate ? "password" : "number"}
-                  id="edit_security_code"
-                  className="relative"
-                  value={editSecurityCode}
-                  onChange={(e) =>
-                    setEditSecurityCode(e.target.value.replace(/\D/g, ""))
-                  }
-                />
-                <label htmlFor="edit_security_code">Edit security code</label>
-                <button
-                  type="button"
-                  className="is_hidden"
-                  onClick={() => setHiddenCodeUpdate(!hiddenCodeUpdate)}
-                >
-                  {hiddenCodeUpdate ? <AiFillEyeInvisible /> : <AiFillEye />}
-                </button>
-              </div>
-              <div className="edited-item">
-                <select
-                  id="edit_role"
-                  value={editRole}
-                  onChange={(e) => setEditRole(e.target.value)}
-                >
-                  <option value="" disabled hidden></option>
-                  <option value="super_root">Super Root</option>
-                  <option value="admin">Administrator</option>
-                  <option value="moderator">Moderator</option>
-                  <option value="regular_member">Member</option>
-                </select>
-                <label htmlFor="edit_role">Edit user role</label>
-              </div>
-              <div className="edited-item edited-item-btn-box">
-                <button
-                  type="submit"
-                  style={{
-                    backgroundColor: "#CED3DA",
-                    borderColor: "#CED3DA",
-                    color: "#444746",
-                  }}
-                  className="send_request"
-                  onClick={handleCancelRequestUpdate}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="send_request"
-                  onClick={handleSendRequestUpdate}
-                >
-                  Send
-                </button>
-              </div>
-            </form>
-          )}
+              {hiddenPassUpdate ? <AiFillEyeInvisible /> : <AiFillEye />}
+            </button>
+          </div>
+          <div className="edited-item">
+            <input
+              type={hiddenCodeUpdate ? "password" : "number"}
+              id="edit_security_code"
+              className="relative"
+              value={security_code}
+              onChange={(e) =>
+                setPayload((prev) => ({
+                  ...prev,
+                  security_code: e.target.value.replace(/\D/g, ""),
+                }))
+              }
+            />
+            <label htmlFor="edit_security_code">Edit security code</label>
+            <button
+              type="button"
+              className="is_hidden"
+              onClick={() => setHiddenCodeUpdate(!hiddenCodeUpdate)}
+            >
+              {hiddenCodeUpdate ? <AiFillEyeInvisible /> : <AiFillEye />}
+            </button>
+          </div>
+          <div className="edited-item">
+            <select
+              id="edit_role"
+              value={role}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, role: e.target.value }))
+              }
+            >
+              <option value="" disabled hidden></option>
+              <option value="super_root">Super Root</option>
+              <option value="admin">Administrator</option>
+              <option value="moderator">Moderator</option>
+              <option value="regular_member">Member</option>
+            </select>
+            <label htmlFor="edit_role">Edit user role</label>
+          </div>
+          <div className="edited-item">
+            <select
+              id="edit_status"
+              value={status}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, status: e.target.value }))
+              }
+            >
+              <option value={null} disabled hidden></option>
+              <option value={true}>Open</option>
+              <option value={false}>Close</option>
+            </select>
+            <label htmlFor="edit_status">Edit user status</label>
+          </div>
+          <div className="edited-item edited-item-btn-box">
+            <button
+              type="submit"
+              className="cancel-update"
+              onClick={handleCancelRequestUpdate}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="submit-update"
+              onClick={handleSendRequestUpdate}
+            >
+              Update
+            </button>
+          </div>
         </div>
       )}
     </div>

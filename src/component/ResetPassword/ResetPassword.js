@@ -1,4 +1,4 @@
-import authAPI from "../../apis/authAPI";
+import userAPI from "../../apis/userAPI";
 import ResetPasswordForm from "./ResetPasswordForm";
 
 import { useEffect, useState } from "react";
@@ -20,7 +20,7 @@ export default function ResetPassword() {
     }
     const checkAccess = async () => {
       try {
-        const response = await authAPI.verifyReset(token);
+        const response = await userAPI.verifyReset(token);
         setIsValid(true);
         setNotification(response?.data?.message);
       } catch (error) {

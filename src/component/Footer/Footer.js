@@ -17,11 +17,26 @@ export default function Footer() {
           Thế là okie thôi!
         </p>
       </div>
-
-      <span className="border-footer"></span>
       <div className="footer-author">
-        <p>
-          Final Boss - © 2025 ♥ <Link to="/">ksc88.net</Link>
+        <p className="root_flex_row gap_025">
+          © 2025 - I'm A ♥
+          <span>
+            <span>
+              <Link to="/">ksc88.net</Link>
+            </span>
+            <span>
+              <Link to="/">Final Boss</Link>
+            </span>
+            <span>
+              <Link to="/">Trùm Cuối</Link>
+            </span>
+            <span>
+              <Link to="/">nht louis</Link>
+            </span>
+            <span>
+              <Link to="/">Kenji XX</Link>
+            </span>
+          </span>
         </p>
       </div>
     </div>

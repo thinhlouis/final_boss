@@ -1,0 +1,142 @@
+.edit-profile-container {
+  width: 100%;
+  padding-left: 1rem;
+}
+.edit-profile-container span {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #999;
+  text-align: left;
+}
+.edit-profile-container div > label > input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+}
+.edit-profile-container div > label > input[type="checkbox"]:checked {
+  accent-color: #97b72b;
+}
+.edit-profile-container div > label > span {
+  color: #97b72b;
+  text-transform: capitalize;
+  font-style: normal;
+}
+
+.form-edit {
+  width: 60%;
+  margin: 15px 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+div.form-edit input,
+div.form-edit select,
+div.form-edit textarea {
+  width: calc(65% - 20px);
+  height: 2.6rem;
+  padding: 5px 5px 5px 7px;
+  outline: none;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #24292e;
+}
+div.form-edit textarea {
+  height: 4.5rem;
+  resize: none;
+}
+div.form-edit .form-edit-item {
+  width: calc(65% - 20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+input#edit-profile-day,
+input#edit-profile-month {
+  width: calc(25% - 20px);
+}
+input#edit-profile-year {
+  width: calc(30% - 20px);
+}
+
+div.form-edit input:focus,
+div.form-edit select:focus,
+div.form-edit textarea:focus {
+  border-color: #97b72b;
+}
+div.form-edit label {
+  display: inline-block;
+  width: 35%;
+  text-align: left;
+  cursor: text;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #fff;
+  padding: 0 10px;
+  color: #f5b501;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+div.form-edit:focus-within label,
+div.form-edit-item:focus-within label {
+  color: #97b72b;
+}
+
+div.form-edit.button {
+  width: calc(60% - 20px);
+  align-content: center;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+div.form-edit.button button {
+  cursor: pointer;
+  width: max-content;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border: 1px solid #97b72b;
+  border-radius: 5px;
+  background-color: #97b72b;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+div.form-edit.button button:hover {
+  color: #97b72b;
+  background-color: #fff;
+}
+div.form-edit.button button:active {
+  transform: translateY(3px);
+}
+div.form-edit.button button.cancel-update-profile {
+  background-color: #e5e7eb;
+  color: #24292e;
+  border: thin solid #d1d5dc;
+}
+div.form-edit.button button.cancel-update-profile:hover {
+  color: #e4e4e7;
+  background-color: #383838;
+}
+@media (width <= 575px) {
+  .form-edit {
+    width: 100%;
+  }
+  input#edit-profile-day,
+  input#edit-profile-month {
+    width: calc(35% - 20px);
+  }
+  input#edit-profile-year {
+    width: calc(40% - 20px);
+  }
+  div.form-edit input,
+  div.form-edit select,
+  div.form-edit textarea,
+  div.form-edit .form-edit-item {
+    width: calc(65% - 0px);
+  }
+
+  div.form-edit.button {
+    width: calc(100%);
+  }
+}

@@ -4,6 +4,10 @@
   border: 2px solid #657e1f;
   margin: 2rem auto;
 }
+.title-bmi {
+  margin: 2rem 0;
+  text-align: center;
+}
 .bmi_calculator_box {
   border-radius: 5px;
   width: 50%;
@@ -154,9 +158,13 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 /* end */
-@media (width <= 480px) {
+@media (width <= 575px) {
   .bmi_calculator_container {
+    width: 90%;
     margin-top: 2rem;
+  }
+  .title-bmi {
+    font-size: 1.2rem;
   }
   .bmi_calculator_box {
     width: 90%;

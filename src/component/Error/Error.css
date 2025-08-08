@@ -7,6 +7,7 @@
   box-shadow: 3px 5px 7px #ddd;
 }
 .box-error {
+  width: 100%;
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
@@ -28,11 +29,14 @@
 .text-error {
   color: #6d7081;
   margin-top: 10px;
+  letter-spacing: 2px;
+  text-align: center;
+}
+h3.text-error-h3 {
+  letter-spacing: 3px;
 }
 
 button.error-button {
-  color: #fff;
-  background: #657e1f;
   font-size: 0.9rem;
   border: none;
   margin-top: 1rem;
@@ -41,13 +45,17 @@ button.error-button {
   border-radius: 3px;
   cursor: pointer;
 }
-@media (width <= 480px) {
+@media (width <= 575px) {
   div.error-container {
-    width: 55%;
+    max-width: 90%;
     border: none;
+    padding: 0;
   }
   .box-error img {
     width: 100%;
     object-fit: cover;
+  }
+  .text-title {
+    font-size: 2rem;
   }
 }

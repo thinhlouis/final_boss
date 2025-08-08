@@ -1,15 +1,16 @@
 div.footer {
-  width: 80%;
-  margin: 10px auto;
+  width: 100%;
+  margin: 1px auto;
   font-size: 1rem;
-  color: #657e1f;
+  background-color: #383838;
 }
 div.footer p {
-  padding: 3px 0;
+  padding-top: 1rem;
+  color: #f0f6d1;
 }
 div.footer strong {
   text-transform: uppercase;
-  color: #f5b501;
+  color: #f9fbea;
 }
 .footer div.footer-content {
   display: flex;
@@ -17,27 +18,60 @@ div.footer strong {
   align-items: center;
   gap: 10px;
 }
-.footer span.border-footer {
-  width: 250px;
-  height: 1px;
-  background-color: #f5b501;
+.footer .footer-author {
+  text-align: center;
+  padding: 1rem 0;
+}
+.footer .footer-author p {
+  text-transform: uppercase;
+  align-items: flex-start;
+}
+.footer .footer-author p > span {
+  position: relative;
   display: inline-block;
+  vertical-align: bottom;
+  overflow: hidden;
+  height: 1.25rem;
+  text-align: left;
+}
+.footer .footer-author p > span > span {
+  display: block;
+  animation: word 10s infinite ease;
+  padding: 2px 0;
+}
+@keyframes word {
+  0% {
+    transform: translateY(0%);
+  }
+  25% {
+    transform: translateY(-100%);
+  }
+  50% {
+    transform: translateY(-200%);
+  }
+  75% {
+    transform: translateY(-300%);
+  }
+  100% {
+    transform: translateY(-400%);
+  }
 }
 .footer .footer-author a {
   text-decoration: none;
-  color: #657e1f;
+  color: #b5d249;
 }
 .footer .footer-author a:hover {
-  color: #f5b501;
+  color: #f9fbea;
 }
 
-@media (width <= 480px) {
+@media (width <= 575px) {
   div.footer {
-    width: 90%;
+    width: 100%;
     font-size: 0.9rem;
   }
   .footer div.footer-content {
     flex-direction: column;
     gap: 0;
+    padding: 0.5rem 0;
   }
 }

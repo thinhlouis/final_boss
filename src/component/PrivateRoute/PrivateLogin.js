@@ -2,10 +2,9 @@ import React, { useContext } from "react";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import { Navigate, useLocation } from "react-router";
 
-const PrivateLogin = ({ children }) => {
+const Private = ({ children }) => {
   const { auth, loading } = useContext(AuthContext);
-  const { isAuthenticated, user } = auth;
-  const isRoot = user?.role === "super_root";
+  const { isAuthenticated } = auth;
 
   const location = useLocation();
 
@@ -13,7 +12,7 @@ const PrivateLogin = ({ children }) => {
     return <div>Loading authentication...</div>;
   }
 
-  if (isAuthenticated && isRoot) {
+  if (isAuthenticated) {
     // Nếu đã xác thực và có vai trò phù hợp, hiển thị component con
     return children;
   } else {
@@ -22,4 +21,4 @@ const PrivateLogin = ({ children }) => {
   }
 };
 
-export default PrivateLogin;
+export default Private;

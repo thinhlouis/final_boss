@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import AuthContext from "./AuthContext";
 import authAPI from "../../apis/authAPI";
@@ -24,7 +25,7 @@ const AuthState = ({ children }) => {
   const navigate = useNavigate();
 
   const clearStorage = () => {
-    session.remove(STORAGE_KEYS.TOKEN);
+    Cookies.remove(STORAGE_KEYS.TOKEN);
     session.remove(STORAGE_KEYS.USER_INFO);
     session.remove(STORAGE_KEYS.VERIFY_CODE);
     local.remove(STORAGE_KEYS.IS_AUTH);
@@ -57,6 +58,7 @@ const AuthState = ({ children }) => {
     } catch (err) {
       console.warn("⛔ Token không hợp lệ:", err);
       handleLogout();
+      window.location.reload();
       return false;
     }
   }, [handleLogout]);
@@ -100,9 +102,39 @@ const AuthState = ({ children }) => {
     }
   }, [handleLogout, verifyToken]);
 
+  const handleSubmitLogin = useCallback(
+    async (e, name, pass, path) => {
+      e.preventDefault();
+
+      if (!name || !pass) {
+        setError("Please fill in both fields.");
+        return;
+      }
+
+      const payloadLogin = {
+        usernameOrEmail: name,
+        password: pass,
+      };
+
+      try {
+        const response = await authAPI.login(payloadLogin);
+
+        const { accessToken } = response.data;
+
+        Cookies.set("accessToken", accessToken, { expires: 1 });
+
+        await handleUserLogin();
+        navigate(path, { replace: true });
+      } catch (err) {
+        setError(err.response?.data?.message);
+      }
+    },
+    [handleUserLogin, navigate]
+  );
+
   useEffect(() => {
     const initAuth = async () => {
-      const storedToken = session.get(STORAGE_KEYS.TOKEN);
+      const storedToken = Cookies.get(STORAGE_KEYS.TOKEN);
 
       if (storedToken && storedToken !== "undefined") {
         // Nếu có token, cố gắng khôi phục session
@@ -121,10 +153,11 @@ const AuthState = ({ children }) => {
       auth,
       error,
       handleUserLogin,
+      handleSubmitLogin,
       handleLogout,
       loading,
     }),
-    [auth, error, handleUserLogin, handleLogout, loading]
+    [auth, error, handleUserLogin, handleSubmitLogin, handleLogout, loading]
   );
 
   return (

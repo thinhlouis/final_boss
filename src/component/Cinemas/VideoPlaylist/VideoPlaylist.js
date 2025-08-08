@@ -1,64 +1,40 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { ImEye, ImEyeBlocked, ImBackward2, ImForward3 } from "react-icons/im";
 
 import "./VideoPlaylist.css";
-import HLSVideoPlayer from "./HLSVideoPlayer";
-import hot from "../../../assets/hot-icon.png";
 import videoAPI from "../../../apis/videoAPI";
+import splitLink from "../../../utils/spiltLink";
 
-import AuthContext from "../../../context/AuthContext/AuthContext";
+import HoverVideo from "../HoverVideo";
 
 const KEY = process.env.REACT_APP_API_KEY;
+const URL = process.env.REACT_APP_UIR_STREAM_API;
+const CHAR = process.env.REACT_APP_CHARACTER_SPILIT;
 
-const VideoPlaylistStream = () => {
+const VideoPlaylistStream = ({ scrollToTop }) => {
   const [allVideosByPage, setAllVideosByPage] = useState({});
-  const [currentPlayingVideo, setCurrentPlayingVideo] = useState(null);
   const [videos, setVideos] = useState([]);
+  const [currentPlayingVideo, setCurrentPlayingVideo] = useState(null);
   const [defaultPage, setDefaultPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [userInteracted, setUserInteracted] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const videoRef = useRef(null);
+  const modalRef = useRef(null);
 
   const limit = 20;
 
-  const { auth } = useContext(AuthContext);
-  const { user } = auth;
-
-  // useEffect(() => {
-  //   const role = user.role;
-  //   const fetchVideos = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const response = await videoAPI.videos(KEY, defaultPage, limit);
-
-  //       const { currentPage, totalPages, videos } = response.data;
-
-  //       if (role !== "super_root") return;
-  //       setVideos(videos);
-  //       setDefaultPage(currentPage);
-  //       setTotalPages(totalPages);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchVideos();
-  // }, [user.role, defaultPage]);
-
   useEffect(() => {
-    const role = user.role;
     const fetchVideos = async () => {
       if (allVideosByPage[defaultPage]) {
         // Kiểm tra nếu đã có dữ liệu cho trang này
         setVideos(allVideosByPage[defaultPage]);
         return;
       }
-
-      if (role !== "super_root") return;
 
       setLoading(true);
       try {
@@ -91,52 +67,29 @@ const VideoPlaylistStream = () => {
     };
 
     fetchVideos();
-  }, [user.role, defaultPage, allVideosByPage, currentPlayingVideo]); // Thêm allVideosByPage vào dependency array
+  }, [defaultPage, allVideosByPage, currentPlayingVideo]); // Thêm allVideosByPage vào dependency array
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 100,
-      behavior: "smooth", // Để cuộn mượt mà
-    });
-  };
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setOpenModal(false);
+        setPlaying(false);
+      }
+    };
 
-  const scrollToTopFixid = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // Để cuộn mượt mà
-    });
-  };
+    document.addEventListener("click", handleClickOutside, true);
 
-  // Hàm xử lý sự kiện cuộn
-  const handleScroll = () => {
-    // Kiểm tra vị trí cuộn: nếu cuộn xuống quá 100px thì hiển thị nút
-    if (window.pageYOffset > 250) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  };
-
-  // const handleNext = () => {
-  //   if (currentVideoIndex < hlsLinks.length - 1) {
-  //     setCurrentVideoIndex(currentVideoIndex + 1);
-  //     setPlaying(true);
-  //   }
-  // };
-
-  // const handlePrev = () => {
-  //   if (currentVideoIndex > 0) {
-  //     setCurrentVideoIndex(currentVideoIndex - 1);
-  //     setPlaying(true);
-  //   }
-  // };
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
 
   const handleNext = () => {
     if (currentVideoIndex < videos.length - 1) {
       // Kiểm tra trong danh sách videos của trang hiện tại
       const nextIndex = currentVideoIndex + 1;
       setCurrentVideoIndex(nextIndex);
-      setCurrentPlayingVideo(videos[nextIndex]); // Cập nhật video đang phát
+      setCurrentPlayingVideo(videos[nextIndex]);
       setPlaying(true);
     }
   };
@@ -146,16 +99,16 @@ const VideoPlaylistStream = () => {
       // Kiểm tra trong danh sách videos của trang hiện tại
       const prevIndex = currentVideoIndex - 1;
       setCurrentVideoIndex(prevIndex);
-      setCurrentPlayingVideo(videos[prevIndex]); // Cập nhật video đang phát
+      setCurrentPlayingVideo(videos[prevIndex]);
       setPlaying(true);
     }
   };
 
   const handleSelectVideo = (index) => {
     setCurrentPlayingVideo(videos[index]);
-    // Đảm bảo rằng video được chọn là từ danh sách hiện tại của trang
     setCurrentVideoIndex(index);
-    setPlaying(true);
+    setOpenModal(true);
+    setPlaying(false);
     scrollToTop();
   };
 
@@ -166,155 +119,170 @@ const VideoPlaylistStream = () => {
     scrollToTop();
   };
 
-  // Sử dụng useEffect để thêm và xóa lắng nghe sự kiện cuộn
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    // Dọn dẹp listener khi component unmount
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []); // [] đảm bảo useEffect chỉ chạy một lần khi component mount
-
   return (
     <div className="video-playlist-container">
-      {/* Nút yêu cầu tương tác trước khi phát (cho iOS) */}
-      {!userInteracted && (
-        <button
-          className="btn-interact"
-          onClick={() => setUserInteracted(true)}
-          style={{ padding: "10px 20px", fontSize: "16px" }}
-        >
-          Nhấn để phát video
-        </button>
-      )}
-
-      {/* Player */}
-      {userInteracted && (
-        <>
-          <HLSVideoPlayer
-            url={currentPlayingVideo.url}
-            playing={playing}
-            onEnded={handleNext}
-          />
-          <h3>{currentPlayingVideo.name}</h3>
-        </>
-      )}
-
-      {/* Điều khiển playlist */}
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          margin: "20px 0",
-          justifyContent: "center",
-        }}
-      >
-        <button
-          onClick={handlePrev}
-          disabled={currentVideoIndex === 0}
-          style={{ padding: "8px 16px" }}
-          className="btn-prev"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={currentVideoIndex === videos?.length - 1}
-          style={{ padding: "8px 16px" }}
-          className="btn-next"
-        >
-          Next
-        </button>
-      </div>
-      {userInteracted && (
-        <div
-          style={{
-            marginTop: "20px",
-            paddingTop: "10px",
-            borderTop: "2px solid #c1c1c1",
-          }}
-          className="page_mobile"
-        >
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => handlePageClick(i + 1)}
-              style={{
-                margin: "0 5px",
-                padding: "5px 10px",
-                backgroundColor: i + 1 === defaultPage ? "#657e1f" : "#ccc",
-                color: i + 1 === defaultPage ? "#fff" : "#000",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
+      {openModal && (
+        <div className="view_current_video">
+          {currentPlayingVideo && (
+            <div
+              ref={modalRef}
+              className="root_flex_column"
+              style={{ width: "fit-content", margin: "5rem auto" }}
             >
-              {i + 1}
-            </button>
-          ))}
+              <video
+                key={currentPlayingVideo.url}
+                ref={videoRef}
+                controls
+                muted
+                loop={false}
+                playsInline
+                preload="auto"
+                autoPlay={playing}
+                onEnded={handleNext}
+                poster={currentPlayingVideo.thumbnail}
+              >
+                <source
+                  src={`${URL}/video-jav/${splitLink(
+                    currentPlayingVideo?.url,
+                    CHAR
+                  )}?key=${KEY}`}
+                  type="video/mp4"
+                />
+              </video>
+              <h3 style={{ color: "#fff" }}>{currentPlayingVideo.name}</h3>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "2rem",
+                  margin: "20px 0",
+                  justifyContent: "center",
+                }}
+              >
+                <button
+                  onClick={handlePrev}
+                  disabled={currentVideoIndex === 0}
+                  className="btn-next-prev"
+                >
+                  <ImBackward2 />
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={currentVideoIndex === videos?.length - 1}
+                  className="btn-next-prev"
+                >
+                  <ImForward3 />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
-
-      {/* Danh sách video */}
 
       {loading ? (
         <div className="container_list">
           <p>Đang tải videos...</p>
         </div>
       ) : (
-        userInteracted && (
-          <div className="container_list">
+        <>
+          {/* Điều khiển playlist */}
+
+          <button
+            className="show-content-nsfw"
+            onClick={() => setShowContent((prve) => !prve)}
+          >
+            {showContent ? (
+              <>
+                <ImEye />
+                <small>Hide NSFW</small>
+              </>
+            ) : (
+              <>
+                <ImEyeBlocked />
+                <small>Show NSFW</small>
+              </>
+            )}
+          </button>
+
+          <div
+            style={{
+              marginTop: "20px",
+              paddingTop: "10px",
+              borderTop: "2px solid #c1c1c1",
+            }}
+            className="page_mobile root_flex_row"
+          >
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => handlePageClick(i + 1)}
+                style={{
+                  margin: "0 5px",
+                  padding: "5px 10px",
+                  backgroundColor: i + 1 === defaultPage ? "#B5D249" : "#ccc",
+                  color: i + 1 === defaultPage ? "#fff" : "#000",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+
+          <div className="container_list_jav">
             {videos?.map((video, index) => (
               <div
-                key={video.id}
-                className="container_list_item"
-                onClick={() => handleSelectVideo(index)}
+                key={index}
+                className={
+                  showContent
+                    ? "container_list_item show-content"
+                    : "container_list_item hide-content"
+                }
+                onDoubleClick={() => handleSelectVideo(index)}
               >
-                <img src={video.thumbnail} alt={video.name} />
-                <p>{video.name}</p>
-                {video.tag === "hot" && (
-                  <img src={hot} alt="Hot" className="icon-hot" />
-                )}
+                <HoverVideo
+                  className="item-content-jav"
+                  src={`${URL}/video-jav/${splitLink(
+                    video.url,
+                    CHAR
+                  )}?key=${KEY}`}
+                  name={video.name}
+                  tag={video.tag}
+                  poster={video.thumbnail}
+                />
               </div>
             ))}
           </div>
-        )
-      )}
-      {userInteracted && (
-        <div
-          style={{
-            marginTop: "20px",
-            paddingTop: "10px",
-            borderTop: "2px solid #c1c1c1",
-          }}
-          className="page_full"
-        >
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => handlePageClick(i + 1)}
-              style={{
-                margin: "0 5px",
-                padding: "5px 10px",
-                backgroundColor: i + 1 === defaultPage ? "#657e1f" : "#ccc",
-                color: i + 1 === defaultPage ? "#fff" : "#000",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+        </>
       )}
 
-      {isVisible && (
-        <button className="scroll-to-top-button" onClick={scrollToTopFixid}>
-          ↑
-        </button>
-      )}
+      <div
+        style={{
+          marginTop: "20px",
+          paddingTop: "10px",
+          borderTop: "2px solid #c1c1c1",
+        }}
+        className="page_full root_flex_row"
+      >
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => handlePageClick(i + 1)}
+            style={{
+              margin: "0 5px",
+              padding: "5px 10px",
+              backgroundColor: i + 1 === defaultPage ? "#B5D249" : "#ccc",
+              color: i + 1 === defaultPage ? "#fff" : "#000",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

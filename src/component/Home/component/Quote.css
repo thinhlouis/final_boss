@@ -1,15 +1,122 @@
+:root {
+  --primaryColor: #98b72b;
+  --secondColor: #d6d6d6;
+}
+.quote-full {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  margin: 1rem 0;
+  background: #ffffff;
+  transition: 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.192);
+  border-radius: 8px;
+  overflow: hidden; /* Quan trọng để ẩn phần gradient thừa */
+  box-sizing: border-box;
+}
+
+/* Pseudo-element ::before sẽ tạo hiệu ứng cho 2 cạnh ngang (trên và dưới) */
+.quote-full::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%; /* Bắt đầu từ ngoài bên trái */
+  width: 200%; /* Rộng gấp đôi để bao phủ cả chiều rộng và sau đó dịch chuyển */
+  height: 2px; /* Chiều dày của viền */
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primaryColor),
+    var(--primaryColor),
+    transparent
+  );
+  animation: border-horizontal 3s linear infinite;
+  transform-origin: left center; /* Điểm neo cho transform */
+}
+
+/* Pseudo-element ::after sẽ tạo hiệu ứng cho 2 cạnh dọc (trái và phải) */
+.quote-full::after {
+  content: "";
+  position: absolute;
+  top: -100%; /* Bắt đầu từ ngoài bên trên */
+  left: 0;
+  width: 2px; /* Chiều dày của viền */
+  height: 200%; /* Dài gấp đôi để bao phủ cả chiều cao và sau đó dịch chuyển */
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--primaryColor),
+    var(--primaryColor),
+    transparent
+  );
+  animation: border-vertical 3s linear infinite;
+  transform-origin: top center; /* Điểm neo cho transform */
+}
+
+/* Animation cho đường viền ngang (trên và dưới) */
+@keyframes border-horizontal {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(100%) translateY(0);
+  }
+  50% {
+    transform: translateX(100%) translateY(calc(100% - 2px)); /* Chuyển xuống đáy */
+  }
+  75% {
+    transform: translateX(0) translateY(calc(100% - 2px));
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+/* Animation cho đường viền dọc (trái và phải) */
+@keyframes border-vertical {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(100%) translateX(0);
+  }
+  50% {
+    transform: translateY(100%) translateX(calc(100% - 2px)); /* Chuyển sang phải */
+  }
+  75% {
+    transform: translateY(0) translateX(calc(100% - 2px));
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+/* Các phần còn lại của CSS giữ nguyên */
 .quote-card {
-  width: 77%;
-  max-width: 77%;
-  margin: 35px auto;
-  padding: 20px;
-  border: 2px solid #e5e7eb;
-  border-radius: 15px;
+  width: 50%;
+  margin: 1.2rem auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+}
+.quote-card blockquote.leading-relaxed,
+.quote-card .items-center,
+.quote-card .blockquote {
+  width: 100%;
+}
+.quote-card .blockquote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .quote-card img.avatar-author {
   width: 50px;
-  aspect-ratio: 1/1;
-  object-fit: cover;
+  height: 50px;
+  aspect-ratio: 1 / 1;
+  object-fit: fill;
   border-radius: 50%;
 }
 
@@ -23,14 +130,14 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 0.5rem;
-  margin-left: 0.25rem;
+  gap: 1rem;
+  margin-left: 1rem;
 }
 .quote-card .items-center,
-.quote-card p.leading-relaxed {
+.quote-card blockquote.leading-relaxed {
   margin-top: 1rem;
 }
-.quote-card p.leading-relaxed {
+.quote-card blockquote.leading-relaxed {
   margin-left: 1rem;
   font-style: italic;
 }
@@ -38,7 +145,7 @@
   font-size: 0.9rem;
 }
 .quote-card p.quote_name_author span {
-  color: #657e1f;
+  color: #98b72b;
 }
 /* action quote */
 .action-quote-container {
@@ -49,6 +156,8 @@ div.add-new-quote-item,
 div.delete-quote-item {
   margin-bottom: 15px;
   position: relative;
+  text-align: right;
+  width: 100%;
 }
 
 div.add-new-quote,
@@ -60,26 +169,27 @@ div.delete-quote {
   justify-content: center;
   align-items: flex-start;
 }
-
+div.add-new-quote-item textarea {
+  padding-top: 0.5rem;
+}
 div.add-new-quote-item textarea,
 div.delete-quote-item input {
-  width: 25rem;
+  width: 100%;
   height: 6rem;
   resize: none;
-  padding: 10px 10px 10px 14px;
+  padding-left: 0.5rem;
   outline: none;
   border: 2px solid #ddd;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 1rem;
   color: #24292e;
 }
 div.delete-quote-item input {
-  height: 1rem;
-  width: 15rem;
+  height: 2.4rem;
 }
 div.add-new-quote-item textarea:focus,
 div.delete-quote-item input:focus {
-  border-color: #657e1f;
+  border-color: #98b72b;
 }
 div.add-new-quote-item label,
 div.delete-quote-item label {
@@ -94,45 +204,36 @@ div.delete-quote-item label {
   color: #999;
   transition: all 0.3s ease;
 }
-div.delete-quote-item label {
-}
+
 div.add-new-quote-item textarea:focus + label,
 div.delete-quote-item input:focus + label {
-  color: #657e1f;
+  color: #98b72b;
 }
 div.add-new-quote-item select {
-  width: 15rem;
-  height: 2rem;
-  padding-left: 1rem;
+  width: 100%;
+  height: 2.2rem;
+  padding-left: 0.5rem;
   font-size: 1rem;
   color: #24292e;
   border: 2px solid #ddd;
   border-radius: 5px;
 }
 div.add-new-quote-item select:focus {
-  border-color: #657e1f;
+  border-color: #98b72b;
   outline: none;
-  color: #657e1f;
+  color: #98b72b;
 }
 
 div.add-new-quote-item button.btn-action-add,
 div.delete-quote-item button {
-  cursor: pointer;
   width: 15rem;
   height: 2.2rem;
-  border: 2px solid #657e1f;
+  border: 1px solid #98b72b;
   border-radius: 4px;
-  background-color: #fff;
-  color: #657e1f;
   font-size: 1rem;
   font-weight: bold;
 }
-div.add-new-quote-item button.btn-action-add:hover,
-div.delete-quote-item button:hover {
-  background-color: #657e1f;
-  color: #fff;
-  opacity: 0.8;
-}
+
 div.add-new-quote-item button.btn-action-add:active,
 div.delete-quote-item button:active {
   transform: translateY(3px);
@@ -185,7 +286,7 @@ span.slider:before {
 }
 
 label.switch input:checked + .slider {
-  background-color: #657e1f;
+  background-color: #98b72b;
 }
 
 label.switch input:checked + .slider:before {
@@ -194,14 +295,15 @@ label.switch input:checked + .slider:before {
   transform: translateX(36px);
 }
 
-@media (width <= 480px) {
+@media (width <= 575px) {
   .quote-card {
-    width: 80%;
-    max-width: 80%;
+    width: 90%;
+    max-width: 100%;
+    height: calc(100% - 10px);
   }
   .quote-card .items-center {
     align-items: flex-end;
-    margin-top: 1rem;
+    margin: 1rem 0;
   }
   .action-quote-container {
     width: 90%;
@@ -211,9 +313,7 @@ label.switch input:checked + .slider:before {
   div.switch-box {
     width: 100%;
   }
-  div.add-new-quote-item textarea {
-    width: 16rem;
-  }
+
   div.switch-box {
     align-items: center;
     margin: 0;

@@ -5,6 +5,7 @@ import WeatherCard from "../Weather/WeatherCard";
 import Quote from "./component/Quote";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import quotesAPI from "../../apis/quotesAPI";
+import ImageSlider from "./ImageSlider";
 
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import Slider from "react-slick";
@@ -17,7 +18,7 @@ function Home() {
   const [avtAuthor, setAvtAuthor] = useState({});
   const [currentQuote, setCurrentQuote] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { auth } = useContext(AuthContext);
+  const { auth, loading: loadingAuth } = useContext(AuthContext);
 
   const isRoot = auth?.user?.role === "super_root";
 
@@ -81,7 +82,7 @@ function Home() {
           />
         </div>
       )}
-      {isRoot && (
+      {!loadingAuth && isRoot ? (
         <div className="image-slider-container">
           <Slider {...settingSlider}>
             {gallerys.map((gallery, index) => (
@@ -90,10 +91,21 @@ function Home() {
                 style={{ width: "100%", margin: "0 auto" }}
                 className="Numeber"
               >
-                <img src={gallery} alt="img" loading="lazy" />
+                <img src={gallery} alt="img" loading="eager" />
               </div>
             ))}
           </Slider>
+        </div>
+      ) : (
+        <div className="container-hero">
+          <ImageSlider />
+          <div className="content-hero">
+            <h1>Khi tất cả đã nhạt phai!</h1>
+            <p>
+              Dù ai đúng ai sai, thì người sai chắc chắn là người không đúng.
+            </p>
+            <small>copyright © by Trùm Cuối ✌🏻</small>
+          </div>
         </div>
       )}
 

@@ -1,32 +1,22 @@
-.weather-component {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
 .weather-app-container {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 30%;
-  max-width: 800px;  */
-  padding: 20px;
   box-sizing: border-box;
   margin: 0 auto;
 }
 
 .weather-card {
-  background: linear-gradient(180deg, #f6e2ab, #657e1f); /* Màu gradient xanh */
-  border-radius: 25px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  color: white;
-  padding: 16px;
-  width: 80%;
+  background: linear-gradient(180deg, #f9fbea, #cce274);
+  border-radius: 3px;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.192);
+  padding: 5px;
+  width: 100%;
   text-align: center;
   display: flex;
   justify-content: space-around;
-  margin: 10px; /* Khoảng cách giữa hai card */
+  margin-bottom: 1rem;
 }
 .weather-content {
   width: 45%;
@@ -37,32 +27,17 @@
 
 .header-weather {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
   gap: 1rem;
+  align-items: center;
   height: 2rem;
   font-size: 1.2em;
   font-weight: bold;
-  padding: 15px;
-}
-.header-weather select {
-  width: 15rem;
-  height: 2rem;
-  text-align: center;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  background-color: #959f4d;
-  color: #fff;
 }
 
-.header-weather select:focus {
-  outline: none;
-}
 .header-weather p {
   text-transform: uppercase;
   font-size: 1rem;
-  color: #fff;
 }
 .header-small {
   display: none;
@@ -72,7 +47,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 15px;
+  padding: 15px 0;
 }
 
 .plus-icon,
@@ -281,33 +256,126 @@
 }
 
 .air-pollution-container {
-  position: relative;
   width: 90%;
   max-width: 500px; /* Chiều rộng tối đa của thanh */
   height: 20px; /* Chiều cao của thanh */
   background-color: #e0e0e0; /* Màu nền khi chưa có chỉ số */
-  border-radius: 5px;
+  border-radius: 3px;
   overflow: hidden; /* Quan trọng để thanh màu không tràn ra ngoài */
 }
 
 .air-pollution-bar {
+  position: relative;
   height: 100%;
   width: 0%; /* Ban đầu là 0% */
-  border-radius: 5px;
+  border-radius: 3px;
   transition: width 0.5s ease-in-out; /* Hiệu ứng chuyển động mượt mà */
   /* Màu nền sẽ được thiết lập qua JavaScript */
 }
 span.name-pollution {
-  color: #bcbcbc;
+  color: #6d6d6d;
   position: absolute;
-  left: 8px;
-  top: 3px;
-  font-size: 12px;
+  right: 10%;
+  top: 3%;
+  font-size: 0.75rem;
 }
+.header-full {
+  position: relative;
+  height: 2.2rem;
+  margin-bottom: 2rem;
+  background-color: #e5e7eb;
+  border-radius: 3px;
+  border: thin solid #e5e7eb;
+}
+.header-full:focus-within {
+  border-color: #b5d249; /* màu khi input focus */
+  background-color: #b5d249;
+}
+.header-full > label {
+  text-transform: uppercase;
+  width: 30%;
+}
+.header-full:focus-within > label {
+  color: #f5f8ed;
+}
+.header-full > input[type="text"] {
+  width: 70%;
+  height: 100%;
+  background-color: #f5f8ed;
+  font-size: 1rem;
+  border-radius: 0 3px 3px 0;
+  padding-left: 10px;
+  border: none;
+}
+
+.header-weather input[type="text"]:focus {
+  outline: none;
+}
+.result-search {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 100%;
+  right: 0;
+  text-align: left;
+  border-radius: 0 0 5px 5px;
+  z-index: 1;
+  width: 67.5%;
+}
+.result-search p {
+  cursor: pointer;
+  padding: 10px 5px;
+  padding-left: 0.5rem;
+  color: #fff;
+  text-transform: capitalize;
+}
+.result-search p:hover {
+  background-color: #e2eea8;
+  color: #1a2310;
+}
+.air-pollution-bar-1 {
+  background-image: linear-gradient(to right, #39ff14, #39ff14);
+}
+.air-pollution-bar-2 {
+  background-image: linear-gradient(to right, #39ff14, #ffff00);
+}
+.air-pollution-bar-3 {
+  background-image: linear-gradient(to right, #39ff14, #ffff00, #ff6a00);
+}
+.air-pollution-bar-4 {
+  background-image: linear-gradient(
+    to right,
+    #39ff14,
+    #ffff00,
+    #ff6a00,
+    #ed1d24
+  );
+}
+.air-pollution-bar-5 {
+  background-image: linear-gradient(
+    to right,
+    #39ff14,
+    #ffff00,
+    #ff6a00,
+    #ed1d24,
+    #7f4699
+  );
+}
+.air-pollution-bar-6 {
+  background-image: linear-gradient(
+    to right,
+    #39ff14,
+    #ffff00,
+    #ff6a00,
+    #ed1d24,
+    #7f4699,
+    #800000
+  );
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .weather-app-container {
-    width: 90%;
+    width: 95%;
     padding: 0;
     margin: 20px auto;
   }
@@ -317,11 +385,37 @@ span.name-pollution {
     flex-direction: column;
   }
   .header-small {
+    width: 90%;
+    position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    height: 4rem;
+    height: fit-content;
+    margin: 1rem auto;
+    background-color: #e5e7eb;
+    border-radius: 3px;
+    border: thin solid #e5e7eb;
+  }
+  .header-small:focus-within {
+    border-color: #b5d249; /* màu khi input focus */
+    background-color: #b5d249;
+  }
+  .header-small > label {
+    text-transform: uppercase;
+    padding-left: 0.5rem;
+    width: 40%;
+    font-size: 1.2rem;
+  }
+  .header-small:focus-within > label {
+    color: #f5f8ed;
+  }
+  .header-small input[type="text"] {
+    height: 3rem;
+    padding-left: 10px;
+    border: none;
+    font-size: 1.2rem;
+    width: 60%;
   }
   .header-full {
     display: none;
@@ -330,6 +424,14 @@ span.name-pollution {
     width: 100%;
   }
   span.name-pollution {
-    top: 2px;
+    top: 2%;
+  }
+  .result-search {
+    width: 57%;
+    top: 100%;
+    right: 0;
+  }
+  .result-search p {
+    font-size: 0.9rem;
   }
 }

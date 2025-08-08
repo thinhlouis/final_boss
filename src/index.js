@@ -4,9 +4,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import Header from "./component/Header/Header";
+import Footer from "./component/Footer/Footer";
 import AuthState from "./context/AuthContext/AuthState";
 import MoviesState from "./context/MovieContext/MoviesState";
 import ActiveState from "./context/ActiveContext/ActiveState";
+import ScrollState from "./context/ScrollContex/ScrollState";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +18,11 @@ root.render(
       <AuthState>
         <ActiveState>
           <MoviesState>
-            <App />
+            <ScrollState>
+              <Header />
+              <App />
+              <Footer />
+            </ScrollState>
           </MoviesState>
         </ActiveState>
       </AuthState>

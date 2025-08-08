@@ -1,20 +1,30 @@
 div.playing-movie {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
 }
+
 div.player-movie {
   width: 100%;
   height: 100%;
 }
 .playing-movie img {
-  width: 500px;
+  width: 600px;
   margin-top: 1rem;
 }
 .hls-movie {
   width: 100%;
   height: 100%;
+}
+.hls-movie,
+.player-movie {
+  background-color: #383838;
+}
+.video-native-box {
   position: relative;
+}
+.video-native-box > video {
+  display: block;
 }
 
 .playing-movie-loading_current {
@@ -26,12 +36,6 @@ div.player-movie {
 }
 /*  */
 div.custom-control {
-  display: none;
-  background-color: transparent;
-  width: 100%;
-  height: 100%;
-}
-div.control-center {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -40,17 +44,25 @@ div.control-center {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
 }
-div.control-bottom {
+div.custom-control-end {
   position: absolute;
-  top: 3%;
-  right: 3%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  bottom: 0;
+  right: 2%;
   gap: 0.75rem;
 }
-div.custom-control button {
+div.custom-control-end > input {
+  width: 5rem;
+  margin-bottom: 5%;
+  accent-color: #fff;
+}
+
+div.custom-control button,
+div.custom-control-end button {
   background-color: transparent;
   color: #fff;
   font-size: 2rem;
@@ -68,9 +80,132 @@ div.custom-control button:active {
   border: none;
   outline: none;
 }
+section.section-vip-top {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+section.section-vip-top > h5 {
+  text-align: center;
+  background-color: #d1df5c;
+  width: 100%;
+  padding: 0.5rem 0px;
+  border-radius: 0 0 3px 3px;
+}
+section.section-vip-bottom {
+  width: 400px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+section.section-vip-bottom a {
+  text-decoration: none;
+  width: 65%;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  color: #009fec;
+  font-weight: bold;
+}
+section.section-vip-bottom .box-ck {
+  width: 70%;
+  margin-top: 1rem;
+  row-gap: 5px;
+}
+div.playing-movie-vip img.membership {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+}
+div.playing-movie-vip img.qr_code {
+  width: 100px;
+}
 
-@media (width <= 480px) {
+div.playing-movie-vip img.telegram_icon {
+  width: 1.2rem;
+  margin: 0;
+}
+.playing-movie > p > b,
+.playing-movie > p > span {
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.playing-movie > p > b {
+  color: #ffb900;
+}
+.container_login_movie {
+  margin: 1rem auto;
+  width: 20%;
+}
+.container_login_movie .form-item-login-movie {
+  width: 100%;
+  position: relative;
+}
+.container_login_movie .form-item-login-movie > label {
+  color: #999;
+}
+.container_login_movie .form-item-login-movie > input,
+.container_login_movie .form-item-login-movie > button {
+  width: calc(100% - 50px);
+  height: 2rem;
+}
+.container_login_movie .form-item-login-movie > input {
+  padding-left: 3%;
+  outline: none;
+  border: thin solid #999;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.container_login_movie .form-item-login-movie > input:focus {
+  border-color: #b6d249;
+  border-width: 2px;
+}
+.container_login_movie .form-item-login-movie:focus-within > label {
+  color: #ffb900;
+}
+.container_login_movie .form-item-login-movie > button {
+  border: none;
+  border-radius: 5px;
+}
+.container_login_movie .form-item-login-movie > button.hide_unhide-pass-movie {
+  position: absolute;
+  top: 46%;
+  right: 20%;
+  font-size: 24px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #98b72b;
+  width: fit-content;
+}
+
+@media (width <= 575px) {
+  div.playing-movie-vip {
+    justify-content: center;
+  }
   div.custom-control {
-    display: block;
+    visibility: inherit;
+  }
+  section.section-vip-bottom {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .container_login_movie {
+    width: 80%;
+  }
+  .container_login_movie .form-item-login-movie {
+    align-items: center;
+  }
+  .container_login_movie .form-item-login-movie > input,
+  .container_login_movie .form-item-login-movie > button {
+    height: 2.4rem;
+  }
+  .container_login_movie
+    .form-item-login-movie
+    > button.hide_unhide-pass-movie {
+    right: 12%;
+    top: 44%;
   }
 }

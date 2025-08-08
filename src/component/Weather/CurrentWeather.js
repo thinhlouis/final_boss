@@ -1,6 +1,6 @@
 import React from "react";
 
-const CurrentWeather = ({ data, getIconUrl }) => {
+const CurrentWeather = ({ data, getIconUrl, name = "Biên Hòa" }) => {
   const currentDate = new Date(data.dt * 1000);
   const options = { weekday: "long", month: "short", day: "numeric" };
   const formattedDate = currentDate.toLocaleDateString("vi-VN", options);
@@ -8,7 +8,7 @@ const CurrentWeather = ({ data, getIconUrl }) => {
   return (
     <div className="current-weather">
       <div className="current-main">
-        <div className="date">{formattedDate}</div>
+        <div className="date">{`${name} - ${formattedDate}`}</div>
         <img
           src={getIconUrl(data.weather[0].icon)}
           alt="weather icon"

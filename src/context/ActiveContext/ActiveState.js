@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from "react";
 
 import ActiveContext from "./ActiveContext";
 import { session } from "../../utils/setStorage";
-import activeAPI from "../../apis/activeAPI";
+import userAPI from "../../apis/userAPI";
 import authAPI from "../../apis/authAPI";
 
 const ActiveState = ({ children }) => {
@@ -11,7 +11,7 @@ const ActiveState = ({ children }) => {
 
   const checkedStatusActive = useCallback(async () => {
     try {
-      const result = await activeAPI.status();
+      const result = await userAPI.status();
 
       if (!result?.data?.success) {
         setShowModal(true);
@@ -30,7 +30,7 @@ const ActiveState = ({ children }) => {
     }
     console.log("Người dùng không hoạt động trong 1 phút. Hiển thị modal.");
     try {
-      await activeAPI.change({ isActive: false });
+      await userAPI.change({ isActive: false });
       setShowModal(true);
     } catch (error) {
       setShowModal(true);
@@ -41,12 +41,28 @@ const ActiveState = ({ children }) => {
     try {
       const result = await authAPI.verifyCode({ security_code: inputCode });
       if (result) {
-        await activeAPI.change({ isActive: true });
+        await userAPI.change({ isActive: true });
         setShowModal(false);
+        return true;
       }
     } catch (error) {
       setShowModal(true);
       setError(error.response?.data?.message);
+      return false;
+    }
+  }, []);
+
+  const verifyMembership = useCallback(async (id) => {
+    try {
+      const result = await userAPI.vipMember(id);
+      if (result.data.success) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      setError(error.response?.data?.message);
+      return false;
     }
   }, []);
 
@@ -56,10 +72,20 @@ const ActiveState = ({ children }) => {
       checkedStatusActive,
       handleInactive,
       verifySecurityCode,
+      verifyMembership,
+      setShowModal,
       error,
       setError,
     }),
-    [showModal, checkedStatusActive, handleInactive, verifySecurityCode, error]
+    [
+      showModal,
+      setShowModal,
+      checkedStatusActive,
+      handleInactive,
+      verifySecurityCode,
+      verifyMembership,
+      error,
+    ]
   );
 
   return (

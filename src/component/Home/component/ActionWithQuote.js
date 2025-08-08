@@ -1,6 +1,6 @@
 import quotesAPI from "../../../apis/quotesAPI";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 
 export default function ActionWithQuote() {
@@ -8,6 +8,20 @@ export default function ActionWithQuote() {
   const [author, setAuthor] = useState("");
   const [quoteID, setQuoteID] = useState("");
   const [checked, setCheked] = useState(false);
+
+  const inputRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (checked && inputRef.current) {
+      inputRef.current.focus();
+      return;
+    }
+    if (!checked && textareaRef.current) {
+      textareaRef.current.focus();
+      return;
+    }
+  }, [checked]);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -76,6 +90,11 @@ export default function ActionWithQuote() {
       });
     }
   };
+  const handleChangeSlider = (e) => {
+    setCheked(e.target.checked);
+
+    checked ? setQuoteID("") : setText("");
+  };
 
   return (
     <div className="action-quote-container">
@@ -85,7 +104,7 @@ export default function ActionWithQuote() {
           <input
             type="checkbox"
             checked={checked}
-            onChange={() => setCheked(!checked)}
+            onChange={handleChangeSlider}
           />
           <span className="slider"></span>
         </label>
@@ -95,6 +114,7 @@ export default function ActionWithQuote() {
           <h2 style={{ margin: "1.5rem 0", color: "#657e1f" }}>DELETE QUOTE</h2>
           <div className="delete-quote-item">
             <input
+              ref={inputRef}
               type="text"
               id="delete-quote"
               value={quoteID}
@@ -118,6 +138,7 @@ export default function ActionWithQuote() {
           </h2>
           <div className="add-new-quote-item">
             <textarea
+              ref={textareaRef}
               type="text"
               value={text}
               onChange={(e) => setText(e.target.value)}

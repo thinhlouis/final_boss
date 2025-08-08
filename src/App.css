@@ -1,19 +1,52 @@
 .App {
-  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: row;
+  background-color: #fbfcff;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App aside.aside_left {
+  width: 10%;
+  order: 1;
+  flex-grow: 1;
+}
+.App aside.aside_left_full {
+  width: 0;
+}
+.App main.container_main {
+  width: 80%;
+  order: 2;
+  flex-grow: 8;
+  margin-top: 1rem;
+}
+.App main.container_main_full {
+  width: 100%;
+}
+.App aside.aside_right {
+  width: 10%;
+  order: 3;
+  flex-grow: 1;
+}
+.App aside.aside_right_full {
+  width: 0;
+}
+.App aside.aside_left,
+.App main.container_main,
+.App aside.aside_right {
+  height: 100%;
 }
 
 h1 {
   font-size: 2rem;
   color: #ffffff;
-  background: linear-gradient(to bottom, #f6e2ab 45%, #657e1f 65%);
+  background: linear-gradient(to bottom, #cce274 45%, #98b72b 65%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 .App p.error,
 .App p.notification {
   color: #f44336;
@@ -27,39 +60,96 @@ h1 {
   gap: 0.2rem;
 }
 .App p.notification {
-  color: #2196f3;
+  color: #98b72b;
 }
 .error span.icon-error,
 .notification span.icon-notification {
   font-size: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+button.scroll-to-top-button {
+  position: fixed; /* Giữ nút ở một vị trí cố định */
+  bottom: 50px; /* Cách đáy 20px */
+  right: 20px; /* Cách phải 20px */
+  border: none;
+  border-radius: 20%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s ease-in-out; /* Hiệu ứng mượt mà khi hiển thị/ẩn */
+  z-index: 1000; /* Đảm bảo nút nằm trên cùng */
 }
 
-.App-link {
-  color: #61dafb;
+button.scroll-to-top-button:hover {
+  background-color: #465716;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+div.loaded-animation span {
+  color: #657e1f;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+div.loaded-animation span:nth-child(1) {
+  animation: animate 1s infinite ease-in-out;
+}
+div.loaded-animation span:nth-child(2) {
+  animation: animate 1s infinite ease-in-out 0.1s;
+}
+div.loaded-animation span:nth-child(3) {
+  animation: animate 1s infinite ease-in-out 0.2s;
+}
+div.loaded-animation span:nth-child(4) {
+  animation: animate 1s infinite ease-in-out 0.3s;
+}
+div.loaded-animation span:nth-child(5) {
+  animation: animate 1s infinite ease-in-out 0.4s;
+}
+div.loaded-animation span:nth-child(6) {
+  animation: animate 1s infinite ease-in-out 0.5s;
+}
+div.loaded-animation span:nth-child(7) {
+  animation: animate 1s infinite ease-in-out 0.6s;
+}
+div.loaded-animation span:nth-child(8) {
+  animation: animate 1s infinite ease-in-out 0.7s;
+}
+div.loaded-animation span:nth-child(9) {
+  animation: animate 1s infinite ease-in-out 0.8s;
+}
+div.loaded-animation span:nth-child(10) {
+  animation: animate 1s infinite ease-in-out 0.9s;
+}
+@keyframes animate {
+  0% {
+    color: #f3f4f5;
   }
-  to {
-    transform: rotate(360deg);
+  25% {
+    color: #657e1f;
+  }
+  50% {
+    color: #bec107;
+  }
+  75% {
+    color: #657e1f;
+  }
+  100% {
+    color: #f3f4f5;
+  }
+}
+@media (width <= 575px) {
+  .App aside.aside_left,
+  .App aside.aside_right {
+    width: 0;
+  }
+  .App main.container_main {
+    width: 100%;
+    margin-top: 0;
+  }
+  button.scroll-to-top-button {
+    bottom: 30px;
   }
 }

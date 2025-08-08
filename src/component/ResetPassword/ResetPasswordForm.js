@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-import authAPI from "../../apis/authAPI";
+import userAPI from "../../apis/userAPI";
 
 function ResetPasswordForm({ token, loading }) {
   const [password, setPassword] = useState("");
@@ -38,7 +38,7 @@ function ResetPasswordForm({ token, loading }) {
     };
 
     try {
-      const response = await authAPI.confirmReset(infoPayload);
+      const response = await userAPI.confirmReset(infoPayload);
 
       setNotification(`${response.data?.message}`);
       setPassword("");

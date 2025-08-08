@@ -8,7 +8,8 @@ const Error = () => {
   const navigate = useNavigate();
   useEffect(() => {
     return () => {
-      document.title = "FINAL BOSS APP - PRO";
+      document.title =
+        "Final Boss - Một người đẹp trai thanh lịch vô địch khắp vũ trụ";
     };
   }, []);
 

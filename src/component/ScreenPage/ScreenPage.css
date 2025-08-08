@@ -14,7 +14,7 @@
   text-transform: uppercase;
   color: #f5b501;
 }
-@media (width <= 480px) {
+@media (width <= 575px) {
   .title-login-movie p {
     text-align: left;
   }

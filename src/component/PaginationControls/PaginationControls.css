@@ -1,0 +1,41 @@
+/* src/components/PaginationControls/PaginationControls.css */
+.pagination-container {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button.pagination-button,
+button.pagination-button-right,
+button.pagination-button-left {
+  background-color: transparent; /* Nền trong suốt */
+  color: #1f290a; /* Chữ trắng */
+  border: thin solid #ccc;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+button.pagination-button-right,
+button.pagination-button-left {
+  background-color: #e2eea8;
+}
+
+.pagination-button:hover:not(:disabled),
+.pagination-button.active {
+  color: #b5d249; /* Màu xanh khi active/hover */
+  border-color: #b5d249;
+}
+.pagination-button.active {
+  border-width: 2px;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

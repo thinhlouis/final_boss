@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FcInfo, FcHighPriority } from "react-icons/fc";
 
-import authAPI from "../../apis/authAPI";
+import userAPI from "../../apis/userAPI";
 
 function ReissuePassword({ setChangeReissue }) {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -22,7 +22,7 @@ function ReissuePassword({ setChangeReissue }) {
     setNotification("");
     setErrors("");
     try {
-      const response = await authAPI.requestReset(infoReissue);
+      const response = await userAPI.requestReset(infoReissue);
       setNotification(`${response.data?.message}`);
       setUsernameOrEmail("");
     } catch (err) {
@@ -33,7 +33,7 @@ function ReissuePassword({ setChangeReissue }) {
   return (
     <div className="container_login_page">
       <h1 id="title-login" style={{ marginTop: "1rem" }}>
-        Reissue Password Final Boss
+        Reissue Password
       </h1>
       <form className="login-page" onSubmit={handleReissuePassword}>
         <div className="login-box-center">
@@ -53,8 +53,8 @@ function ReissuePassword({ setChangeReissue }) {
             </label>
           </div>
 
-          <p className="chage-reissue" onClick={() => setChangeReissue(false)}>
-            <span>Back Login</span>
+          <p className="chage-reissue">
+            <span onClick={() => setChangeReissue(false)}>Back Login</span>
           </p>
           {notification && (
             <p className="notification">

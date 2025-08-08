@@ -1,99 +1,133 @@
-.sigup-page {
-  margin: 25px auto;
-  max-width: 450px;
-  min-height: 250px;
-  padding: 30px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  /* background-image: linear-gradient(to bottom, #fff 0%, #a4e63b 100%); */
-  text-align: center;
+.register_container {
+  margin: 5px auto;
+  width: 100%;
+}
+.register_page {
+  width: calc(50%);
+}
+.register_page form.form_registers {
+  width: 80%;
+  margin: 1.25rem auto;
 }
 
-.sigup-page .form-group {
-  margin-bottom: 15px;
-  position: relative;
-}
-
-form.sigup-page h1#title-login {
-  color: #333;
-  margin-bottom: 20px;
-}
-form.sigup-page button.btn_sigup {
-  width: calc(100% + 8px);
-  padding: 10px 15px;
+.form-group button.btn_sigup {
+  width: calc(100% - 20px);
+  height: 2.5rem;
   border: none;
   border-radius: 4px;
-  background-color: #657e1f;
-  color: white;
-  cursor: pointer;
   font-size: 16px;
 }
-form.sigup-page button.hide_unhide {
-  font-size: 24px;
+
+.form-group button.hide_unhide {
+  position: absolute;
+  top: 50%;
+  right: 12%;
+  font-size: 22px;
   border: none;
   outline: none;
   background-color: transparent;
-  color: #657e1f;
+  color: #98b72b;
+}
+.form_item {
+  width: 100%;
+  flex-wrap: nowrap;
 }
 
-form.sigup-page button.btn_sigup:hover {
-  background-color: #a9d433;
+.form_item .form-group {
+  width: 50%;
+  margin-bottom: 15px;
+  position: relative;
+  align-items: flex-start;
+}
+.address,
+.address .form-group {
+  width: 100%;
+}
+.form_item.address .form-group textarea {
+  height: 5rem;
+  resize: none;
+  padding-top: 1.5%;
+  padding-left: 2%;
 }
 
-.sigup-page .form-group input[type="text"],
-.sigup-page .form-group input[type="password"],
-.sigup-page .form-group select#input_role {
+.form_item .form-group input,
+.form_item .form-group select#input_role,
+.form_item .form-group select#input_gender,
+.address .form-group textarea {
   width: calc(100% - 20px);
-  padding: 10px 10px 10px 14px;
+  height: 2.5rem;
   outline: none;
   border: 2px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
   color: #24292e;
-}
-.sigup-page .form-group input[type="text"]:focus,
-.sigup-page .form-group input[type="password"]:focus,
-.sigup-page .form-group select#input_role:focus {
-  border-color: #657e1f;
+  padding-left: 3%;
 }
 
-.sigup-page .form-group label {
-  position: absolute;
+.form_item .form-group input:focus,
+.form_item .form-group select#input_role:focus,
+.form_item .form-group select#input_gender:focus {
+  border-color: #98b72b;
+}
+
+.form_item .form-group label {
   cursor: text;
-  top: 10px;
-  left: 5px;
   font-size: 1rem;
   font-weight: bold;
-  background: #fff;
-  padding: 0 10px;
   color: #999;
   transition: all 0.3s ease;
+  margin-bottom: 0.25rem;
+  margin-left: 0.25rem;
 }
-.form-group input:focus + label,
-.form-group select:focus + label {
-  top: -8px;
-  color: #657e1f;
-  font-size: 0.9rem;
+.form-group:focus-within label,
+.form-group:focus-within select {
+  color: #98b72b;
 }
-.sigup-page .form-group select#input_role {
-  width: calc(100% + 8px);
-  padding: 10px 10px 10px 14px;
-  outline: none;
-  border: 2px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  color: #24292e;
+.date_of_birth {
+  width: calc(100% - 20px);
+  justify-content: space-between;
 }
-@media (width <= 480px) {
-  .sigup-page {
-    padding: 20px;
+.date_of_birth .date_item {
+  width: 30%;
+}
+.date_of_birth .date_item:nth-child(1) input,
+.date_of_birth .date_item:nth-child(2) input {
+  width: 85%;
+  padding-left: 10%;
+}
+.date_of_birth .date_item:nth-child(3) input {
+  width: 100%;
+  padding-left: 10%;
+}
+
+@media (width <= 575px) {
+  .form_register {
     border: none;
+    width: 90%;
   }
-  .sigup-page .form-group select#input_role {
+  .register_page {
+    width: 100%;
+  }
+  .register_page form.form_registers {
+    width: 100%;
+  }
+  .register-page .form-group {
+    width: 100%;
+  }
+  .register-page .form-group input[type="text"],
+  .register-page .form-group input[type="password"],
+  .register-page .form-group select#input_role,
+  .register-page button.btn_sigup {
+    width: 100%;
+  }
+  .register-page .form-group select#input_role {
     height: 2.7rem;
     background-color: transparent;
   }
-  form.sigup-page button.hide_unhide {
+  .register-page button.hide_unhide {
     right: 4%;
+  }
+  .form-group button.hide_unhide {
+    right: 17%;
   }
 }

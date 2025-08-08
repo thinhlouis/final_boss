@@ -6,7 +6,9 @@ import PollutionAir from "./PollutionAir";
 
 import CITIES from "../../mock/citys";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { debounce } from "lodash";
+import { GiModernCity } from "react-icons/gi";
 
 const API_KEY = "b65904355fca4c1d91119dd6f36aed85"; // Thay thế bằng API Key của bạn
 
@@ -15,13 +17,17 @@ function WeatherCard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cityID, setCityID] = useState(1587923);
+  const [cityName, setCityName] = useState("Biên Hòa");
   const [cityLon, setCityLon] = useState(106.816673);
   const [cityLat, setCityLat] = useState(10.95);
+  const [query, setQuery] = useState("");
+  const [searchResultCities, setSearchResultCities] = useState([]);
+  const [notFound, setNotFound] = useState("");
 
   useEffect(() => {
     const findCity = CITIES.find((city) => city.id === Number(cityID));
 
-    if (findCity) return;
+    if (!findCity) return;
     setCityLat(findCity?.lat);
     setCityLon(findCity?.lon);
   }, [cityID]);
@@ -113,6 +119,52 @@ function WeatherCard() {
     fetchWeatherData();
   }, [cityID, cityLat, cityLon]);
 
+  const handlePerformSearch = (searchText) => {
+    if (searchText === "") return;
+    setNotFound("");
+    const currentSearchQuery = searchText.toLowerCase();
+
+    const filtered = CITIES.filter((city) =>
+      city.name.toLowerCase().includes(currentSearchQuery)
+    );
+
+    if (filtered.length === 0) {
+      setNotFound("Không tìm thấy Thành Phố!");
+    }
+
+    // Cập nhật state kết quả để giao diện được render lại
+    setSearchResultCities(filtered);
+  };
+
+  const debouncedSearchHandler = useRef(
+    debounce(handlePerformSearch, 1500)
+  ).current;
+
+  useEffect(() => {
+    return () => {
+      debouncedSearchHandler.cancel();
+    };
+  }, [debouncedSearchHandler]);
+
+  const handleChange = (e) => {
+    if (e.target.value === "") {
+      setSearchResultCities([]);
+    }
+    const inputValue = e.target.value;
+
+    setQuery(inputValue); // Cập nhật state 'query' để input hiển thị đúng giá trị
+
+    // Gọi hàm debounce với giá trị input MỚI NHẤT
+    debouncedSearchHandler(inputValue);
+  };
+
+  const handleSelectedCity = (id, name) => {
+    setCityID(id);
+    setCityName(name);
+    setQuery("");
+    setSearchResultCities([]);
+  };
+
   if (loading) {
     return (
       <div className="weather-app-container">Đang tải dữ liệu thời tiết...</div>
@@ -137,37 +189,52 @@ function WeatherCard() {
         <div className="weather-card">
           <div className="weather-content content-left">
             <div className="header-weather header-small">
-              <p>Select City</p>
-              <select
-                value={cityID}
-                onChange={(e) => setCityID(e.target.value)}
-              >
-                {CITIES.map((city, index) => (
-                  <option key={index} value={city.id}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
+              <label>
+                Search <GiModernCity />
+              </label>
+              <input type="text" value={query} onChange={handleChange} />
+              {searchResultCities.length > 0 && (
+                <div className="result-search">
+                  {searchResultCities.map((c, i) => (
+                    <p key={i} onClick={() => handleSelectedCity(c.id, c.name)}>
+                      {c.name}
+                    </p>
+                  ))}
+                </div>
+              )}
+              {notFound && query !== "" && (
+                <div className="result-search">
+                  <p>{notFound}</p>
+                </div>
+              )}
             </div>
             <CurrentWeather
               data={weatherData.current}
               getIconUrl={getIconUrl}
+              name={cityName}
             />
             <HourlyForecast data={weatherData.hourly} getIconUrl={getIconUrl} />
           </div>
           <div className="weather-content content-right">
             <div className="header-weather header-full">
-              <p>Select City</p>
-              <select
-                value={cityID}
-                onChange={(e) => setCityID(e.target.value)}
-              >
-                {CITIES.map((city, index) => (
-                  <option key={index} value={city.id}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
+              <label>
+                Search <GiModernCity />
+              </label>
+              <input type="text" value={query} onChange={handleChange} />
+              {searchResultCities.length > 0 && (
+                <div className="result-search">
+                  {searchResultCities.map((c, i) => (
+                    <p key={i} onClick={() => handleSelectedCity(c.id)}>
+                      {c.name}
+                    </p>
+                  ))}
+                </div>
+              )}
+              {notFound && query !== "" && (
+                <div className="result-search">
+                  <p>{notFound}</p>
+                </div>
+              )}
             </div>
             <PollutionAir data={weatherData.pollution} />
             <DailyForecast data={weatherData.daily} getIconUrl={getIconUrl} />
