@@ -24,6 +24,7 @@ import InformationUser from "./component/InformationUser/InformationUser";
 import AddQuote from "./component/Home/component/ActionWithQuote";
 import ResetPassword from "./component/ResetPassword/ResetPassword";
 import InactivityModal from "./component/InactivityModal/InactivityModal";
+import LotteryStatistics from "./component/LotteryStatistics/LotteryStatistics";
 
 const LazyMoviesPage = lazy(() => import("./component/Movies/Movies"));
 
@@ -96,6 +97,7 @@ function App() {
                   </PublicRoute>
                 }
               />
+              <Route path="/loto" element={<LotteryStatistics />} />
               <Route path="/weather" element={<WeatherCard />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/ksc" element={<ScreenPage />}>

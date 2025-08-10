@@ -195,8 +195,10 @@ div.edited-item-btn-box {
     height: 100%;
   }
 
-  th:not(:first-child):not(:last-child):not(:nth-last-child(3)),
-  td:not(:first-child):not(:last-child):not(:nth-last-child(3)) {
+  .table-infomation
+    th:not(:first-child):not(:last-child):not(:nth-last-child(3)),
+  .table-infomation
+    td:not(:first-child):not(:last-child):not(:nth-last-child(3)) {
     display: none;
   }
 

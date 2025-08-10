@@ -20,6 +20,7 @@ import {
   RiMenuLine,
   RiLockFill,
   RiLockUnlockFill,
+  RiRefund2Fill,
 } from "react-icons/ri";
 
 export default function Header() {
@@ -179,6 +180,18 @@ export default function Header() {
                     <RiHome4Fill />
                   </span>
                   <sup>HOME</sup>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/loto"
+                  className={activeLink}
+                  onClick={lockSreen && handleClick}
+                >
+                  <span className="icon-header">
+                    <RiRefund2Fill />
+                  </span>
+                  <sup>LOTO</sup>
                 </NavLink>
               </li>
 

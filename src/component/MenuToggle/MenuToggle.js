@@ -12,6 +12,7 @@ import {
   RiUserReceivedFill,
   RiHeartPulseFill,
   RiDashboardFill,
+  RiRefund2Fill,
 } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
@@ -50,6 +51,11 @@ const MenuToggle = ({ isAuthenticated, isRoot }) => {
               </Link>
             </li>
 
+            <li>
+              <Link to="/loto">
+                LOTO <RiRefund2Fill />
+              </Link>
+            </li>
             <li>
               <Link to={"/ksc/movies"}>
                 CINEMA <RiVidiconFill />
